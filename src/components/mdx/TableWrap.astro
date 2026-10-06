@@ -1,0 +1,19 @@
+---
+interface Props {
+	label?: string;
+}
+
+const { label = "Table" } = Astro.props;
+---
+
+<div
+	role="region"
+	tabindex="0"
+	aria-label={label}
+	class="border-window my-8 overflow-x-auto bg-white shadow-hard-sm shadow-ink"
+	data-table-scroll
+>
+	<table class="w-max min-w-full border-collapse font-ui text-ui-sm leading-ui">
+		<slot />
+	</table>
+</div>

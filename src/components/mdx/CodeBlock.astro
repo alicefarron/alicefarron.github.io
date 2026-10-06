@@ -1,0 +1,29 @@
+---
+import Terminal from "../Terminal.astro";
+
+interface Props {
+	title?: string;
+	"data-title"?: string;
+	"data-language"?: string;
+	class?: string;
+}
+
+const {
+	title,
+	"data-title": dataTitle,
+	"data-language": language,
+} = Astro.props;
+const label = title ?? dataTitle ?? language ?? "code";
+---
+
+<Terminal label={label} as="figure" class="my-8" bodyClass="p-0">
+	<div
+		role="region"
+		tabindex="0"
+		aria-label={`Code: ${label}`}
+		class="overflow-x-auto px-4 py-3"
+		data-code-scroll
+	>
+		<pre class="w-max min-w-full font-mono text-ui-sm leading-ui"><slot /></pre>
+	</div>
+</Terminal>

@@ -35,6 +35,7 @@
 	--text-ui-lg: 17px;
 	--text-body: 18px;
 	--text-body--line-height: 1.7;
+	--text-h3: clamp(22px, 3.5cqi, 32px);
 	--text-h2: clamp(28px, 5cqi, 48px);
 	--text-h1: clamp(40px, 7cqi, 96px);
 	--text-title: clamp(56px, 10cqi, 150px);

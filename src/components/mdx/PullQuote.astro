@@ -1,0 +1,16 @@
+---
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<blockquote
+	class:list={[
+		"border-y-window my-10 py-6 font-display text-h3 leading-display font-semibold",
+		className,
+	]}
+>
+	<slot />
+</blockquote>

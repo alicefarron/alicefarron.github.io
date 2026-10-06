@@ -1,6 +1,7 @@
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
+import { codeMetaTransformer } from "./src/lib/code-meta";
 
 type Weight = 400 | 600 | 700;
 
@@ -31,6 +32,11 @@ export default defineConfig({
 		format: "directory",
 	},
 	integrations: [mdx()],
+	markdown: {
+		shikiConfig: {
+			transformers: [codeMetaTransformer],
+		},
+	},
 	fonts: [
 		{
 			name: "Pixelify Sans",

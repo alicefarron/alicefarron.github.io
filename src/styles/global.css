@@ -44,6 +44,12 @@
 	border-top-color: var(--color-ink);
 }
 
+@utility border-y-window {
+	border-block-width: var(--border-window);
+	border-block-style: solid;
+	border-block-color: var(--color-ink);
+}
+
 @utility border-window {
 	border-width: var(--border-window);
 	border-style: solid;
