@@ -33,6 +33,7 @@ const imageAlt = `${socialTitle}, ${site.name}`;
 <meta name="description" content={description} />
 {noindex && <meta name="robots" content="noindex" />}
 <link rel="canonical" href={canonical} />
+<link rel="sitemap" href={absoluteUrl("/sitemap-index.xml", Astro.site)} />
 <meta property="og:site_name" content={site.name} />
 <meta property="og:type" content={type} />
 <meta property="og:title" content={socialTitle} />

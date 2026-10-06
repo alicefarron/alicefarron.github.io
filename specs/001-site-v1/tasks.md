@@ -142,7 +142,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: src/pages/rss.xml.ts, src/pages/digest/rss.xml.ts, src/pages/writing/rss.xml.ts, src/lib/feed.ts, tests/unit/feeds.test.ts
   Verify: `feeds.test.ts` over a production build of fixtures: three feeds parse as RSS 2.0 with required channel and item fields, items have full HTML content, no draft titles appear (AC15)
 
-- [ ] T32 [P] Add the sitemap
+- [x] T32 [P] Add the sitemap
   Files: astro.config.ts, tests/unit/sitemap.test.ts
   Verify: `sitemap.test.ts`: `sitemap-index.xml` lists every published route, excludes `/404` and draft entries
 

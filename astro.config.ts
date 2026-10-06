@@ -1,5 +1,6 @@
 import mdx from "@astrojs/mdx";
 import preact from "@astrojs/preact";
+import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import {
 	defineConfig,
@@ -7,7 +8,7 @@ import {
 	passthroughImageService,
 } from "astro/config";
 import { codeMetaTransformer } from "./src/lib/code-meta";
-import { resolveSiteUrl } from "./src/lib/seo";
+import { includeInSitemap, resolveSiteUrl } from "./src/lib/seo";
 
 type Weight = 400 | 600 | 700;
 
@@ -38,7 +39,7 @@ export default defineConfig({
 	build: {
 		format: "directory",
 	},
-	integrations: [mdx(), preact()],
+	integrations: [mdx(), preact(), sitemap({ filter: includeInSitemap })],
 	image: {
 		service: passthroughImageService(),
 	},

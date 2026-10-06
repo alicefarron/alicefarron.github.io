@@ -74,3 +74,8 @@ export const feedLinks = [
 	{ href: "/digest/rss.xml", title: "alina.os: This week in AI" },
 	{ href: "/writing/rss.xml", title: "alina.os: writing" },
 ] as const;
+
+export function includeInSitemap(url: string): boolean {
+	const path = normalizePath(new URL(url).pathname);
+	return path !== "/404" && !path.startsWith("/og/");
+}
