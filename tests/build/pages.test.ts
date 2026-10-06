@@ -286,3 +286,21 @@ describe("meow.app island", () => {
 		);
 	});
 });
+
+describe("filter islands", () => {
+	it.each([
+		["/digest", "Filter by topic", /data-issue="/g, 3, "3 issues"],
+		["/writing", "Filter by tag", /data-note="/g, 7, "6 notes"],
+	])(
+		"%s ships all items and a hidden filter group for no-JS (AC6)",
+		(path, label, item, count, text) => {
+			const html = page(path);
+			expect(html.match(item)).toHaveLength(count);
+			expect(html).toMatch(new RegExp(`data-count[^>]*>${text}<`));
+			expect(html).toMatch(
+				new RegExp(`<fieldset[^>]*hidden[^>]*><legend[^>]*>${label}</legend>`),
+			);
+			expect(html).toMatch(/<astro-island[^>]*client="idle"/);
+		},
+	);
+});

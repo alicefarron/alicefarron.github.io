@@ -42,3 +42,78 @@ test.describe("meow.app", () => {
 		});
 	});
 });
+
+test.describe("archive filter", () => {
+	test("pressing Agents shows only Agents issues and updates the count (AC6)", async ({
+		page,
+	}) => {
+		await page.goto("/digest");
+		const group = page.getByRole("group", { name: "Filter by topic" });
+		await expect(group).toBeVisible();
+		const agents = group.getByRole("button", { name: "Agents" });
+		await agents.click();
+		await expect(agents).toHaveAttribute("aria-pressed", "true");
+		await expect(group.getByRole("button", { name: "All" })).toHaveAttribute(
+			"aria-pressed",
+			"false",
+		);
+		const items = page.locator("[data-issue]");
+		await expect(items).toHaveCount(1);
+		await expect(items.first()).toHaveAttribute("data-issue", "12");
+		await expect(page.locator("[data-count]")).toHaveText("1 issue");
+		await agents.click();
+		await expect(agents).toHaveAttribute("aria-pressed", "false");
+		await expect(items).toHaveCount(3);
+		await expect(page.locator("[data-count]")).toHaveText("3 issues");
+	});
+
+	test.describe("without JavaScript", () => {
+		test.use({ javaScriptEnabled: false });
+
+		test("all issues show and no filter buttons render (AC6)", async ({
+			page,
+		}) => {
+			await page.goto("/digest");
+			await expect(page.locator("[data-issue]")).toHaveCount(3);
+			await expect(page.locator("[data-count]")).toHaveText("3 issues");
+			await expect(
+				page.getByRole("group", { name: "Filter by topic" }),
+			).toBeHidden();
+			await expect(page.locator("[data-filters] button").first()).toBeHidden();
+		});
+	});
+});
+
+test.describe("writing filter", () => {
+	test("pressing a tag shows only notes with that tag (R5)", async ({
+		page,
+	}) => {
+		await page.goto("/writing");
+		const group = page.getByRole("group", { name: "Filter by tag" });
+		const architecture = group.getByRole("button", { name: "Architecture" });
+		await architecture.click();
+		await expect(architecture).toHaveAttribute("aria-pressed", "true");
+		const items = page.locator('[data-window="all-notes"] [data-note]');
+		await expect(items).toHaveCount(2);
+		expect(
+			await items.evaluateAll((nodes) =>
+				nodes.map((node) => node.getAttribute("data-note")),
+			),
+		).toEqual(["sample-note-table", "sample-note-one"]);
+		await expect(page.locator("[data-count]")).toHaveText("2 notes");
+	});
+
+	test.describe("without JavaScript", () => {
+		test.use({ javaScriptEnabled: false });
+
+		test("all notes show and no filter buttons render", async ({ page }) => {
+			await page.goto("/writing");
+			await expect(
+				page.locator('[data-window="all-notes"] [data-note]'),
+			).toHaveCount(6);
+			await expect(
+				page.getByRole("group", { name: "Filter by tag" }),
+			).toBeHidden();
+		});
+	});
+});

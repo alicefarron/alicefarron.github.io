@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import Footer from "../../components/Footer.astro";
 import TagChip from "../../components/TagChip.astro";
 import Window from "../../components/Window.astro";
-import NoteListItem from "../../islands/NoteListItem";
+import FilterList from "../../islands/FilterList";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { entryReadingTime, getPublishedNotes } from "../../lib/collections";
 import { notePath, pinnedOrNewest } from "../../lib/content";
@@ -11,12 +11,12 @@ import { noteEntry } from "../../lib/entries";
 import { formatDate, isoDate, minutesLabel } from "../../lib/format";
 import { asImage } from "../../lib/image";
 import { tagColor } from "../../lib/labels";
+import { noteTags } from "../../lib/schemas";
 
 const notes = await getPublishedNotes();
 const pinned = pinnedOrNewest(notes);
 const cover = asImage(pinned?.data.cover?.src);
 const entries = notes.map(noteEntry);
-const count = `${entries.length} ${entries.length === 1 ? "note" : "notes"}`;
 ---
 
 <BaseLayout
@@ -51,12 +51,7 @@ const count = `${entries.length} ${entries.length === 1 ? "note" : "notes"}`;
 			)
 		}
 		<Window title="all_notes/" as="section" shadow="lg" class="w-full" data-window="all-notes">
-			<div class="flex flex-wrap items-center justify-between gap-3 border-b-window px-4 py-3">
-				<p class="font-label text-label" aria-live="polite" data-count>{count}</p>
-			</div>
-			<ul data-note-list>
-				{entries.map((note) => <NoteListItem note={note} />)}
-			</ul>
+			<FilterList client:idle kind="note" items={entries} filters={noteTags} groupLabel="Filter by tag" />
 		</Window>
 	</div>
 	<Footer slot="footer" />
