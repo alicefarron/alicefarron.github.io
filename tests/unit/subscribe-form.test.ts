@@ -1,3 +1,5 @@
+import { loadRenderers } from "astro:container";
+import { getContainerRenderer } from "@astrojs/preact/container-renderer";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { beforeAll, describe, expect, it } from "vitest";
 import SubscribeForm from "../../src/components/SubscribeForm.astro";
@@ -7,7 +9,8 @@ import { colorUtilityProblems } from "./helpers/classes";
 let container: AstroContainer;
 
 beforeAll(async () => {
-	container = await AstroContainer.create();
+	const renderers = await loadRenderers([getContainerRenderer()]);
+	container = await AstroContainer.create({ renderers });
 });
 
 function render(props: Record<string, unknown> = {}) {

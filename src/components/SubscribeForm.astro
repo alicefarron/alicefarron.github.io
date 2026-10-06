@@ -1,4 +1,5 @@
 ---
+import SubscribeEnhancer from "../islands/SubscribeEnhancer";
 import { buttondownAction, site } from "../lib/site";
 import { speechBubble } from "../sprites";
 import PixelSprite from "./PixelSprite.astro";
@@ -50,6 +51,7 @@ const button =
 						class="border-window min-h-11 w-full bg-white px-3 font-ui text-ui text-ink"
 					/>
 					<input type="hidden" name="embed" value="1" />
+					<SubscribeEnhancer client:visible inputId={inputId} />
 				</div>
 				<div class="flex flex-wrap items-center justify-end gap-4">
 					<a href="#main" data-not-now class:list={[button, "bg-white font-normal"]}>
@@ -99,6 +101,7 @@ const button =
 							Subscribe
 						</button>
 					</div>
+					<SubscribeEnhancer client:visible inputId={inputId} />
 				</form>
 			</div>
 		</section>
