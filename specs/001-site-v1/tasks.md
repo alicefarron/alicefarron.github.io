@@ -54,7 +54,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
 
 ## Content
 
-- [ ] T12 Write Zod schemas for digest and notes
+- [x] T12 Write Zod schemas for digest and notes
   Files: src/lib/schemas.ts, tests/unit/schemas.test.ts
   Verify: `schemas.test.ts`: valid samples pass; cover without alt or with empty alt fails (AC16); topics outside the enum fail; tldr of 0 or 6 items fails; `draft` and `pinned` default to false
 
