@@ -6,7 +6,12 @@ interface Props {
 	bodyClass?: string;
 }
 
-const { label, as = "div", class: className, bodyClass } = Astro.props;
+const {
+	label,
+	as = "div",
+	class: className,
+	bodyClass = "px-4 py-3",
+} = Astro.props;
 const Tag = as;
 ---
 
@@ -24,7 +29,7 @@ const Tag = as;
 			</div>
 		)
 	}
-	<div class:list={["min-w-0 px-4 py-3", bodyClass]}>
+	<div class:list={["min-w-0", bodyClass]}>
 		<slot />
 	</div>
 </Tag>

@@ -1,0 +1,110 @@
+---
+import { render } from "astro:content";
+import Footer from "../../components/Footer.astro";
+import Figure from "../../components/mdx/Figure.astro";
+import PixelStairs from "../../components/PixelStairs.astro";
+import SubscribeForm from "../../components/SubscribeForm.astro";
+import TagChip from "../../components/TagChip.astro";
+import Window from "../../components/Window.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+	entryReadingTime,
+	getPublishedNotes,
+	type Note,
+} from "../../lib/collections";
+import { notePath, prevNextNote } from "../../lib/content";
+import { formatDate, isoDate, minutesLabel } from "../../lib/format";
+import { asImage } from "../../lib/image";
+import { tagColor } from "../../lib/labels";
+import { noteComponents } from "../../lib/mdx-components";
+import { site } from "../../lib/site";
+
+export async function getStaticPaths() {
+	const notes = await getPublishedNotes();
+	return notes.map((note) => ({
+		params: { slug: note.id },
+		props: { note, ...prevNextNote(notes, note.id) },
+	}));
+}
+
+interface Props {
+	note: Note;
+	prev?: Note;
+	next?: Note;
+}
+
+const { note, prev, next } = Astro.props;
+const { Content } = await render(note);
+const cover = asImage(note.data.cover?.src);
+const neighbours = [
+	{ entry: prev, label: "previous", rel: "prev" },
+	{ entry: next, label: "next", rel: "next" },
+];
+---
+
+<BaseLayout title={note.data.title} description={note.data.dek} hasSubscribeForm preloadBody>
+	<div class="bg-pink">
+		<header class="mx-auto flex max-w-3xl flex-col items-start gap-5 px-4 pt-8 pb-12">
+			<a href="/writing" class="font-label text-label text-ink underline">← writing/</a>
+			<ul class="flex flex-wrap gap-2" aria-label="Tags">
+				<li><TagChip label={note.data.tag} color={tagColor(note.data.tag)} /></li>
+			</ul>
+			<h1 class="font-display text-h1 leading-display font-bold uppercase">{note.data.title}</h1>
+			<p class="font-ui text-ui-lg leading-ui">{note.data.dek}</p>
+			<p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-label text-label" data-note-meta>
+				<span>{site.author}</span>
+				<span aria-hidden="true">·</span>
+				<time datetime={isoDate(note.data.date)}>{formatDate(note.data.date)}</time>
+				{
+					note.data.updated !== undefined && (
+						<>
+							<span aria-hidden="true">·</span>
+							<span>
+								Updated <time datetime={isoDate(note.data.updated)}>{formatDate(note.data.updated)}</time>
+							</span>
+						</>
+					)
+				}
+				<span aria-hidden="true">·</span>
+				<span>{minutesLabel(entryReadingTime(note))}</span>
+			</p>
+		</header>
+		<PixelStairs from="pink" to="paper" />
+	</div>
+
+	<article class="mx-auto flex max-w-measure flex-col px-4 py-12">
+		{cover !== undefined && <Figure src={cover} alt={note.data.cover?.alt ?? ""} class="mt-0" />}
+		<Window title="tl;dr" as="section" variant="yellow" class="mb-10" data-window="tldr" bodyClass="p-5">
+			<ul class="flex list-[square] flex-col gap-2 pl-5 font-body text-body leading-body">
+				{note.data.tldr.map((line) => <li>{line}</li>)}
+			</ul>
+		</Window>
+		<div class="prose-note min-w-0" data-note-body>
+			<Content components={noteComponents} />
+		</div>
+	</article>
+
+	<nav aria-label="More notes" class="mx-auto grid max-w-measure grid-cols-1 gap-6 px-4 pb-16 @dock:grid-cols-2">
+		{
+			neighbours.map(({ entry, label, rel }) =>
+				entry !== undefined ? (
+					<a
+						href={notePath(entry.id)}
+						rel={rel}
+						data-neighbour={label}
+						class:list={[
+							"border-window flex flex-col gap-2 bg-white p-4 text-ink no-underline shadow-hard-sm shadow-ink hover:bg-yellow",
+							label === "next" && "@dock:col-start-2 @dock:text-right",
+						]}
+					>
+						<span class="font-label text-label-sm">{label === "previous" ? `← ${label}` : `${label} →`}</span>
+						<span class="font-ui text-ui leading-ui font-bold">{entry.data.title}</span>
+					</a>
+				) : null,
+			)
+		}
+	</nav>
+
+	<SubscribeForm variant="band" />
+	<Footer slot="footer" />
+</BaseLayout>

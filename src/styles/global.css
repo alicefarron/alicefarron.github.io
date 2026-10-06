@@ -107,3 +107,98 @@
 	border-right-style: solid;
 	border-right-color: var(--color-ink);
 }
+
+@utility prose-note {
+	counter-reset: section;
+	font-family: var(--font-body);
+	font-size: var(--text-body);
+	line-height: var(--leading-body);
+
+	& > * + * {
+		margin-top: calc(var(--spacing) * 5);
+	}
+
+	& h2 {
+		counter-increment: section;
+		display: flex;
+		align-items: center;
+		gap: calc(var(--spacing) * 3);
+		margin-top: calc(var(--spacing) * 12);
+		scroll-margin-top: calc(var(--spacing) * 20);
+		font-family: var(--font-display);
+		font-size: var(--text-h3);
+		font-weight: 700;
+		line-height: var(--leading-display);
+		text-transform: uppercase;
+	}
+
+	& h2::before {
+		content: counter(section);
+		display: inline-flex;
+		flex-shrink: 0;
+		align-items: center;
+		justify-content: center;
+		width: calc(var(--spacing) * 9);
+		height: calc(var(--spacing) * 9);
+		border: var(--border-window) solid var(--color-ink);
+		background-color: var(--color-pink);
+		box-shadow: var(--shadow-hard-sm);
+		font-size: var(--text-ui-lg);
+	}
+
+	& h3 {
+		margin-top: calc(var(--spacing) * 8);
+		font-family: var(--font-ui);
+		font-size: var(--text-ui-lg);
+		font-weight: 700;
+	}
+
+	& a {
+		color: var(--color-ink);
+		text-decoration: underline;
+	}
+
+	& a:hover {
+		color: var(--color-link-hover);
+	}
+
+	& mark {
+		background-color: var(--color-yellow);
+		color: var(--color-ink);
+		padding-inline: calc(var(--spacing) * 1);
+	}
+
+	& ul {
+		list-style: square;
+		padding-left: calc(var(--spacing) * 6);
+	}
+
+	& ol {
+		list-style: decimal;
+		padding-left: calc(var(--spacing) * 6);
+	}
+
+	& li + li {
+		margin-top: calc(var(--spacing) * 2);
+	}
+
+	& :not(pre) > code {
+		font-family: var(--font-mono);
+		font-size: 0.85em;
+		background-color: var(--color-white);
+		border: 1px solid var(--color-ink);
+		padding-inline: calc(var(--spacing) * 1);
+	}
+
+	& th,
+	& td {
+		border: 1px solid var(--color-ink);
+		padding: calc(var(--spacing) * 2) calc(var(--spacing) * 3);
+		text-align: left;
+	}
+
+	& th {
+		background-color: var(--color-yellow);
+		font-weight: 700;
+	}
+}

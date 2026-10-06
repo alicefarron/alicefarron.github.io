@@ -1,7 +1,11 @@
 import mdx from "@astrojs/mdx";
 import preact from "@astrojs/preact";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, fontProviders } from "astro/config";
+import {
+	defineConfig,
+	fontProviders,
+	passthroughImageService,
+} from "astro/config";
 import { codeMetaTransformer } from "./src/lib/code-meta";
 
 type Weight = 400 | 600 | 700;
@@ -33,6 +37,9 @@ export default defineConfig({
 		format: "directory",
 	},
 	integrations: [mdx(), preact()],
+	image: {
+		service: passthroughImageService(),
+	},
 	markdown: {
 		shikiConfig: {
 			transformers: [codeMetaTransformer],

@@ -173,3 +173,62 @@ describe("writing index", () => {
 		expect(html).not.toContain("[NOTE 7 TITLE]");
 	});
 });
+
+describe("article", () => {
+	it("renders the code block as a Terminal with the file label (AC8)", () => {
+		const html = page("/writing/sample-note-code");
+		const body = between(html, "data-note-body", "</article>");
+		expect(body).toMatch(
+			/<figure[^>]*bg-ink[\s\S]*text-lime[^>]*>example\.ts</,
+		);
+		expect(body).toMatch(
+			/role="region"[^>]*tabindex="0"[^>]*class="[^"]*overflow-x-auto/,
+		);
+		expect(body).not.toMatch(/style="/);
+	});
+
+	it("has no previous link on the oldest note (AC9)", () => {
+		const html = page("/writing/sample-note-one");
+		expect(html).not.toContain('data-neighbour="previous"');
+		expect(html).toMatch(
+			/href="\/writing\/sample-note-code"[^>]*data-neighbour="next"/,
+		);
+	});
+
+	it("renders the hero, tl;dr, neighbours and subscribe band", () => {
+		const html = page("/writing/sample-note-code");
+		expect(html).toMatch(/<a[^>]*href="\/writing"[^>]*>← writing\/<\/a>/);
+		expect(html).toMatch(/<h1[^>]*>\[NOTE 2 TITLE\]<\/h1>/);
+		expect(html).toMatch(
+			/data-note-meta[\s\S]*Alina Shaimieva[\s\S]*12 Jan 2026[\s\S]*min read/,
+		);
+		const tldr = between(html, 'data-window="tldr"', "</section>");
+		expect(tldr).toContain("[NOTE 2 TLDR 1]");
+		expect(tldr).toContain("[NOTE 2 TLDR 2]");
+		expect(html).toMatch(
+			/href="\/writing\/sample-note-one"[^>]*data-neighbour="previous"/,
+		);
+		expect(html).toMatch(
+			/href="\/writing\/sample-note-pinned"[^>]*data-neighbour="next"/,
+		);
+		expect(html).toMatch(/id="subscribe"[^>]*data-variant="band"/);
+	});
+
+	it("shows updated date, cover, table, callout and pull quote", () => {
+		expect(page("/writing/sample-note-series")).toMatch(
+			/Updated[\s\S]*10 Feb 2026/,
+		);
+		expect(page("/writing/sample-note-cover")).toMatch(
+			/<img[^>]*alt="\[COVER ALT\]"/,
+		);
+		const table = page("/writing/sample-note-table");
+		expect(table).toMatch(/data-table-scroll[^>]*>\s*<table/);
+		expect(table).toMatch(/<aside[\s\S]*\[CALLOUT/);
+		expect(table).toMatch(/<blockquote[^>]*border-y-window[\s\S]*\[PULL QUOTE/);
+		expect(table).not.toContain('data-neighbour="next"');
+	});
+
+	it("does not build drafts", () => {
+		expect(() => page("/writing/sample-note-draft")).toThrow();
+	});
+});
