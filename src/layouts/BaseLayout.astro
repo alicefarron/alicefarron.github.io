@@ -1,0 +1,50 @@
+---
+import { Font } from "astro:assets";
+import MenuBar from "../components/MenuBar.astro";
+import Seo from "../components/Seo.astro";
+import "../styles/global.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+	noindex?: boolean;
+	hasSubscribeForm?: boolean;
+	preloadBody?: boolean;
+	bodyClass?: string;
+}
+
+const {
+	title,
+	description,
+	noindex = false,
+	hasSubscribeForm = false,
+	preloadBody = false,
+	bodyClass = "bg-paper",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<Seo title={title} description={description} noindex={noindex} />
+		<Font cssVariable="--font-pixelify" preload />
+		<Font cssVariable="--font-silkscreen" />
+		<Font cssVariable="--font-space-mono" />
+		<Font cssVariable="--font-atkinson" preload={preloadBody} />
+		<slot name="head" />
+	</head>
+	<body class:list={["min-h-dvh font-ui text-ui leading-ui text-ink", bodyClass]}>
+		<a
+			href="#main"
+			class="border-window sr-only z-50 bg-yellow px-4 py-2 font-ui text-ink focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+		>
+			Skip to content
+		</a>
+		<MenuBar hasSubscribeForm={hasSubscribeForm} />
+		<main id="main" tabindex="-1" class="@container min-w-0 focus:outline-none">
+			<slot />
+		</main>
+	</body>
+</html>

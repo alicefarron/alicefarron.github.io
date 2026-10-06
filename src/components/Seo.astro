@@ -1,0 +1,16 @@
+---
+import { site } from "../lib/site";
+
+interface Props {
+	title?: string;
+	description?: string;
+	noindex?: boolean;
+}
+
+const { title, description = site.description, noindex = false } = Astro.props;
+const fullTitle = title === undefined ? site.name : `${title} | ${site.name}`;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}

@@ -1,0 +1,55 @@
+---
+import { currentNav, isHome, navItems, site, subscribeHref } from "../lib/site";
+import { cat } from "../sprites";
+import PixelSprite from "./PixelSprite.astro";
+
+interface Props {
+	hasSubscribeForm?: boolean;
+}
+
+const { hasSubscribeForm = false } = Astro.props;
+const current = currentNav(Astro.url.pathname);
+const home = isHome(Astro.url.pathname);
+const inverted = "bg-ink text-white hover:text-white";
+---
+
+<header class="border-b-window sticky top-0 z-20 bg-white">
+	<div class="flex min-h-11 items-center justify-between gap-4 px-3">
+		<a
+			href="/"
+			aria-current={home ? "page" : undefined}
+			class:list={[
+				"flex min-h-11 items-center gap-2 px-2 font-label text-label-lg text-ink no-underline",
+				home && inverted,
+			]}
+		>
+			<PixelSprite sprite={cat} scale={2} />
+			<span>{site.name}</span>
+		</a>
+		<nav aria-label="Main" class="max-dock:hidden">
+			<ul class="flex items-center gap-1 font-ui text-ui-sm">
+				{
+					navItems.map((item) => {
+						const isCurrent = item.id === current;
+						const href = item.id === "subscribe" ? subscribeHref(hasSubscribeForm) : item.href;
+						return (
+							<li>
+								<a
+									href={href}
+									aria-current={isCurrent ? "page" : undefined}
+									class:list={[
+										"flex min-h-11 items-center px-3 text-ink no-underline hover:underline",
+										item.id === "subscribe" && "border-window ml-2 min-h-9 bg-yellow",
+										isCurrent && inverted,
+									]}
+								>
+									{item.label}
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</nav>
+	</div>
+</header>

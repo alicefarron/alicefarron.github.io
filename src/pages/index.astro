@@ -1,21 +1,11 @@
 ---
-import { Font } from "astro:assets";
-import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../lib/site";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>alina.os</title>
-		<Font cssVariable="--font-pixelify" preload />
-		<Font cssVariable="--font-silkscreen" />
-		<Font cssVariable="--font-space-mono" />
-		<Font cssVariable="--font-atkinson" />
-	</head>
-	<body class="bg-dots-sky font-ui text-ink">
-		<main>
-			<h1 class="font-display">[HOME]</h1>
-		</main>
-	</body>
-</html>
+<BaseLayout bodyClass="bg-dots-sky">
+	<div class="px-4 py-8">
+		<h1 class="font-display text-title leading-display font-bold uppercase">{site.name}</h1>
+		<p>[HOME]</p>
+	</div>
+</BaseLayout>
