@@ -1,34 +1,15 @@
 ---
-export type TagColor =
-	| "pink"
-	| "lime"
-	| "yellow"
-	| "sky"
-	| "white"
-	| "lavender";
+import { type ChipColor, chipClass } from "../lib/chip";
+
+export type TagColor = ChipColor;
 
 interface Props {
 	label: string;
-	color?: TagColor;
+	color?: ChipColor;
 	class?: string;
 }
 
 const { label, color = "lime", class: className } = Astro.props;
-
-const colorClasses: Record<TagColor, string> = {
-	pink: "bg-pink",
-	lime: "bg-lime",
-	yellow: "bg-yellow",
-	sky: "bg-sky",
-	white: "bg-white",
-	lavender: "bg-lavender",
-};
 ---
 
-<span
-	class:list={[
-		"border-window inline-flex items-center px-2 py-0.5 font-label text-label-sm leading-none text-ink uppercase",
-		colorClasses[color],
-		className,
-	]}
->{label}</span>
+<span class:list={[chipClass(color), className]}>{label}</span>

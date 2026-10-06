@@ -9,6 +9,17 @@ export type BuildResult = {
 	outDir: string;
 };
 
+function parentEnv(): NodeJS.ProcessEnv {
+	return Object.fromEntries(
+		Object.entries(process.env).filter(
+			([key]) =>
+				!/^(?:VITEST.*|VITE_.*|TEST|MODE|NODE_ENV|DEV|PROD|SSR|BASE_URL|NODE_PATH)$/.test(
+					key,
+				),
+		),
+	);
+}
+
 export function runBuild(env: Record<string, string> = {}): BuildResult {
 	const outDir = mkdtempSync(join(tmpdir(), "alina-os-build-"));
 	const result = spawnSync(
@@ -17,7 +28,7 @@ export function runBuild(env: Record<string, string> = {}): BuildResult {
 		{
 			cwd: process.cwd(),
 			encoding: "utf8",
-			env: { ...process.env, ...env },
+			env: { ...parentEnv(), ...env },
 		},
 	);
 	return {

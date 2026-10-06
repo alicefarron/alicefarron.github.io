@@ -1,11 +1,144 @@
 ---
+import DesktopIcon from "../components/DesktopIcon.astro";
+import Footer from "../components/Footer.astro";
+import PetWindow from "../components/PetWindow.astro";
+import PixelStairs from "../components/PixelStairs.astro";
+import SubscribeForm from "../components/SubscribeForm.astro";
+import TagChip from "../components/TagChip.astro";
+import Window from "../components/Window.astro";
+import NoteListItem from "../islands/NoteListItem";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+	entryReadingTime,
+	getPublishedIssues,
+	getPublishedNotes,
+} from "../lib/collections";
+import { issuePath, latestIssue, newestNotes } from "../lib/content";
+import { issueHeadlines } from "../lib/digest";
+import { noteEntry } from "../lib/entries";
+import { formatDate, isoDate, issueLabel, minutesLabel } from "../lib/format";
+import { tagColor, topicColor } from "../lib/labels";
 import { site } from "../lib/site";
+import { document, floppy, folder, radar } from "../sprites";
+
+const issues = await getPublishedIssues();
+const notes = await getPublishedNotes();
+const issue = latestIssue(issues);
+const issueHref = issuePath(issue.data.number);
+const headlines = issueHeadlines(issue.body ?? "");
+const writing = newestNotes(notes, 5);
+const latestNote = writing[0];
+
+const icons = [
+	{ label: "digest.txt", href: issueHref, sprite: document },
+	{ label: "writing/", href: "/writing", sprite: folder },
+	{ label: "archive/", href: "/digest", sprite: floppy },
+	{ label: "feed.rss", href: "/rss.xml", sprite: radar },
+	{ label: "about.txt", href: "/about", sprite: document },
+];
 ---
 
-<BaseLayout bodyClass="bg-dots-sky">
-	<div class="px-4 py-8">
-		<h1 class="font-display text-title leading-display font-bold uppercase">{site.name}</h1>
-		<p>[HOME]</p>
+<BaseLayout bodyClass="bg-paper" hasSubscribeForm>
+	<div class="bg-dots-sky">
+		<div class="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 @5xl:flex-row @5xl:gap-10 @5xl:py-12">
+			<nav aria-label="Desktop" data-desktop-icons>
+				<ul class="grid grid-cols-3 justify-items-center gap-4 @dock:grid-cols-5 @5xl:grid-cols-1">
+					{
+						icons.map((icon) => (
+							<li>
+								<DesktopIcon href={icon.href} label={icon.label} sprite={icon.sprite} />
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+			<div class="flex min-w-0 grow flex-col gap-8">
+				<header class="flex flex-col items-start gap-5">
+					<h1 class="font-display text-title leading-display font-bold uppercase">{site.name}</h1>
+					<div class="border-window bg-white p-4 shadow-hard-sm shadow-ink">
+						<p class="font-ui text-ui-lg leading-ui">
+							{site.tagline}{" "}
+							<mark class="bg-yellow px-1 text-ink">{site.taglineHighlight}</mark>
+						</p>
+					</div>
+					<a href={issueHref} class="bg-ink px-3 py-1.5 font-label text-label text-white no-underline hover:text-yellow">
+						// issue {issueLabel(issue.data.number)} is out
+					</a>
+				</header>
+
+				<Window title="this_week_in_ai.md" as="section" shadow="lg" class="w-full" data-window="this-week" bodyClass="flex flex-col gap-4 p-5">
+					<p class="flex flex-wrap items-center gap-x-3 gap-y-2 font-label text-label-sm">
+						<span class="bg-ink px-2 py-0.5 text-white" data-issue-number>Issue {issueLabel(issue.data.number)}</span>
+						<time datetime={isoDate(issue.data.date)}>{formatDate(issue.data.date)}</time>
+						<span>{minutesLabel(entryReadingTime(issue))}</span>
+					</p>
+					<h3 class="font-display text-h3 leading-display font-bold uppercase">{issue.data.title}</h3>
+					<p class="max-w-measure font-body text-body leading-body">{issue.data.lede}</p>
+					<ul class="flex flex-wrap gap-2" aria-label="Topics">
+						{issue.data.topics.map((topic) => <li><TagChip label={topic} color={topicColor(topic)} /></li>)}
+					</ul>
+					{
+						headlines.length > 0 && (
+							<ol class="flex list-inside list-decimal flex-col gap-1 border-t-2 border-ink pt-4 font-ui text-ui leading-ui" data-issue-items>
+								{headlines.map((headline) => <li>{headline}</li>)}
+							</ol>
+						)
+					}
+					<p>
+						<a
+							href={issueHref}
+							class="border-window inline-flex min-h-11 items-center bg-yellow px-4 font-ui text-ui font-bold text-ink no-underline shadow-hard-sm shadow-ink"
+						>
+							Read issue {issueLabel(issue.data.number)}
+						</a>
+					</p>
+				</Window>
+
+				<div class="grid grid-cols-1 gap-8 @dock:grid-cols-2">
+					<Window title="latest_note.txt" as="section" class="w-full" data-window="latest-note" bodyClass="flex flex-col gap-3 p-5">
+						{
+							latestNote === undefined ? (
+								<p>[NO NOTES YET]</p>
+							) : (
+								<>
+									<p class="flex flex-wrap items-center gap-3 font-label text-label-sm">
+										<TagChip label={latestNote.data.tag} color={tagColor(latestNote.data.tag)} />
+										<time datetime={isoDate(latestNote.data.date)}>{formatDate(latestNote.data.date)}</time>
+										<span>{minutesLabel(entryReadingTime(latestNote))}</span>
+									</p>
+									<h3 class="font-ui text-ui-lg leading-ui font-bold">
+										<a href={`/writing/${latestNote.id}`} class="text-ink underline">{latestNote.data.title}</a>
+									</h3>
+									<p class="font-ui text-ui leading-ui">{latestNote.data.dek}</p>
+								</>
+							)
+						}
+					</Window>
+					<PetWindow class="w-full" />
+				</div>
+			</div>
+		</div>
+		<PixelStairs from="sky" to="yellow" />
 	</div>
+
+	<section aria-labelledby="writing-heading" class="bg-yellow">
+		<div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12">
+			<h2 id="writing-heading" class="font-display text-h1 leading-display font-bold uppercase">Writing</h2>
+			<Window title="writing/" class="w-full" data-window="writing">
+				<ul data-note-list>
+					{writing.map((note) => <NoteListItem note={noteEntry(note)} />)}
+				</ul>
+				<p class="border-t-window px-4 py-3 font-ui text-ui">
+					<a href="/writing" class="text-ink underline">All notes</a>
+				</p>
+			</Window>
+		</div>
+		<PixelStairs from="yellow" to="sky" />
+	</section>
+
+	<div class="bg-dots-sky px-4 py-16">
+		<SubscribeForm variant="dialog" class="mx-auto w-full max-w-xl" />
+	</div>
+
+	<Footer slot="footer" />
 </BaseLayout>

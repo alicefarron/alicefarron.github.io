@@ -1,4 +1,5 @@
 import mdx from "@astrojs/mdx";
+import preact from "@astrojs/preact";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
 import { codeMetaTransformer } from "./src/lib/code-meta";
@@ -31,7 +32,7 @@ export default defineConfig({
 	build: {
 		format: "directory",
 	},
-	integrations: [mdx()],
+	integrations: [mdx(), preact()],
 	markdown: {
 		shikiConfig: {
 			transformers: [codeMetaTransformer],

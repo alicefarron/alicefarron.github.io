@@ -426,7 +426,7 @@ All under `tests/fixtures/content/`, never in `src/content/`. Text is placeholde
 - Caddy and Node Docker image versions could not be checked (Docker Hub and GitHub were blocked from this environment). Pin exact tags and digests in T35 when they can be read. Node 24 LTS chosen; Node 26 may become LTS this month.
 - Railway variable names (`RAILWAY_PUBLIC_DOMAIN`, passing build args) and the `builder` value for Dockerfiles: the config docs list `DOCKERFILE`; confirm in the dashboard on first deploy.
 - `[DOMAIN]` is unknown, so canonical URLs and feed links point at the Railway domain until it is set. Changing it later changes every canonical URL; acceptable for v1 per the spec decisions.
-- Production builds fail until Alina adds at least one published issue and one published note, because Home requires them. This is intended (no fake content).
+- Production builds fail until Alina adds at least one published issue and one published note, because Home requires them. This is intended (no fake content). Recorded at T21: `pnpm check` therefore builds with `CONTENT_DIR=tests/fixtures/content` (`pnpm build:fixtures`), so the check and the JS budget run over real pages; `pnpm build` keeps using `src/content` and fails until real content lands.
 - Lighthouse mobile performance with four font families and inline SVG sprites is untested. Mitigation listed in section 16.
 - `hover` color #2348C4 on sky #9FD3F7 and on pink #FF9BD6 needs a contrast check; if it fails AA, hover changes underline thickness instead of color on those backgrounds.
 - Visual snapshot baselines depend on the OS font rendering; generate and compare them in the same Playwright Docker image (`mcr.microsoft.com/playwright:v1.63.0-noble`) locally and in CI.

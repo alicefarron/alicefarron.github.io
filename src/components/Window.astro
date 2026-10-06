@@ -7,6 +7,7 @@ type ShadowColor = "ink" | "pink";
 type HeadingLevel = 1 | 2 | 3 | 4;
 
 interface Props {
+	[key: `data-${string}`]: string | boolean | undefined;
 	title: string;
 	as?: "div" | "section" | "article" | "aside";
 	headingLevel?: HeadingLevel;
@@ -28,6 +29,7 @@ const {
 	id,
 	class: className,
 	bodyClass,
+	...rest
 } = Astro.props;
 
 const bodyClasses: Record<Variant, string> = {
@@ -58,6 +60,7 @@ const titleId = `${id ?? slugify(title)}-title`;
 ---
 
 <Tag
+	{...rest}
 	id={id}
 	aria-labelledby={isSection ? titleId : undefined}
 	class:list={[

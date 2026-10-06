@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import Item from "../../src/components/mdx/Item.astro";
 import Section from "../../src/components/mdx/Section.astro";
 import TriedIt from "../../src/components/mdx/TriedIt.astro";
-import { issueContents } from "../../src/lib/digest";
+import { issueContents, issueHeadlines } from "../../src/lib/digest";
 import { digestComponents } from "../../src/lib/mdx-components";
 import Issue012 from "../fixtures/content/digest/012.mdx";
 import { colorUtilityProblems } from "./helpers/classes";
@@ -106,5 +106,16 @@ describe("issueContents", () => {
 		expect(issueContents('<Section title="A">')).toEqual([
 			{ id: "a", title: "A" },
 		]);
+	});
+});
+
+describe("issueHeadlines", () => {
+	it("lists Item headlines in order", () => {
+		const body = [
+			'<Item headline="A" source={{ name: "x", url: "https://example.com" }}>',
+			"<Item headline='B'>",
+			'<Section title="S">',
+		].join("\n");
+		expect(issueHeadlines(body)).toEqual(["A", "B"]);
 	});
 });

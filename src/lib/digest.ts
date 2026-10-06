@@ -24,3 +24,12 @@ export function issueContents(body: string): ContentsEntry[] {
 	}
 	return entries;
 }
+
+const itemTag =
+	/<Item\b[^>]*?\bheadline=(?:"([^"]*)"|'([^']*)'|\{\s*"([^"]*)"\s*\})/g;
+
+export function issueHeadlines(body: string): string[] {
+	return [...body.matchAll(itemTag)]
+		.map((match) => match[1] ?? match[2] ?? match[3] ?? "")
+		.filter((headline) => headline.trim() !== "");
+}

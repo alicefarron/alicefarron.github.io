@@ -6,7 +6,7 @@ let css = "";
 let outDir = "";
 
 beforeAll(() => {
-	const result = runBuild();
+	const result = runBuild({ CONTENT_DIR: "tests/fixtures/content" });
 	outDir = result.outDir;
 	expect(result.status, result.output).toBe(0);
 	css = readBuiltFiles(outDir, [".html", ".css"]).join("\n");
