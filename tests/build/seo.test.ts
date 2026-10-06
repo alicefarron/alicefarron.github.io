@@ -131,3 +131,16 @@ describe("seo tags on every built page (R12)", () => {
 		}
 	});
 });
+
+describe("og images (R12, R16)", () => {
+	it("every og:image points at a built 1200x630 PNG", () => {
+		for (const { path, html } of pages) {
+			const image = one(html, "property", "og:image");
+			const file = join(outDir, new URL(image).pathname);
+			const png = readFileSync(file);
+			expect(png.subarray(1, 4).toString(), path).toBe("PNG");
+			expect(png.readUInt32BE(16), path).toBe(1200);
+			expect(png.readUInt32BE(20), path).toBe(630);
+		}
+	});
+});
