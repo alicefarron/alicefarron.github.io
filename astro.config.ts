@@ -7,6 +7,7 @@ import {
 	passthroughImageService,
 } from "astro/config";
 import { codeMetaTransformer } from "./src/lib/code-meta";
+import { resolveSiteUrl } from "./src/lib/seo";
 
 type Weight = 400 | 600 | 700;
 
@@ -31,6 +32,7 @@ function fontsourceVariants(
 }
 
 export default defineConfig({
+	site: resolveSiteUrl(process.env),
 	output: "static",
 	trailingSlash: "never",
 	build: {

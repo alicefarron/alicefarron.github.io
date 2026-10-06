@@ -134,7 +134,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
 
 ## SEO and feeds
 
-- [ ] T30 Complete Seo tags for every route
+- [x] T30 Complete Seo tags for every route
   Files: src/components/Seo.astro, src/lib/seo.ts, astro.config.ts (site), tests/unit/seo.test.ts
   Verify: `seo.test.ts` over built `dist/`: every page has a unique title and description, canonical, og:* and twitter:* tags, absolute og:image (R12)
 
