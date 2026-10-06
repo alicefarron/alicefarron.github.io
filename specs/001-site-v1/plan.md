@@ -349,6 +349,15 @@ PR environments (manual steps, documented in the task): link the GitHub repo to 
 
 `scripts/docker-smoke.sh` (AC19): `docker build -t alina-os .`, run with `-p 8080:8080`, then curl: `/` is 200; `/missing` is 404 and the body contains "The page could not be found."; the first `/_astro/*.css` link from `/` returns `Cache-Control: public, max-age=31536000, immutable`. Stops the container at the end.
 
+Recorded at T30 to T36:
+
+- `site` comes from `resolveSiteUrl` in `src/lib/seo.ts`: `SITE_URL`, then `https://` plus `RAILWAY_PUBLIC_DOMAIN`, then the placeholder `https://domain.invalid` (a reserved name standing in for `[DOMAIN]`; `[DOMAIN]` itself is not a valid URL). Changed from `http://localhost:4321` so a build without either variable never publishes localhost canonicals. A `SITE_URL` that is not an http(s) URL fails the build.
+- Feeds render each entry with the Container API and the MDX container renderer (`@astrojs/mdx/container-renderer`), strip `<script>` and make root-relative `href` and `src` absolute. Items carry no `<author>`, because RSS 2.0 wants an email there and `[EMAIL]` is a placeholder.
+- OG images: Satori 0.35 ignores the CSS radial gradient, so the sky dot pattern is an SVG pattern image behind the window. Fonts are the `.woff` files of Pixelify Sans 700, Silkscreen 400 and Space Mono 400 and 700.
+- Docker: `node:24.21.0-alpine` (24.21.0 is the newest 24.x on npm's `node` package on 2026-10-06) and `caddy:2.11.4-alpine` (2.11.4 is the newest Caddy release seen in distro package trackers). Neither tag nor a digest could be read from Docker Hub here, and the Docker daemon was not available, so the image has not been built. Pin digests at the first successful build.
+- Caddyfile: as above, plus `persist_config off`, an explicit `Cache-Control: public, max-age=0, must-revalidate` on everything outside `/_astro/` and `/og/`, and the `Server` header removed. The image sets `PORT=8080` and `X_ROBOTS_TAG=all` as defaults.
+- `railway.json`: Dockerfile builder, watch patterns, healthcheck `/` with a 60 s timeout, restart on failure up to 3 times. Dashboard steps are in `docs/deploy.md`.
+
 ## 14. Testing strategy
 
 Commands: `pnpm check` = `biome check . && astro check && vitest run && astro build && tsx scripts/js-budget.ts`. `pnpm test:e2e` = build with `CONTENT_DIR=tests/fixtures/content`, `astro preview`, Playwright projects `phone` (390x844), `tablet` (820x1180), `desktop` (1280x800). Lighthouse CI runs `lhci autorun` against `dist/` built from fixtures.
