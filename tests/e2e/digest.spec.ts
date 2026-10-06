@@ -76,3 +76,29 @@ test.describe("digest issue", () => {
 		expect(response?.status()).toBe(404);
 	});
 });
+
+test.describe("digest archive", () => {
+	test("lists published issues newest first with number, date, title and topics (R4)", async ({
+		page,
+	}) => {
+		await page.goto("/digest");
+		const items = page.locator("[data-issue]");
+		await expect(items).toHaveCount(3);
+		expect(
+			await items.evaluateAll((nodes) =>
+				nodes.map((node) => node.getAttribute("data-issue")),
+			),
+		).toEqual(["12", "11", "10"]);
+		const first = items.first();
+		await expect(first).toContainText("#012");
+		await expect(first).toContainText("23 Jan 2026");
+		await expect(first.getByRole("link")).toHaveText("[ISSUE 012 TITLE]");
+		await expect(first.getByRole("link")).toHaveAttribute(
+			"href",
+			"/digest/012",
+		);
+		await expect(first.getByRole("listitem")).toHaveText(["Agents", "Models"]);
+		await expect(page.locator("[data-count]")).toHaveText("3 issues");
+		await expect(page.getByText("[ISSUE 013 TITLE]")).toHaveCount(0);
+	});
+});

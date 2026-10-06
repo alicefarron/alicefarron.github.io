@@ -1,0 +1,36 @@
+---
+import Footer from "../../components/Footer.astro";
+import PixelStairs from "../../components/PixelStairs.astro";
+import SubscribeForm from "../../components/SubscribeForm.astro";
+import Window from "../../components/Window.astro";
+import IssueListItem from "../../islands/IssueListItem";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPublishedIssues } from "../../lib/collections";
+import { issueEntry } from "../../lib/entries";
+
+const issues = (await getPublishedIssues()).map(issueEntry);
+const count = `${issues.length} ${issues.length === 1 ? "issue" : "issues"}`;
+---
+
+<BaseLayout
+	title="Digest archive"
+	description="Every issue of This week in AI, newest first, filterable by topic."
+	hasSubscribeForm
+>
+	<div class="bg-dots-sky">
+		<div class="mx-auto flex max-w-5xl flex-col gap-8 px-4 pt-10 pb-12">
+			<h1 class="font-display text-h1 leading-display font-bold uppercase">Archive/</h1>
+			<Window title="archive/" as="section" shadow="lg" class="w-full" data-window="archive">
+				<div class="flex flex-wrap items-center justify-between gap-3 border-b-window px-4 py-3">
+					<p class="font-label text-label" aria-live="polite" data-count>{count}</p>
+				</div>
+				<ul data-issue-list>
+					{issues.map((issue) => <IssueListItem issue={issue} />)}
+				</ul>
+			</Window>
+		</div>
+		<PixelStairs from="sky" to="paper" />
+	</div>
+	<SubscribeForm variant="band" />
+	<Footer slot="footer" />
+</BaseLayout>

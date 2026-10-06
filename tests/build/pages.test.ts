@@ -132,3 +132,19 @@ describe("digest issue", () => {
 		expect(page("/digest/010")).not.toContain("data-previous");
 	});
 });
+
+describe("digest archive", () => {
+	it("lists published issues newest first with date, title and topics (R4)", () => {
+		const html = page("/digest");
+		expect(attrs(html, /data-issue="([^"]+)"/g)).toEqual(["12", "11", "10"]);
+		const first = between(html, 'data-issue="12"', 'data-issue="11"');
+		expect(first).toContain("#012");
+		expect(first).toContain("23 Jan 2026");
+		expect(first).toMatch(
+			/<a[^>]*href="\/digest\/012"[^>]*>\[ISSUE 012 TITLE\]<\/a>/,
+		);
+		expect(first).toMatch(/>Agents<[\s\S]*>Models</);
+		expect(html).toMatch(/data-count[^>]*>3 issues</);
+		expect(html).not.toContain("[ISSUE 013 TITLE]");
+	});
+});
