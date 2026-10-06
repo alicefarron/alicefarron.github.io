@@ -46,7 +46,7 @@ Checked with `npm view <pkg> version` on 2026-10-06. Pin all of these exactly (`
 | pnpm | 12.9.1 | Package manager, set in `packageManager` |
 | Node | 24 LTS | Runtime for build. Local machine has 22.22.0, which also meets Astro's minimum |
 
-New dependency reasons (CLAUDE.md asks for one): `@astrojs/preact` and `preact` to meet the JS budget; `satori` and `@resvg/resvg-js` for R12 and R16; `fast-xml-parser` (dev) to check RSS structure in tests (AC15). No reading-time library: a 15 line function over `entry.body` is enough. No font metrics library: the Astro Fonts API generates metric fallbacks.
+New dependency reasons (CLAUDE.md asks for one): `@astrojs/preact` and `preact` to meet the JS budget; `satori` and `@resvg/resvg-js` for R12 and R16; `fast-xml-parser` (dev) to check RSS structure in tests (AC15); `@types/node` (dev) because `astro check` type-checks `playwright.config.ts`, which reads `process.env`. No reading-time library: a 15 line function over `entry.body` is enough. No font metrics library: the Astro Fonts API generates metric fallbacks.
 
 Not pinned in npm, pinned at implementation: `caddy` and `node` Docker image tags (see Risks).
 
