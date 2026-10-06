@@ -21,6 +21,12 @@
 	--color-transparent: transparent;
 	--color-current: currentColor;
 
+	--font-display: var(--font-pixelify);
+	--font-label: var(--font-silkscreen);
+	--font-ui: var(--font-space-mono);
+	--font-mono: var(--font-space-mono);
+	--font-body: var(--font-atkinson);
+
 	--text-label-sm: 11px;
 	--text-label: 13px;
 	--text-label-lg: 16px;

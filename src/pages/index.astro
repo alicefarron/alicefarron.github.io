@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import "../styles/global.css";
 ---
 
@@ -7,10 +8,14 @@ import "../styles/global.css";
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>alina.os</title>
+		<Font cssVariable="--font-pixelify" preload />
+		<Font cssVariable="--font-silkscreen" />
+		<Font cssVariable="--font-space-mono" />
+		<Font cssVariable="--font-atkinson" />
 	</head>
-	<body class="bg-dots-sky text-ink">
+	<body class="bg-dots-sky font-ui text-ink">
 		<main>
-			<h1>[HOME]</h1>
+			<h1 class="font-display">[HOME]</h1>
 		</main>
 	</body>
 </html>

@@ -19,3 +19,18 @@ for (const route of routes) {
 		});
 	});
 }
+
+test("loads every request from the local server", async ({ page, baseURL }) => {
+	const origin = new URL(baseURL ?? "http://localhost").origin;
+	const external: string[] = [];
+	page.on("request", (request) => {
+		const url = new URL(request.url());
+		if (url.protocol !== "data:" && url.origin !== origin) {
+			external.push(request.url());
+		}
+	});
+	for (const route of routes) {
+		await page.goto(route.path, { waitUntil: "networkidle" });
+	}
+	expect(external).toEqual([]);
+});
