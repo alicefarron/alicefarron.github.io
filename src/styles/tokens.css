@@ -1,0 +1,60 @@
+@theme {
+	--color-*: initial;
+	--font-*: initial;
+	--shadow-*: initial;
+
+	--color-ink: #111111;
+	--color-paper: #f4f3ef;
+	--color-white: #ffffff;
+	--color-sky: #9fd3f7;
+	--color-sky-dot: #7bb8e3;
+	--color-yellow: #ffe45c;
+	--color-pink: #ff9bd6;
+	--color-lime: #b8f28b;
+	--color-lavender: #e9e6f7;
+	--color-lavender-dot: #c9c3e6;
+	--color-sprite-blue: #3b6fe0;
+	--color-sprite-green: #7bc86c;
+	--color-link-hover: #2348c4;
+	--color-terminal-text: #e8e8e8;
+	--color-terminal-dim: #6f6f6f;
+	--color-transparent: transparent;
+	--color-current: currentColor;
+
+	--text-label-sm: 11px;
+	--text-label: 13px;
+	--text-label-lg: 16px;
+	--text-ui-sm: 13px;
+	--text-ui: 15px;
+	--text-ui-lg: 17px;
+	--text-body: 18px;
+	--text-body--line-height: 1.7;
+	--text-h2: clamp(28px, 5cqi, 48px);
+	--text-h1: clamp(40px, 7cqi, 96px);
+	--text-title: clamp(56px, 10cqi, 150px);
+
+	--leading-ui: 1.6;
+	--leading-ui-loose: 1.85;
+	--leading-body: 1.7;
+	--leading-display: 0.95;
+
+	--container-measure: 68ch;
+	--container-dock: 40rem;
+
+	--spacing: 4px;
+	--spacing-dock: 64px;
+
+	--radius-dialog-button: 10px;
+
+	--shadow-hard-sm: 4px 4px 0 0 var(--color-ink);
+	--shadow-hard-md: 6px 6px 0 0 var(--color-ink);
+	--shadow-hard-lg: 10px 10px 0 0 var(--color-ink);
+
+	--border-window: 3px;
+	--outline-focus: 3px;
+	--outline-focus-offset: 2px;
+	--titlebar-stripe: 2px;
+	--titlebar-stripe-gap: 3px;
+	--dot-size: 2px;
+	--dot-gap: 16px;
+}

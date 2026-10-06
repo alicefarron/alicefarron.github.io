@@ -20,7 +20,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
 
 ## Foundation
 
-- [ ] T04 Define design tokens in tokens.css with Tailwind v4
+- [x] T04 Define design tokens in tokens.css with Tailwind v4
   Files: src/styles/tokens.css, src/styles/global.css, astro.config.ts, tests/unit/tokens.test.ts, tests/unit/no-vw.test.ts
   Verify: `tokens.test.ts` checks all 14 spec colors plus `sprite-green` with exact hex values, and that built CSS contains no Tailwind default palette names; `no-vw.test.ts` finds no `vw` units in `src/`
 

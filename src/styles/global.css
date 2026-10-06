@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@custom-variant dock (@media (width >= 40rem));
+@custom-variant max-dock (@media (width < 40rem));
+
+@utility bg-dots-sky {
+	background-color: var(--color-sky);
+	background-image: radial-gradient(
+		var(--color-sky-dot) var(--dot-size),
+		transparent var(--dot-size)
+	);
+	background-size: var(--dot-gap) var(--dot-gap);
+}
+
+@utility bg-dots-lavender {
+	background-color: var(--color-lavender);
+	background-image: radial-gradient(
+		var(--color-lavender-dot) var(--dot-size),
+		transparent var(--dot-size)
+	);
+	background-size: var(--dot-gap) var(--dot-gap);
+}
+
+@utility bg-titlebar-stripes {
+	background-color: var(--color-white);
+	background-image: repeating-linear-gradient(
+		to bottom,
+		var(--color-ink) 0 var(--titlebar-stripe),
+		transparent var(--titlebar-stripe)
+			calc(var(--titlebar-stripe) + var(--titlebar-stripe-gap))
+	);
+}
+
+@utility border-window {
+	border-width: var(--border-window);
+	border-style: solid;
+	border-color: var(--color-ink);
+}
+
+@layer base {
+	html {
+		background-color: var(--color-paper);
+		color: var(--color-ink);
+	}
+
+	:focus-visible {
+		outline: var(--outline-focus) solid var(--color-ink);
+		outline-offset: var(--outline-focus-offset);
+	}
+
+	a:hover {
+		color: var(--color-link-hover);
+	}
+}
