@@ -101,3 +101,9 @@
 		0 0 0 var(--default-ring-gap) var(--color-white),
 		0 0 0 calc(var(--default-ring-gap) + var(--border-window)) var(--color-ink);
 }
+
+@utility border-r-window {
+	border-right-width: var(--border-window);
+	border-right-style: solid;
+	border-right-color: var(--color-ink);
+}

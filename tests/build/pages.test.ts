@@ -148,3 +148,28 @@ describe("digest archive", () => {
 		expect(html).not.toContain("[ISSUE 013 TITLE]");
 	});
 });
+
+describe("writing index", () => {
+	it("shows the pinned note in pinned.md and again in all_notes/ (AC7)", () => {
+		const html = page("/writing");
+		const pinned = between(
+			html,
+			'data-window="pinned"',
+			'data-window="all-notes"',
+		);
+		expect(attrs(pinned, /data-note="([^"]+)"/g)).toEqual([
+			"sample-note-pinned",
+		]);
+		const all = html.slice(html.indexOf('data-window="all-notes"'));
+		expect(attrs(all, /data-note="([^"]+)"/g)).toEqual([
+			"sample-note-table",
+			"sample-note-series",
+			"sample-note-cover",
+			"sample-note-pinned",
+			"sample-note-code",
+			"sample-note-one",
+		]);
+		expect(html).toMatch(/data-count[^>]*>6 notes</);
+		expect(html).not.toContain("[NOTE 7 TITLE]");
+	});
+});

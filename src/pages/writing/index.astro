@@ -1,0 +1,63 @@
+---
+import { Image } from "astro:assets";
+import Footer from "../../components/Footer.astro";
+import TagChip from "../../components/TagChip.astro";
+import Window from "../../components/Window.astro";
+import NoteListItem from "../../islands/NoteListItem";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { entryReadingTime, getPublishedNotes } from "../../lib/collections";
+import { notePath, pinnedOrNewest } from "../../lib/content";
+import { noteEntry } from "../../lib/entries";
+import { formatDate, isoDate, minutesLabel } from "../../lib/format";
+import { asImage } from "../../lib/image";
+import { tagColor } from "../../lib/labels";
+
+const notes = await getPublishedNotes();
+const pinned = pinnedOrNewest(notes);
+const cover = asImage(pinned?.data.cover?.src);
+const entries = notes.map(noteEntry);
+const count = `${entries.length} ${entries.length === 1 ? "note" : "notes"}`;
+---
+
+<BaseLayout
+	title="Writing"
+	description="Long notes on building software: architecture, AI in production, agents, backend and side projects."
+	bodyClass="bg-yellow"
+>
+	<div class="mx-auto flex max-w-5xl flex-col gap-10 px-4 pt-10 pb-16">
+		<h1 class="font-display text-title leading-display font-bold uppercase">Writing/</h1>
+		{
+			pinned !== undefined && (
+				<Window title="pinned.md" as="section" shadow="lg" class="w-full" data-window="pinned" bodyClass="grid grid-cols-1 @dock:grid-cols-2">
+					<div class="border-b-window @dock:border-b-0 @dock:border-r-window">
+						{cover !== undefined ? (
+							<Image src={cover} alt={pinned.data.cover?.alt ?? ""} class="block h-full w-full object-cover" />
+						) : (
+							<div class="bg-dots-sky aspect-video h-full w-full" aria-hidden="true" data-cover-placeholder />
+						)}
+					</div>
+					<div class="flex flex-col gap-3 p-5" data-note={pinned.id}>
+						<p class="flex flex-wrap items-center gap-3 font-label text-label-sm">
+							<TagChip label={pinned.data.tag} color={tagColor(pinned.data.tag)} />
+							<time datetime={isoDate(pinned.data.date)}>{formatDate(pinned.data.date)}</time>
+							<span>{minutesLabel(entryReadingTime(pinned))}</span>
+						</p>
+						<h3 class="font-display text-h3 leading-display font-bold uppercase">
+							<a href={notePath(pinned.id)} class="text-ink underline">{pinned.data.title}</a>
+						</h3>
+						<p class="font-ui text-ui leading-ui">{pinned.data.dek}</p>
+					</div>
+				</Window>
+			)
+		}
+		<Window title="all_notes/" as="section" shadow="lg" class="w-full" data-window="all-notes">
+			<div class="flex flex-wrap items-center justify-between gap-3 border-b-window px-4 py-3">
+				<p class="font-label text-label" aria-live="polite" data-count>{count}</p>
+			</div>
+			<ul data-note-list>
+				{entries.map((note) => <NoteListItem note={note} />)}
+			</ul>
+		</Window>
+	</div>
+	<Footer slot="footer" />
+</BaseLayout>
