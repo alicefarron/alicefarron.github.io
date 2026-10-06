@@ -28,7 +28,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: astro.config.ts (fonts), src/styles/tokens.css (font tokens), package.json (@fontsource/*)
   Verify: built CSS has `@font-face` rules for Pixelify Sans 600/700, Silkscreen 400, Space Mono 400/700, Atkinson Hyperlegible Next 400/700 and fallback faces with `size-adjust`; `routes.spec.ts` asserts no request leaves localhost
 
-- [ ] T06 [P] Add the seven sprite grids and run-merging renderer
+- [x] T06 [P] Add the seven sprite grids and run-merging renderer
   Files: src/sprites/*.ts, src/lib/sprite.ts, tests/unit/sprite.test.ts
   Verify: `sprite.test.ts` checks each grid against the spec appendix dimensions and characters, and that a row `KKWW..K` yields three rects
 
