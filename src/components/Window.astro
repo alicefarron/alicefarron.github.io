@@ -1,0 +1,94 @@
+---
+import { slugify } from "../lib/slug";
+
+type Variant = "white" | "sky" | "yellow" | "pink" | "lavender" | "alert";
+type Shadow = "none" | "sm" | "md" | "lg";
+type ShadowColor = "ink" | "pink";
+type HeadingLevel = 1 | 2 | 3 | 4;
+
+interface Props {
+	title: string;
+	as?: "div" | "section" | "article" | "aside";
+	headingLevel?: HeadingLevel;
+	variant?: Variant;
+	shadow?: Shadow;
+	shadowColor?: ShadowColor;
+	id?: string;
+	class?: string;
+	bodyClass?: string;
+}
+
+const {
+	title,
+	as = "div",
+	headingLevel = 2,
+	variant = "white",
+	shadow = "md",
+	shadowColor = "ink",
+	id,
+	class: className,
+	bodyClass,
+} = Astro.props;
+
+const bodyClasses: Record<Variant, string> = {
+	white: "bg-white",
+	sky: "bg-sky",
+	yellow: "bg-yellow",
+	pink: "bg-pink",
+	lavender: "bg-lavender",
+	alert: "bg-white",
+};
+
+const shadowClasses: Record<Shadow, string> = {
+	none: "",
+	sm: "shadow-hard-sm",
+	md: "shadow-hard-md",
+	lg: "shadow-hard-lg",
+};
+
+const shadowColorClasses: Record<ShadowColor, string> = {
+	ink: "shadow-ink",
+	pink: "shadow-pink",
+};
+
+const Tag = as;
+const isSection = as !== "div";
+const Heading = `h${headingLevel}` as const;
+const titleId = `${id ?? slugify(title)}-title`;
+---
+
+<Tag
+	id={id}
+	aria-labelledby={isSection ? titleId : undefined}
+	class:list={[
+		"border-window flex min-w-0 flex-col bg-white",
+		shadowClasses[shadow],
+		shadow !== "none" && shadowColorClasses[shadowColor],
+		className,
+	]}
+>
+	<div class="bg-titlebar-stripes relative flex h-7 items-center justify-center border-b-window px-2">
+		<span
+			data-close-box
+			aria-hidden="true"
+			class="border-window absolute left-2 size-4 bg-white"
+		></span>
+		{
+			isSection ? (
+				<Heading
+					id={titleId}
+					class="bg-white px-2 font-label text-label leading-none font-normal text-ink"
+				>
+					{title}
+				</Heading>
+			) : (
+				<span class="bg-white px-2 font-label text-label leading-none text-ink">
+					{title}
+				</span>
+			)
+		}
+	</div>
+	<div class:list={["@container min-w-0 grow", bodyClasses[variant], variant === "alert" && "p-6", bodyClass]}>
+		<slot />
+	</div>
+</Tag>

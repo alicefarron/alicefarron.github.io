@@ -32,6 +32,18 @@
 	);
 }
 
+@utility border-b-window {
+	border-bottom-width: var(--border-window);
+	border-bottom-style: solid;
+	border-bottom-color: var(--color-ink);
+}
+
+@utility border-t-window {
+	border-top-width: var(--border-window);
+	border-top-style: solid;
+	border-top-color: var(--color-ink);
+}
+
 @utility border-window {
 	border-width: var(--border-window);
 	border-style: solid;

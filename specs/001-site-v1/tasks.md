@@ -36,7 +36,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: src/components/PixelSprite.astro, src/components/PixelStairs.astro, tests/unit/pixel-sprite.test.ts
   Verify: container render test: cat SVG has `shape-rendering="crispEdges"`, no `<div>`, `aria-hidden` without title and `role="img"` with title; PixelStairs has `aria-hidden="true"`
 
-- [ ] T08 Build the Window component
+- [x] T08 Build the Window component
   Files: src/components/Window.astro, tests/unit/window.test.ts
   Verify: container render test: title is an `h2` when `as="section"`, close box is `aria-hidden`, variant and shadow props map to token classes only
 
