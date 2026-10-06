@@ -1,0 +1,40 @@
+---
+type SectionColor =
+	| "ink"
+	| "paper"
+	| "white"
+	| "sky"
+	| "yellow"
+	| "pink"
+	| "lime"
+	| "lavender";
+
+interface Props {
+	from: SectionColor;
+	to: SectionColor;
+	steps?: number;
+	class?: string;
+}
+
+const { from, to, steps = 6, class: className } = Astro.props;
+const width = steps * 2;
+const rises = Array.from({ length: steps }, (_, index) => ({
+	x: (steps - 1 - index) * 2,
+	y: index + 1,
+	w: (index + 1) * 2,
+	h: steps - index,
+}));
+---
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox={`0 0 ${width} ${steps + 1}`}
+	preserveAspectRatio="none"
+	shape-rendering="crispEdges"
+	aria-hidden="true"
+	focusable="false"
+	class:list={["block h-6 w-full", className]}
+>
+	<rect x="0" y="0" width={width} height={steps + 1} fill={`var(--color-${from})`} />
+	{rises.map((rise) => <rect x={rise.x} y={rise.y} width={rise.w} height={rise.h} fill={`var(--color-${to})`} />)}
+</svg>

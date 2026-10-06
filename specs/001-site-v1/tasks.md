@@ -32,7 +32,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: src/sprites/*.ts, src/lib/sprite.ts, tests/unit/sprite.test.ts
   Verify: `sprite.test.ts` checks each grid against the spec appendix dimensions and characters, and that a row `KKWW..K` yields three rects
 
-- [ ] T07 Build PixelSprite and PixelStairs
+- [x] T07 Build PixelSprite and PixelStairs
   Files: src/components/PixelSprite.astro, src/components/PixelStairs.astro, tests/unit/pixel-sprite.test.ts
   Verify: container render test: cat SVG has `shape-rendering="crispEdges"`, no `<div>`, `aria-hidden` without title and `role="img"` with title; PixelStairs has `aria-hidden="true"`
 
