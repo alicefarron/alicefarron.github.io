@@ -202,3 +202,12 @@
 		font-weight: 700;
 	}
 }
+
+@utility stripes-placeholder {
+	background-color: var(--color-white);
+	background-image: repeating-linear-gradient(
+		45deg,
+		var(--color-lavender-dot) 0 var(--placeholder-stripe),
+		transparent var(--placeholder-stripe) calc(var(--placeholder-stripe) * 2)
+	);
+}

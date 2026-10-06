@@ -1,0 +1,104 @@
+---
+import Footer from "../components/Footer.astro";
+import PixelSprite from "../components/PixelSprite.astro";
+import Terminal from "../components/Terminal.astro";
+import Window from "../components/Window.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { about, isPlaceholder, site } from "../lib/site";
+import { sprites } from "../sprites";
+
+const contacts = [
+	{ label: "Email", value: site.email, href: `mailto:${site.email}` },
+	{ label: "GitHub", value: "github.com/alicefarron", href: site.github },
+	{ label: "LinkedIn", value: site.linkedin, href: site.linkedin },
+];
+---
+
+<BaseLayout
+	title="About"
+	description="About Alina Shaimieva, the engineer behind alina.os: work, side projects and contacts."
+	bodyClass="bg-dots-lavender"
+>
+	<div class="mx-auto flex max-w-5xl flex-col gap-10 px-4 pt-10 pb-16">
+		<h1 class="font-display text-title leading-display font-bold uppercase">
+			About<span class="text-pink">.txt</span>
+		</h1>
+
+		<Terminal label="terminal" shadow="lg" bodyClass="flex flex-col gap-4 px-5 py-5">
+			<p class="text-lime">$ whoami</p>
+			{about.bio.map((line) => <p class="font-ui text-ui leading-ui-loose" data-bio>{line}</p>)}
+		</Terminal>
+
+		<section aria-labelledby="work-heading" class="flex flex-col gap-6">
+			<h2 id="work-heading" class="font-display text-h2 leading-display font-bold uppercase">Work</h2>
+			<div class="grid grid-cols-1 gap-8 @dock:grid-cols-2">
+				{
+					about.caseStudies.map((study) => (
+						<Window
+							title={`${study.id}.case`}
+							shadow="lg"
+							shadowColor="pink"
+							data-case-study={study.id}
+							bodyClass="flex flex-col"
+						>
+							<div class="stripes-placeholder aspect-video border-b-window" aria-hidden="true" />
+							<div class="flex flex-col gap-3 p-5">
+								<p class="font-label text-label-sm">
+									{study.where} · {study.when}
+								</p>
+								<h3 class="font-ui text-ui-lg leading-ui font-bold">{study.title}</h3>
+								<p class="font-ui text-ui leading-ui">{study.summary}</p>
+								<p class="font-ui text-ui-sm leading-ui">
+									<span class="font-bold">Stack:</span> {study.stack}
+								</p>
+								<p class="font-ui text-ui-sm leading-ui">
+									<span class="font-bold">Result:</span> {study.result}
+								</p>
+							</div>
+						</Window>
+					))
+				}
+			</div>
+		</section>
+
+		<Window title="side_projects/" as="section" shadow="lg" shadowColor="pink" data-window="side-projects">
+			<ul class="grid grid-cols-1 gap-6 p-5 @dock:grid-cols-2" data-view="icons">
+				{
+					about.sideProjects.map((project) => (
+						<li class="flex items-start gap-4" data-project={project.name}>
+							<PixelSprite sprite={sprites[project.sprite] ?? sprites.document} scale={4} class="shrink-0" />
+							<div class="flex min-w-0 flex-col gap-1">
+								{project.href !== undefined ? (
+									<a href={project.href} class="font-ui text-ui font-bold text-ink underline">{project.name}</a>
+								) : (
+									<span class="font-ui text-ui font-bold">{project.name}</span>
+								)}
+								<span class="font-ui text-ui-sm leading-ui">{project.description}</span>
+								<span class="font-label text-label-sm">{project.stack}</span>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</Window>
+
+		<section aria-labelledby="contact-heading" class="border-window flex flex-col gap-4 bg-ink p-6 text-white shadow-hard-lg shadow-pink" data-contacts>
+			<h2 id="contact-heading" class="font-display text-h2 leading-display font-bold uppercase">Say hi</h2>
+			<ul class="flex flex-col gap-3 font-ui text-ui">
+				{
+					contacts.map((contact) => (
+						<li class="flex flex-wrap items-baseline gap-x-3">
+							<span class="font-label text-label text-lime">{contact.label}</span>
+							{isPlaceholder(contact.value) ? (
+								<span data-placeholder>{contact.value}</span>
+							) : (
+								<a href={contact.href} class="text-white underline hover:text-yellow">{contact.value}</a>
+							)}
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</div>
+	<Footer slot="footer" />
+</BaseLayout>

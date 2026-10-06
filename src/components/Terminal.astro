@@ -4,6 +4,7 @@ interface Props {
 	as?: "div" | "figure" | "section";
 	class?: string;
 	bodyClass?: string;
+	shadow?: "sm" | "lg";
 }
 
 const {
@@ -11,13 +12,15 @@ const {
 	as = "div",
 	class: className,
 	bodyClass = "px-4 py-3",
+	shadow = "sm",
 } = Astro.props;
 const Tag = as;
 ---
 
 <Tag
 	class:list={[
-		"border-window min-w-0 bg-ink font-mono text-ui-sm leading-ui text-terminal-text shadow-hard-sm shadow-ink",
+		"border-window min-w-0 bg-ink font-mono text-ui-sm leading-ui text-terminal-text shadow-ink",
+		shadow === "lg" ? "shadow-hard-lg" : "shadow-hard-sm",
 		className,
 	]}
 >

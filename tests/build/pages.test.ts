@@ -232,3 +232,46 @@ describe("article", () => {
 		expect(() => page("/writing/sample-note-draft")).toThrow();
 	});
 });
+
+describe("about", () => {
+	it("shows the title, bio terminal, case studies and side projects", () => {
+		const html = page("/about");
+		expect(html).toMatch(
+			/<h1[^>]*>\s*About<span class="text-pink">\.txt<\/span>/,
+		);
+		expect(html).toContain("$ whoami");
+		expect(attrs(html, /data-bio[^>]*>([^<]+)</g)).toHaveLength(3);
+		expect(html).toContain(
+			"Fullstack engineer in Eindhoven, eight years of TypeScript",
+		);
+		expect(attrs(html, /data-case-study="([^"]+)"/g)).toEqual([
+			"vet-ai-layer",
+			"mobile-platform",
+		]);
+		expect(html).toContain("AI layer for a veterinary B2B platform");
+		expect(html).toContain("One React Native app, three product teams");
+		expect(attrs(html, /data-project="([^"]+)"/g)).toEqual([
+			"sudo-meow",
+			"VeterokSetkaBot",
+			"job-radar",
+			"schedule-agent",
+		]);
+	});
+
+	it("keeps unknown copy as visible placeholders and never links them", () => {
+		const html = page("/about");
+		expect(html).toContain("[RESULT]");
+		expect(html).toMatch(/data-placeholder[^>]*>\[EMAIL\]</);
+		expect(html).toMatch(/data-placeholder[^>]*>\[LINKEDIN_URL\]</);
+		expect(html).not.toContain('href="mailto:[EMAIL]"');
+		expect(html).not.toContain('href="[LINKEDIN_URL]"');
+		expect(html).toMatch(
+			/<a[^>]*href="https:\/\/github\.com\/alicefarron"[^>]*>github\.com\/alicefarron</,
+		);
+	});
+
+	it("uses no em dashes or curly quotes in copy", () => {
+		const html = page("/about");
+		expect(html).not.toMatch(/[\u2014\u2018\u2019\u201c\u201d]/);
+	});
+});

@@ -12,5 +12,6 @@ export const routes: RouteEntry[] = [
 	{ path: "/writing/sample-note-code", name: "article-code" },
 	{ path: "/writing/sample-note-table", name: "article-table" },
 	{ path: "/writing/sample-note-cover", name: "article-cover" },
+	{ path: "/about", name: "about" },
 	{ path: "/404", name: "not-found" },
 ];
