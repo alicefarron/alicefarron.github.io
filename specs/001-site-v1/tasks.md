@@ -58,7 +58,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: src/lib/schemas.ts, tests/unit/schemas.test.ts
   Verify: `schemas.test.ts`: valid samples pass; cover without alt or with empty alt fails (AC16); topics outside the enum fail; tldr of 0 or 6 items fails; `draft` and `pinned` default to false
 
-- [ ] T13 Add content collections with pinned and issue number checks
+- [x] T13 Add content collections with pinned and issue number checks
   Files: src/content.config.ts, src/lib/collection-checks.ts, tests/unit/collection-checks.test.ts
   Verify: `collection-checks.test.ts`: two pinned notes throw a message naming both file paths (AC7); `012.mdx` with `number: 11` throws; duplicate numbers throw
 
