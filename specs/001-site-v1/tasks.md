@@ -70,7 +70,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: tests/build/build-fails.test.ts, vitest.config.ts
   Verify: `build-fails.test.ts`: two-pinned fixture exits non-zero with both file names in output (AC7); missing-alt fixture exits non-zero (AC16)
 
-- [ ] T16 Add content queries and reading time
+- [x] T16 Add content queries and reading time
   Files: src/lib/content.ts, src/lib/reading-time.ts, tests/unit/content.test.ts, tests/unit/reading-time.test.ts
   Verify: `content.test.ts`: latest issue is the highest number and five newest notes are newest first (AC1); first note has no previous (AC9); drafts excluded when PROD; pinned or newest selection; `reading-time.test.ts` known word counts
 
