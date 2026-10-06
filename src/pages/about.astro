@@ -1,11 +1,10 @@
 ---
 import Footer from "../components/Footer.astro";
-import PixelSprite from "../components/PixelSprite.astro";
 import Terminal from "../components/Terminal.astro";
 import Window from "../components/Window.astro";
+import ViewToggle from "../islands/ViewToggle";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { about, isPlaceholder, site } from "../lib/site";
-import { sprites } from "../sprites";
 
 const contacts = [
 	{ label: "Email", value: site.email, href: `mailto:${site.email}` },
@@ -62,24 +61,7 @@ const contacts = [
 		</section>
 
 		<Window title="side_projects/" as="section" shadow="lg" shadowColor="pink" data-window="side-projects">
-			<ul class="grid grid-cols-1 gap-6 p-5 @dock:grid-cols-2" data-view="icons">
-				{
-					about.sideProjects.map((project) => (
-						<li class="flex items-start gap-4" data-project={project.name}>
-							<PixelSprite sprite={sprites[project.sprite] ?? sprites.document} scale={4} class="shrink-0" />
-							<div class="flex min-w-0 flex-col gap-1">
-								{project.href !== undefined ? (
-									<a href={project.href} class="font-ui text-ui font-bold text-ink underline">{project.name}</a>
-								) : (
-									<span class="font-ui text-ui font-bold">{project.name}</span>
-								)}
-								<span class="font-ui text-ui-sm leading-ui">{project.description}</span>
-								<span class="font-label text-label-sm">{project.stack}</span>
-							</div>
-						</li>
-					))
-				}
-			</ul>
+			<ViewToggle client:visible projects={about.sideProjects} />
 		</Window>
 
 		<section aria-labelledby="contact-heading" class="border-window flex flex-col gap-4 bg-ink p-6 text-white shadow-hard-lg shadow-pink" data-contacts>

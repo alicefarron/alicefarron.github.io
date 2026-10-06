@@ -304,3 +304,17 @@ describe("filter islands", () => {
 		},
 	);
 });
+
+describe("view toggle island", () => {
+	it("ships the Icons view with all projects and a hidden toggle (AC10)", () => {
+		const html = page("/about");
+		const icons = between(html, 'data-view="icons"', "</ul>");
+		expect(attrs(icons, /data-project="([^"]+)"/g)).toHaveLength(4);
+		expect(html).toMatch(
+			/<fieldset[^>]*hidden[^>]*data-view-toggle[^>]*><legend[^>]*>View<\/legend>/,
+		);
+		expect(html).toMatch(/aria-pressed="true"[^>]*>Icons</);
+		expect(html).not.toContain("<table");
+		expect(html).toMatch(/<astro-island[^>]*client="visible"/);
+	});
+});

@@ -117,3 +117,44 @@ test.describe("writing filter", () => {
 		});
 	});
 });
+
+test.describe("side projects view toggle", () => {
+	test("pressing List renders a table and sets aria-pressed (AC10)", async ({
+		page,
+	}) => {
+		await page.goto("/about");
+		const toggle = page.getByRole("group", { name: "View" });
+		await toggle.scrollIntoViewIfNeeded();
+		const list = toggle.getByRole("button", { name: "List" });
+		const icons = toggle.getByRole("button", { name: "Icons" });
+		await expect(icons).toHaveAttribute("aria-pressed", "true");
+		await list.click();
+		await expect(list).toHaveAttribute("aria-pressed", "true");
+		await expect(icons).toHaveAttribute("aria-pressed", "false");
+		const table = page.locator('[data-window="side-projects"] table');
+		await expect(table).toBeVisible();
+		await expect(table.locator("tbody tr")).toHaveCount(4);
+		await expect(table.getByRole("columnheader")).toHaveText([
+			"Name",
+			"What it is",
+			"Stack",
+		]);
+		await icons.click();
+		await expect(page.locator('[data-view="icons"] li')).toHaveCount(4);
+	});
+
+	test.describe("without JavaScript", () => {
+		test.use({ javaScriptEnabled: false });
+
+		test("the Icons view shows all items and no toggle (AC10)", async ({
+			page,
+		}) => {
+			await page.goto("/about");
+			await expect(page.locator('[data-view="icons"] li')).toHaveCount(4);
+			await expect(page.getByRole("group", { name: "View" })).toBeHidden();
+			await expect(
+				page.locator('[data-window="side-projects"] table'),
+			).toHaveCount(0);
+		});
+	});
+});
