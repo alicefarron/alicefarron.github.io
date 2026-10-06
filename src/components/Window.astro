@@ -9,7 +9,7 @@ type HeadingLevel = 1 | 2 | 3 | 4;
 interface Props {
 	[key: `data-${string}`]: string | boolean | undefined;
 	title: string;
-	as?: "div" | "section" | "article" | "aside";
+	as?: "div" | "section" | "article" | "aside" | "nav";
 	headingLevel?: HeadingLevel;
 	variant?: Variant;
 	shadow?: Shadow;

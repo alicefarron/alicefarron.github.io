@@ -5,5 +5,7 @@ export type RouteEntry = {
 
 export const routes: RouteEntry[] = [
 	{ path: "/", name: "home" },
+	{ path: "/digest/012", name: "issue-with-quote" },
+	{ path: "/digest/011", name: "issue-without-quote" },
 	{ path: "/404", name: "not-found" },
 ];

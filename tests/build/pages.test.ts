@@ -84,3 +84,51 @@ describe("home", () => {
 		expect(html).toContain("zzz... (idle)");
 	});
 });
+
+describe("digest issue", () => {
+	it("builds published issues only", () => {
+		expect(() => page("/digest/012")).not.toThrow();
+		expect(() => page("/digest/011")).not.toThrow();
+		expect(() => page("/digest/013")).toThrow();
+	});
+
+	it("contents link to each section id in the body (AC4)", () => {
+		const html = page("/digest/012");
+		const contents = between(html, 'data-window="contents"', "</nav>");
+		const hrefs = attrs(contents, /href="#([^"]+)"/g);
+		expect(hrefs).toEqual(["section-1", "section-2", "section-3", "tried-it"]);
+		for (const id of hrefs) {
+			expect(html).toMatch(new RegExp(`<h2[^>]*id="${id}"`));
+		}
+	});
+
+	it("shows the hero, the quote and previous link on 012 (AC4)", () => {
+		const html = page("/digest/012");
+		expect(html).toMatch(/<h1[^>]*>This week in AI<\/h1>/);
+		expect(html).toMatch(
+			/data-issue-chip[\s\S]*Issue #012[\s\S]*23 Jan 2026[\s\S]*min read/,
+		);
+		expect(html).toMatch(
+			/<mark[^>]*data-issue-title[^>]*>\[ISSUE 012 TITLE\]<\/mark>/,
+		);
+		expect(html).toContain('data-window="quote"');
+		expect(html).toContain("[QUOTE]");
+		expect(html).toMatch(/<a[^>]*href="\/digest\/011"[^>]*data-previous/);
+		expect(html).toMatch(/<a[^>]*href="\/digest"[^>]*>\s*archive\/\s*<\/a>/);
+		expect(html).toMatch(/id="subscribe"[^>]*data-variant="band"/);
+	});
+
+	it("renders Tried it with a Terminal", () => {
+		const tried = between(page("/digest/012"), 'id="tried-it"', "</section>");
+		expect(tried).toContain("bg-ink");
+		expect(tried).toContain("[COMMAND]");
+	});
+
+	it("has no quote window without a quote (AC5)", () => {
+		expect(page("/digest/011")).not.toContain('data-window="quote"');
+	});
+
+	it("has no previous link on the oldest issue", () => {
+		expect(page("/digest/010")).not.toContain("data-previous");
+	});
+});
