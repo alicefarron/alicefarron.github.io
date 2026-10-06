@@ -11,12 +11,25 @@ export const site = {
 	name: "alina.os",
 	author: "Alina Shaimieva",
 	description: "[SITE_DESCRIPTION]",
+	tagline: "A weekly AI digest and long notes on building software.",
+	taglineHighlight: "Only the news you can use on Monday.",
 	domain: "[DOMAIN]",
 	digestDay: "[DAY]",
 	email: "[EMAIL]",
 	github: "https://github.com/alicefarron",
 	linkedin: "[LINKEDIN_URL]",
+	buttondownUsername: "[BUTTONDOWN_USERNAME]",
 } as const;
+
+export function buttondownAction(
+	username: string = site.buttondownUsername,
+): string {
+	return `https://buttondown.com/api/emails/embed-subscribe/${username}`;
+}
+
+export function isPlaceholder(value: string): boolean {
+	return /^\[[A-Z_ ]+\]$/.test(value);
+}
 
 export const navItems: NavItem[] = [
 	{ id: "digest", label: "Digest", href: "/digest", match: "/digest" },

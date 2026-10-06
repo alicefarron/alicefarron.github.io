@@ -95,3 +95,9 @@
 		content: counter(section);
 	}
 }
+
+@utility ring-default {
+	box-shadow:
+		0 0 0 var(--default-ring-gap) var(--color-white),
+		0 0 0 calc(var(--default-ring-gap) + var(--border-window)) var(--color-ink);
+}

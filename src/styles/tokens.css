@@ -61,6 +61,7 @@
 	--border-window: 3px;
 	--outline-focus: 3px;
 	--outline-focus-offset: 2px;
+	--default-ring-gap: 3px;
 	--titlebar-stripe: 2px;
 	--titlebar-stripe-gap: 3px;
 	--dot-size: 2px;

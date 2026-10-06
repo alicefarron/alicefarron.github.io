@@ -88,7 +88,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: src/components/mdx/CodeBlock.astro, src/components/mdx/Figure.astro, src/components/mdx/PullQuote.astro, src/components/mdx/TableWrap.astro, src/lib/mdx-components.ts
   Verify: first confirm in the Astro 7 docs whether fence meta reaches the `pre` override (else use the explicit CodeBlock fallback from plan section 7); container render test: CodeBlock shows the file name label and its scroll box has `tabindex="0"` and `role="region"`
 
-- [ ] T20 Build SubscribeForm without JavaScript
+- [x] T20 Build SubscribeForm without JavaScript
   Files: src/components/SubscribeForm.astro, src/lib/site.ts
   Verify: container render test: `<form method="post" target="_blank">` posts to the Buttondown embed URL with `[BUTTONDOWN_USERNAME]`, has a labeled required email input and hidden `embed=1`; dialog and band variants render
 
