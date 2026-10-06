@@ -86,10 +86,7 @@ test.describe("home", () => {
 			const box = await page.locator(`[data-window="${name}"]`).boundingBox();
 			expect(Math.abs((box?.width ?? 0) - content)).toBeLessThanOrEqual(1);
 		}
-		const pet = await page
-			.getByText("meow.app", { exact: true })
-			.locator("xpath=ancestor::div[contains(@class,'border-window')][1]")
-			.boundingBox();
+		const pet = await page.locator('[data-window="meow"]').boundingBox();
 		expect(Math.abs((pet?.width ?? 0) - content)).toBeLessThanOrEqual(1);
 	});
 

@@ -275,3 +275,14 @@ describe("about", () => {
 		expect(html).not.toMatch(/[\u2014\u2018\u2019\u201c\u201d]/);
 	});
 });
+
+describe("meow.app island", () => {
+	it("ships the idle line and a hidden button for no-JS (R8)", () => {
+		const html = page("/");
+		expect(html).toMatch(/data-pet-status[^>]*>zzz\.\.\. \(idle\)</);
+		expect(html).toMatch(/<button[^>]*hidden[^>]*>Pet the cat<\/button>/);
+		expect(html).toMatch(
+			/<astro-island[^>]*component-url="[^"]+"[^>]*client="visible"/,
+		);
+	});
+});

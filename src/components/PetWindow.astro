@@ -1,4 +1,5 @@
 ---
+import PetButton from "../islands/PetButton";
 import { petLines } from "../lib/pet";
 import { cat } from "../sprites";
 import PixelSprite from "./PixelSprite.astro";
@@ -11,7 +12,7 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<Window title="meow.app" class={className} bodyClass="flex flex-col items-center justify-center gap-4 p-6">
+<Window title="meow.app" class={className} data-window="meow" bodyClass="flex flex-col items-center justify-center gap-4 p-6">
 	<PixelSprite sprite={cat} scale={6} />
-	<p class="font-ui text-ui leading-ui" data-pet-status>{petLines[0]}</p>
+	<PetButton client:visible lines={petLines} />
 </Window>
