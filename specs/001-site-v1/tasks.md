@@ -80,7 +80,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: src/components/TagChip.astro, src/components/DesktopIcon.astro, src/components/Terminal.astro, src/components/Callout.astro, tests/unit/components.test.ts
   Verify: container render tests: DesktopIcon is one `<a href>` with visible label; Callout is an `<aside>` with a screen reader label; Terminal uses only token classes
 
-- [ ] T18 [P] Build digest MDX components Section, Item and TriedIt
+- [x] T18 [P] Build digest MDX components Section, Item and TriedIt
   Files: src/components/mdx/Section.astro, src/components/mdx/Item.astro, src/components/mdx/TriedIt.astro, tests/unit/digest-mdx.test.ts
   Verify: container render test: Section renders an `h2` with a slug id; Item renders headline, source link and highlighted takeaway; TriedIt includes a Terminal
 

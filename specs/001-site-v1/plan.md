@@ -133,6 +133,7 @@ Custom CSS rules (each needs a reason):
 - Dot patterns for sky and lavender: `radial-gradient` background. Same reason.
 - Dock bottom padding with `env(safe-area-inset-bottom)`. Arbitrary value utilities could do it but a named rule is clearer.
 - Prose styles for MDX body (headings, lists, `mark`) inside `.prose-note`, because MDX output has no class hooks.
+- Section numbers for digest sections and note headings: a CSS counter (`counter-sections`, `counter-section`, `section-number`). MDX components do not know their index, and no utility expresses counters.
 
 Fonts and metric fallbacks: use the Astro Fonts API (`fonts` in `astro.config.ts`) with `fontProviders.npm({ remote: false })` reading the four installed `@fontsource/*` packages, so nothing is fetched from a CDN at build or run time. Weights: Pixelify Sans 600, 700; Silkscreen 400; Space Mono 400, 700; Atkinson Hyperlegible Next 400, 700. Subset `latin`, `font-display: swap`, formats woff2. `optimizedFallbacks` stays on (default) so Astro generates `size-adjust`, `ascent-override` and `descent-override` fallback faces from the local system font named last in each `fallbacks` list (`monospace` for the pixel and mono faces, `sans-serif` for Atkinson). `<Font cssVariable="--font-pixelify" preload />` and the same for Atkinson on article and issue pages only, to keep preloads to two files.
 

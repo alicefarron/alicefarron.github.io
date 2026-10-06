@@ -75,3 +75,17 @@
 		}
 	}
 }
+
+@utility counter-sections {
+	counter-reset: section;
+}
+
+@utility counter-section {
+	counter-increment: section;
+}
+
+@utility section-number {
+	&::before {
+		content: counter(section);
+	}
+}

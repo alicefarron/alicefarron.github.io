@@ -1,0 +1,37 @@
+---
+import { slugify } from "../../lib/slug";
+
+export type SectionColor = "sky" | "yellow" | "pink" | "lime" | "lavender";
+
+interface Props {
+	title: string;
+	color?: SectionColor;
+}
+
+const { title, color = "sky" } = Astro.props;
+const id = slugify(title);
+
+const badgeClasses: Record<SectionColor, string> = {
+	sky: "bg-sky",
+	yellow: "bg-yellow",
+	pink: "bg-pink",
+	lime: "bg-lime",
+	lavender: "bg-lavender",
+};
+---
+
+<section aria-labelledby={id} class="counter-section mt-12 flex scroll-mt-20 flex-col gap-6 first:mt-0">
+	<div class="flex items-center gap-3">
+		<span
+			aria-hidden="true"
+			class:list={[
+				"section-number border-window flex size-10 shrink-0 items-center justify-center font-display text-ui-lg font-bold text-ink shadow-hard-sm shadow-ink",
+				badgeClasses[color],
+			]}
+		></span>
+		<h2 id={id} class="scroll-mt-20 font-display text-h2 leading-display font-bold uppercase">{title}</h2>
+	</div>
+	<div class="flex flex-col gap-6">
+		<slot />
+	</div>
+</section>
