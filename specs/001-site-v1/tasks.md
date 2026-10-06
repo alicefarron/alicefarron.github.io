@@ -6,7 +6,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
 
 ## Setup
 
-- [ ] T01 Initialize the Astro project with pinned versions
+- [x] T01 Initialize the Astro project with pinned versions
   Files: package.json, pnpm-lock.yaml, .npmrc, .nvmrc, tsconfig.json, astro.config.ts, biome.json, .gitignore, src/pages/index.astro (temporary "[HOME]" placeholder)
   Verify: `pnpm check` passes; `package.json` has no `^` or `~` ranges; versions match plan section 2
 
