@@ -76,7 +76,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
 
 ## Components
 
-- [ ] T17 [P] Build TagChip, DesktopIcon, Terminal and Callout
+- [x] T17 [P] Build TagChip, DesktopIcon, Terminal and Callout
   Files: src/components/TagChip.astro, src/components/DesktopIcon.astro, src/components/Terminal.astro, src/components/Callout.astro, tests/unit/components.test.ts
   Verify: container render tests: DesktopIcon is one `<a href>` with visible label; Callout is an `<aside>` with a screen reader label; Terminal uses only token classes
 

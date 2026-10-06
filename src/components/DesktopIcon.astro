@@ -1,0 +1,23 @@
+---
+import type { Sprite } from "../lib/sprite";
+import PixelSprite from "./PixelSprite.astro";
+
+interface Props {
+	href: string;
+	label: string;
+	sprite: Sprite;
+	class?: string;
+}
+
+const { href, label, sprite, class: className } = Astro.props;
+---
+
+<a
+	href={href}
+	class:list={[
+		"group flex min-h-11 w-24 flex-col items-center gap-1 text-ink no-underline",
+		className,
+	]}
+><PixelSprite sprite={sprite} scale={4} /><span
+		class="border-window bg-white px-1.5 py-0.5 font-label text-label-sm leading-tight group-hover:bg-ink group-hover:text-white"
+	>{label}</span></a>

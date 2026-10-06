@@ -1,0 +1,30 @@
+---
+interface Props {
+	label?: string;
+	as?: "div" | "figure" | "section";
+	class?: string;
+	bodyClass?: string;
+}
+
+const { label, as = "div", class: className, bodyClass } = Astro.props;
+const Tag = as;
+---
+
+<Tag
+	class:list={[
+		"border-window min-w-0 bg-ink font-mono text-ui-sm leading-ui text-terminal-text shadow-hard-sm shadow-ink",
+		className,
+	]}
+>
+	{
+		label !== undefined && (
+			<div class="flex items-center gap-2 border-b-2 border-terminal-dim px-3 py-1.5">
+				<span aria-hidden="true" class="size-2 bg-lime" />
+				<span class="font-label text-label-sm text-lime">{label}</span>
+			</div>
+		)
+	}
+	<div class:list={["min-w-0 px-4 py-3", bodyClass]}>
+		<slot />
+	</div>
+</Tag>
