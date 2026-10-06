@@ -138,7 +138,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: src/components/Seo.astro, src/lib/seo.ts, astro.config.ts (site), tests/unit/seo.test.ts
   Verify: `seo.test.ts` over built `dist/`: every page has a unique title and description, canonical, og:* and twitter:* tags, absolute og:image (R12)
 
-- [ ] T31 Add the three RSS feeds with full content
+- [x] T31 Add the three RSS feeds with full content
   Files: src/pages/rss.xml.ts, src/pages/digest/rss.xml.ts, src/pages/writing/rss.xml.ts, src/lib/feed.ts, tests/unit/feeds.test.ts
   Verify: `feeds.test.ts` over a production build of fixtures: three feeds parse as RSS 2.0 with required channel and item fields, items have full HTML content, no draft titles appear (AC15)
 
