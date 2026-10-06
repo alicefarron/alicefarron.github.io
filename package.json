@@ -13,7 +13,9 @@
     "preview": "astro preview",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "check": "biome check . && astro check && vitest run && astro build"
+    "check": "biome check . && astro check && vitest run && astro build && node scripts/js-budget.ts",
+    "budget": "node scripts/js-budget.ts",
+    "lhci": "lhci autorun"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.3",
@@ -23,6 +25,7 @@
     "@astrojs/check": "0.9.10",
     "@axe-core/playwright": "4.13.0",
     "@biomejs/biome": "2.5.15",
+    "@lhci/cli": "0.15.1",
     "@playwright/test": "1.63.0",
     "@types/node": "24.19.1",
     "typescript": "6.0.3",

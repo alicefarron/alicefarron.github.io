@@ -14,7 +14,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: vitest.config.ts, playwright.config.ts, tests/e2e/helpers/axe.ts, tests/e2e/helpers/routes.ts, tests/e2e/routes.spec.ts, tests/unit/smoke.test.ts
   Verify: `pnpm test:e2e` runs `routes.spec.ts` on `/` in the phone, tablet and desktop projects with the overflow check and zero axe violations
 
-- [ ] T03 [P] Add the JS budget script and Lighthouse CI config
+- [x] T03 [P] Add the JS budget script and Lighthouse CI config
   Files: scripts/js-budget.ts, lighthouserc.json, package.json (scripts)
   Verify: `tsx scripts/js-budget.ts` reports 0 KB for the placeholder page and exits non-zero on a test HTML file over 30 KB (`tests/unit/js-budget.test.ts`)
 
