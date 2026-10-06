@@ -66,7 +66,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: tests/fixtures/content/**, tests/fixtures/content-two-pinned/**, tests/fixtures/content-missing-alt/**
   Verify: `CONTENT_DIR=tests/fixtures/content pnpm build` succeeds; review that every text value is a square-bracket placeholder or marked sample filler, with no real names, sources or claims
 
-- [ ] T15 Add build failure tests for broken content
+- [x] T15 Add build failure tests for broken content
   Files: tests/build/build-fails.test.ts, vitest.config.ts
   Verify: `build-fails.test.ts`: two-pinned fixture exits non-zero with both file names in output (AC7); missing-alt fixture exits non-zero (AC16)
 
