@@ -62,7 +62,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
   Files: src/content.config.ts, src/lib/collection-checks.ts, tests/unit/collection-checks.test.ts
   Verify: `collection-checks.test.ts`: two pinned notes throw a message naming both file paths (AC7); `012.mdx` with `number: 11` throws; duplicate numbers throw
 
-- [ ] T14 Add placeholder fixture content for tests
+- [x] T14 Add placeholder fixture content for tests
   Files: tests/fixtures/content/**, tests/fixtures/content-two-pinned/**, tests/fixtures/content-missing-alt/**
   Verify: `CONTENT_DIR=tests/fixtures/content pnpm build` succeeds; review that every text value is a square-bracket placeholder or marked sample filler, with no real names, sources or claims
 
