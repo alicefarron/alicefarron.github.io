@@ -3,4 +3,7 @@ export type RouteEntry = {
 	name: string;
 };
 
-export const routes: RouteEntry[] = [{ path: "/", name: "home" }];
+export const routes: RouteEntry[] = [
+	{ path: "/", name: "home" },
+	{ path: "/404", name: "not-found" },
+];

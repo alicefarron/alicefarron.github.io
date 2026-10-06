@@ -66,3 +66,15 @@ test.describe("layout", () => {
 		).toHaveText(["Digest", "Writing", "About", "Subscribe"]);
 	});
 });
+
+test("404 is a system alert with a link home", async ({ page }) => {
+	await page.goto("/404");
+	const alert = page.getByRole("region", { name: "alert" });
+	await expect(alert).toBeVisible();
+	await expect(alert.getByRole("heading", { level: 1 })).toHaveText(
+		"The page could not be found.",
+	);
+	await expect(
+		alert.getByRole("link", { name: "Go to the home page" }),
+	).toHaveAttribute("href", "/");
+});

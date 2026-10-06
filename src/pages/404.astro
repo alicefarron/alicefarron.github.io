@@ -1,0 +1,28 @@
+---
+import Window from "../components/Window.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found" description="The page could not be found." noindex bodyClass="bg-dots-sky">
+	<div class="flex justify-center px-4 py-16">
+		<Window title="alert" as="section" variant="alert" shadow="lg" class="w-full max-w-md">
+			<div class="flex items-start gap-4">
+				<span
+					aria-hidden="true"
+					class="border-window flex size-10 shrink-0 items-center justify-center bg-yellow font-display text-ui-lg font-bold"
+				>!</span>
+				<div class="flex flex-col gap-4">
+					<h1 class="font-ui text-ui-lg font-bold">The page could not be found.</h1>
+					<p>
+						<a
+							href="/"
+							class="border-window inline-flex min-h-11 items-center rounded-dialog-button bg-white px-5 font-ui text-ui text-ink no-underline shadow-hard-sm shadow-ink"
+						>
+							Go to the home page
+						</a>
+					</p>
+				</div>
+			</div>
+		</Window>
+	</div>
+</BaseLayout>

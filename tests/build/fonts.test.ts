@@ -30,6 +30,7 @@ function weights(rules: string[]): string[] {
 	return rules
 		.filter((rule) => !rule.includes("fallback"))
 		.map((rule) => /font-weight:\s*(\d+)/.exec(rule)?.[1] ?? "")
+		.filter((weight, index, all) => all.indexOf(weight) === index)
 		.sort();
 }
 
