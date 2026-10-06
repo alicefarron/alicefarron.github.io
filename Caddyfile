@@ -1,0 +1,31 @@
+{
+	admin off
+	auto_https off
+	persist_config off
+}
+
+:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+
+	@hashed path /_astro/*
+	@og path /og/*
+	@other not path /_astro/* /og/*
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+	header @og Cache-Control "public, max-age=86400"
+	header @other Cache-Control "public, max-age=0, must-revalidate"
+	header {
+		X-Robots-Tag {$X_ROBOTS_TAG:all}
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	try_files {path} {path}/index.html {path}.html
+	file_server
+
+	handle_errors 404 {
+		rewrite * /404.html
+		file_server
+	}
+}
