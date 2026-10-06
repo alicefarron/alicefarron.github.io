@@ -114,7 +114,7 @@ blocks with `title="file.ts"` for the terminal-style header.
 
 ## Deploy
 
-Railway builds the `Dockerfile` (Node build, Caddy serve) on every push to `main` and creates a preview environment for each pull request. Setup steps and checks are in [`docs/deploy.md`](docs/deploy.md).
+Railway builds the `Dockerfile` (Node build, Caddy serve) on every push to `main` and creates a preview environment for each pull request. Setup steps and checks are in [`docs/deploy.md`](docs/deploy.md). Why the site is built the way it is: [`docs/decisions.md`](docs/decisions.md).
 
 ## How work happens here
 
