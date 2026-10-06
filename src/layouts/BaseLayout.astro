@@ -1,5 +1,6 @@
 ---
 import { Font } from "astro:assets";
+import Dock from "../components/Dock.astro";
 import MenuBar from "../components/MenuBar.astro";
 import Seo from "../components/Seo.astro";
 import "../styles/global.css";
@@ -46,5 +47,6 @@ const {
 		<main id="main" tabindex="-1" class="@container min-w-0 focus:outline-none">
 			<slot />
 		</main>
+		<Dock hasSubscribeForm={hasSubscribeForm} />
 	</body>
 </html>

@@ -1,0 +1,46 @@
+---
+import { currentNav, type NavId, navItems, subscribeHref } from "../lib/site";
+import type { Sprite } from "../lib/sprite";
+import { document, floppy, folder, speechBubble } from "../sprites";
+import PixelSprite from "./PixelSprite.astro";
+
+interface Props {
+	hasSubscribeForm?: boolean;
+}
+
+const { hasSubscribeForm = false } = Astro.props;
+const current = currentNav(Astro.url.pathname);
+
+const icons: Record<NavId, Sprite> = {
+	digest: document,
+	writing: folder,
+	about: floppy,
+	subscribe: speechBubble,
+};
+---
+
+<nav aria-label="Main" data-dock class="pb-safe fixed inset-x-0 bottom-0 z-30 border-t-window bg-white dock:hidden">
+	<ul class="grid grid-cols-4">
+		{
+			navItems.map((item) => {
+				const isCurrent = item.id === current;
+				const href = item.id === "subscribe" ? subscribeHref(hasSubscribeForm) : item.href;
+				return (
+					<li class="flex">
+						<a
+							href={href}
+							aria-current={isCurrent ? "page" : undefined}
+							class:list={[
+								"flex h-dock-item min-h-11 w-full flex-col items-center justify-center gap-1 font-label text-label-sm text-ink no-underline",
+								isCurrent && "bg-ink text-white hover:text-white",
+							]}
+						>
+							<PixelSprite sprite={icons[item.id]} scale={2} />
+							<span>{item.label}</span>
+						</a>
+					</li>
+				);
+			})
+		}
+	</ul>
+</nav>

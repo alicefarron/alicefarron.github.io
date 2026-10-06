@@ -48,7 +48,8 @@
 	--container-dock: 40rem;
 
 	--spacing: 4px;
-	--spacing-dock: 64px;
+	--spacing-dock-item: 64px;
+	--spacing-dock: calc(var(--spacing-dock-item) + var(--border-window));
 
 	--radius-dialog-button: 10px;
 
