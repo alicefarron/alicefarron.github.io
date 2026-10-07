@@ -28,7 +28,7 @@ export function runBuild(env: Record<string, string> = {}): BuildResult {
 		{
 			cwd: process.cwd(),
 			encoding: "utf8",
-			env: { ...parentEnv(), ...env },
+			env: { ...parentEnv(), CONTENT_STRICT: "", ...env },
 		},
 	);
 	return {

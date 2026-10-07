@@ -10,7 +10,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: src/lib/author-markers.ts, src/lib/collection-checks.ts, tests/unit/author-markers.test.ts, tests/unit/collection-checks.test.ts
   Verify: `author-markers.test.ts`: finds closed and unclosed `[ALINA:` markers with line numbers, splits text into text and marker parts; `collection-checks.test.ts`: strict throws one error listing file, line and marker for every hit in body and nested frontmatter strings (AC11), not strict passes, draft entries are skipped (AC12)
 
-- [ ] T02 Run the marker check in both collections behind CONTENT_STRICT
+- [x] T02 Run the marker check in both collections behind CONTENT_STRICT
   Files: src/content.config.ts, tests/build/build-output.ts, tests/build/markers.test.ts, tests/fixtures/content-markers/**, tests/fixtures/content-markers-draft/**
   Verify: `markers.test.ts`: `CONTENT_STRICT=true` build of `content-markers` exits non-zero and the output names `tests/fixtures/content-markers/digest/001.mdx` and `[ALINA: tried it this week]` (AC11); `CONTENT_STRICT=true` build of `content-markers-draft` passes (AC12); `CONTENT_STRICT=false` build of `content-markers` passes; `runBuild` clears `CONTENT_STRICT` by default; existing build tests still pass
 
