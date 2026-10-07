@@ -64,7 +64,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
 
 ## Dry run
 
-- [ ] T14 Run the skill once end to end in dry run mode
+- [x] T14 Run the skill once end to end in dry run mode
   Files: none committed to main. Produces a local branch `digest/NNN` with one commit, `.digest/NNN.json`, `.digest/NNN-pr.md`. Fixes found in SKILL.md, sources.md or the scripts go in a separate commit `fix(002): ... [T14]` on the working branch, not on `digest/NNN`
   Verify: started with "make this week's digest, dry run"; the skill loads (AC1); every `sources.md` URL is in `sourcesChecked` (AC2); `check-ledger`, `check-issue`, `pnpm check`, `render-check` and `check-diff` all pass, or the run ends as a thin-week report with no branch (AC10); `git log --stat digest/NNN` shows one commit changing only `src/content/digest/NNN.mdx` (AC9); `.digest/NNN-pr.md` has every PR body section; nothing pushed, no `gh pr create` called; report the branch, the PR body and anything the skill got wrong to the orchestrator
 
