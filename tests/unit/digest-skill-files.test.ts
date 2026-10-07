@@ -247,6 +247,12 @@ describe("digest scheduled prompt", () => {
 		expect(prompt).toMatch(/pull request link, or for a thin week the reason/);
 	});
 
+	it("stops when the skill is missing from the clone", () => {
+		expect(prompt).toContain(
+			"If .claude/skills/digest/SKILL.md does not exist in the clone, stop and report",
+		);
+	});
+
 	it("has no em dashes or curly quotes", () => {
 		expect(prompt).not.toMatch(/[—‘’“”]/);
 	});
