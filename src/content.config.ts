@@ -25,6 +25,7 @@ function checkedGlob(base: string, checks: Check[]): Loader {
 	return {
 		name: `checked-${inner.name}`,
 		load: async (context) => {
+			context.store.clear();
 			await inner.load(context);
 			const entries = context.store.values();
 			for (const check of checks) {

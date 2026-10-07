@@ -36,7 +36,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: scripts/digest/issue-check.ts, scripts/digest.ts, tests/unit/digest-issue-check.test.ts, tests/fixtures/digest-runs/**
   Verify: `digest-issue-check.test.ts`: valid fixture passes; 3 items, 11 items, 5 items in one section, `topics` not equal to section titles, wrong section color, duplicate section, file name not equal to `number`, `date` not the run date, `draft: true`, items not matching the ledger all fail (AC6); `TriedIt` with any text besides `[ALINA: tried it this week]` fails, missing `TriedIt` fails (AC8); intro not ending in `[ALINA: your take, optional]` fails; quote not equal to the ledger quote fails (AC7); every marker is listed with its line
 
-- [ ] T08 Add render-check, check-diff and pr-body
+- [x] T08 Add render-check, check-diff and pr-body
   Files: scripts/digest/render-check.ts, scripts/digest/pr-body.ts, scripts/digest.ts, tests/unit/digest-pr-body.test.ts, tests/build/digest-render-check.test.ts
   Verify: `digest-pr-body.test.ts`: body has the items table with URL and date on page, quote or "None", dropped items with reasons, sources checked, every marker with its line, the three check results and the "Before merging" list (AC9); `digest-render-check.test.ts`: a valid fixture issue builds and the result names `digest/NNN/index.html`, an issue with a broken component exits 2; `check-diff` unit-tested with a stubbed file list: one file passes, two files or a different path fail (AC9)
 

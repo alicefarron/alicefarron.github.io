@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -9,6 +10,12 @@ import {
 	ledgerExitCodes,
 	parseLedger,
 } from "./digest/ledger.ts";
+import { type CheckOutcome, prBody } from "./digest/pr-body.ts";
+import {
+	defaultNotesDir,
+	type RenderCheck,
+	renderCheck,
+} from "./digest/render-check.ts";
 import {
 	type ParsedSources,
 	readSources,
@@ -22,7 +29,7 @@ import {
 	isIsoDate,
 } from "./digest/window.ts";
 
-export type { IssueCheck, LedgerCheck };
+export type { IssueCheck, LedgerCheck, RenderCheck };
 
 export type CommandResult = {
 	code: number;
@@ -33,11 +40,31 @@ export type CommandResult = {
 export type Deps = {
 	now: () => Date;
 	readSources: () => ParsedSources;
+	changedFiles: () => string[];
+	renderCheck: (file: string) => RenderCheck;
 };
+
+function gitChangedFiles(): string[] {
+	const result = spawnSync(
+		"git",
+		["diff", "--name-only", "origin/main...HEAD"],
+		{ encoding: "utf8" },
+	);
+	if (result.status !== 0) {
+		throw new Error(`git diff failed: ${result.stderr.trim()}`);
+	}
+	return result.stdout
+		.split("\n")
+		.map((line) => line.trim())
+		.filter((line) => line !== "");
+}
 
 const defaultDeps: Deps = {
 	now: () => new Date(),
 	readSources: () => readSources(),
+	changedFiles: gitChangedFiles,
+	renderCheck: (file) =>
+		renderCheck(file, { notesDir: defaultNotesDir, cwd: process.cwd() }),
 };
 
 export type CitedUrl = {
@@ -314,8 +341,124 @@ function checkIssueCommand(
 	};
 }
 
+function renderCheckCommand(positional: string[], deps: Deps): CommandResult {
+	const [file] = positional;
+	if (file === undefined) {
+		return { code: 64, stdout: "", stderr: `Missing issue file\n${usage}` };
+	}
+	let result: RenderCheck;
+	try {
+		result = deps.renderCheck(file);
+	} catch (error) {
+		return {
+			code: 1,
+			stdout: "",
+			stderr: `${error instanceof Error ? error.message : String(error)}\n`,
+		};
+	}
+	const { buildOutput, ...report } = result;
+	if (result.status === "ok") {
+		return { code: 0, stdout: json(report), stderr: "" };
+	}
+	return {
+		code: 2,
+		stdout: json(report),
+		stderr: `${result.problems.join("\n")}\n${buildOutput}`,
+	};
+}
+
+export function checkDiff(number: number, files: string[]) {
+	const expected = `src/content/digest/${padNumber(number)}.mdx`;
+	const ok = files.length === 1 && files[0] === expected;
+	return {
+		status: ok ? "ok" : "problems",
+		expected,
+		files,
+		problems: ok
+			? []
+			: [
+					`the branch must change exactly ${expected}; it changes ${files.length === 0 ? "nothing" : files.join(", ")}`,
+				],
+	};
+}
+
+function checkDiffCommand(positional: string[], deps: Deps): CommandResult {
+	const [raw] = positional;
+	const number = Number.parseInt(raw ?? "", 10);
+	if (!Number.isInteger(number) || number < 1) {
+		return { code: 64, stdout: "", stderr: `Missing issue number\n${usage}` };
+	}
+	let files: string[];
+	try {
+		files = deps.changedFiles();
+	} catch (error) {
+		return {
+			code: 1,
+			stdout: "",
+			stderr: `${error instanceof Error ? error.message : String(error)}\n`,
+		};
+	}
+	const result = checkDiff(number, files);
+	return {
+		code: result.status === "ok" ? 0 : 2,
+		stdout: json(result),
+		stderr: result.problems.map((problem) => `${problem}\n`).join(""),
+	};
+}
+
+function outcome(value: string | undefined): CheckOutcome | undefined {
+	return value === "pass" || value === "fail" ? value : undefined;
+}
+
+function prBodyCommand(
+	positional: string[],
+	options: Record<string, string>,
+	deps: Deps,
+): CommandResult {
+	const [file, ledgerPath] = positional;
+	const pnpmCheck = outcome(options.check);
+	const render = outcome(options.render);
+	if (
+		file === undefined ||
+		ledgerPath === undefined ||
+		pnpmCheck === undefined ||
+		render === undefined
+	) {
+		return {
+			code: 64,
+			stdout: "",
+			stderr: `pr-body needs <file> <ledger> --check pass|fail --render pass|fail\n${usage}`,
+		};
+	}
+	const issue = checkIssueCommand([file, ledgerPath], options, deps);
+	if (issue.code === 1 || issue.code === 64) {
+		return issue;
+	}
+	const read = readJson(ledgerPath);
+	const ledger = read.ok ? parseLedger(read.value) : undefined;
+	if (ledger === undefined || !ledger.ok) {
+		return { code: 1, stdout: "", stderr: issue.stderr };
+	}
+	const report = JSON.parse(issue.stdout) as IssueCheck;
+	return {
+		code: 0,
+		stdout: prBody({
+			ledger: ledger.ledger,
+			markers: report.markers,
+			checks: {
+				checkIssue: report.status === "ok" ? "pass" : "fail",
+				pnpmCheck,
+				renderCheck: render,
+			},
+		}),
+		stderr: "",
+	};
+}
+
 const usage = `Usage: node scripts/digest.ts <command> [options]
-Commands: context, check-ledger <ledger>, check-issue <file> <ledger>
+Commands: context, check-ledger <ledger>, check-issue <file> <ledger>,
+  render-check <file>, check-diff <number>,
+  pr-body <file> <ledger> --check pass|fail --render pass|fail
 Options: --date YYYY-MM-DD, --content-dir DIR
 `;
 
@@ -333,6 +476,12 @@ export function runDigest(
 			return checkLedgerCommand(rest, options, deps);
 		case "check-issue":
 			return checkIssueCommand(rest, options, deps);
+		case "render-check":
+			return renderCheckCommand(rest, deps);
+		case "check-diff":
+			return checkDiffCommand(rest, deps);
+		case "pr-body":
+			return prBodyCommand(rest, options, deps);
 		default:
 			return {
 				code: 64,
