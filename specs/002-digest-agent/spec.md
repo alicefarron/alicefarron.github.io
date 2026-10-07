@@ -1,6 +1,6 @@
 # 002: Digest agent
 
-Status: draft
+Status: approved
 Owner: Alina
 
 ## Why
