@@ -32,7 +32,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: scripts/digest/ledger.ts, scripts/digest.ts, tests/unit/digest-ledger.test.ts, tests/fixtures/digest-runs/**
   Verify: `digest-ledger.test.ts`: item dated 2026-10-05 rejected and 2026-10-12 accepted for the AC3 window; URL cited in 014 rejected for 015, also with `utm_source`, `www.` and trailing slash variants (AC5); duplicate URL inside the ledger rejected; 5 items in one section rejected; non-topic section rejected; a `sources.md` URL missing from `sourcesChecked` rejected (AC2); quote without author, role or an opened URL rejected (AC7); 3 valid items exits 3 (AC10); a valid ledger exits 0
 
-- [ ] T07 Add the issue file check
+- [x] T07 Add the issue file check
   Files: scripts/digest/issue-check.ts, scripts/digest.ts, tests/unit/digest-issue-check.test.ts, tests/fixtures/digest-runs/**
   Verify: `digest-issue-check.test.ts`: valid fixture passes; 3 items, 11 items, 5 items in one section, `topics` not equal to section titles, wrong section color, duplicate section, file name not equal to `number`, `date` not the run date, `draft: true`, items not matching the ledger all fail (AC6); `TriedIt` with any text besides `[ALINA: tried it this week]` fails, missing `TriedIt` fails (AC8); intro not ending in `[ALINA: your take, optional]` fails; quote not equal to the ledger quote fails (AC7); every marker is listed with its line
 

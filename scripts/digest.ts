@@ -1,10 +1,13 @@
 import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { checkIssue, type IssueCheck } from "./digest/issue-check.ts";
 import { type IssueFile, padNumber, readIssues } from "./digest/issues.ts";
 import {
 	checkLedger,
 	type LedgerCheck,
 	ledgerExitCodes,
+	parseLedger,
 } from "./digest/ledger.ts";
 import {
 	type ParsedSources,
@@ -19,7 +22,7 @@ import {
 	isIsoDate,
 } from "./digest/window.ts";
 
-export type { LedgerCheck };
+export type { IssueCheck, LedgerCheck };
 
 export type CommandResult = {
 	code: number;
@@ -135,14 +138,16 @@ export type ContextResult =
 export function loadContext(
 	options: Record<string, string>,
 	deps: Deps,
+	exclude?: string,
 ): ContextResult {
 	const runDate = options.date ?? dateInTimeZone(deps.now());
 	if (!isIsoDate(runDate)) {
 		return { ok: false, error: `--date must be YYYY-MM-DD, got "${runDate}"` };
 	}
 	const contentDir = options["content-dir"] ?? "src/content";
+	const excluded = exclude === undefined ? undefined : resolve(exclude);
 	const context = buildContext(
-		readIssues(contentDir),
+		readIssues(contentDir).filter((issue) => resolve(issue.file) !== excluded),
 		runDate,
 		contentDir,
 		deps.readSources(),
@@ -246,8 +251,71 @@ function checkLedgerCommand(
 	};
 }
 
+function checkIssueCommand(
+	positional: string[],
+	options: Record<string, string>,
+	deps: Deps,
+): CommandResult {
+	const [file, ledgerPath] = positional;
+	if (file === undefined || ledgerPath === undefined) {
+		return {
+			code: 64,
+			stdout: "",
+			stderr: `Missing issue file or ledger path\n${usage}`,
+		};
+	}
+	const read = readJson(ledgerPath);
+	if (!read.ok) {
+		return { code: 1, stdout: "", stderr: `${read.error}\n` };
+	}
+	const ledger = parseLedger(read.value);
+	if (!ledger.ok) {
+		return {
+			code: 2,
+			stdout: json({
+				status: "problems",
+				problems: ledger.problems,
+				markers: [],
+			}),
+			stderr: ledger.problems.map((problem) => `${problem}\n`).join(""),
+		};
+	}
+	const loaded = loadContext(runDateFor(options, read.value), deps, file);
+	if (!loaded.ok) {
+		return { code: 1, stdout: "", stderr: `${loaded.error}\n` };
+	}
+	let source: string;
+	try {
+		source = readFileSync(file, "utf8");
+	} catch (error) {
+		return {
+			code: 1,
+			stdout: "",
+			stderr: `Cannot read ${file}: ${error instanceof Error ? error.message : String(error)}\n`,
+		};
+	}
+	const { context } = loaded;
+	const check: IssueCheck = checkIssue(source, {
+		file,
+		number: context.number,
+		runDate: context.runDate,
+		ledger: ledger.ledger,
+	});
+	if (resolve(dirname(file)) !== resolve(dirname(context.file))) {
+		check.problems.unshift(
+			`issue file ${file} should be in ${dirname(context.file)}`,
+		);
+		check.status = "problems";
+	}
+	return {
+		code: check.status === "ok" ? 0 : 2,
+		stdout: json(check),
+		stderr: check.problems.map((problem) => `${problem}\n`).join(""),
+	};
+}
+
 const usage = `Usage: node scripts/digest.ts <command> [options]
-Commands: context, check-ledger <ledger>
+Commands: context, check-ledger <ledger>, check-issue <file> <ledger>
 Options: --date YYYY-MM-DD, --content-dir DIR
 `;
 
@@ -263,6 +331,8 @@ export function runDigest(
 			return contextCommand(options, deps);
 		case "check-ledger":
 			return checkLedgerCommand(rest, options, deps);
+		case "check-issue":
+			return checkIssueCommand(rest, options, deps);
 		default:
 			return {
 				code: 64,
