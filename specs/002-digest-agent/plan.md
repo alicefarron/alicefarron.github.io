@@ -262,6 +262,13 @@ Never: merge, push to `main`, force-push, change files other than the new issue,
 
 The exact rule syntax is checked against the current Claude Code permission docs in T09. The deny list backs up the skill's "never merge, never push to main".
 
+Checked in T09 against https://code.claude.com/docs/en/permissions (2026-10-07). Two differences from the list above, applied in `.claude/settings.json`:
+
+- `:*` is the same as a trailing ` *`, with a space, so `Bash(git add src/content/digest/:*)` and `Bash(git push -u origin digest/:*)` would only match a space after the slash and never `digest/015`. They are written `Bash(git add src/content/digest/*)` and `Bash(git push -u origin digest/*)`.
+- Path rules for `Write` are accepted but never consulted; `Edit(path)` rules govern all file writes. `Write(.digest/**)` and `Write(src/content/digest/**)` are dropped; the `Edit` rules for the same paths cover them, including shell redirects such as `> .digest/NNN-pr.md`.
+
+Open for Alina: a `*` in a Bash rule also matches spaces, so `Bash(git push -u origin digest/*)` matches `git push -u origin digest/015 main` or `... digest/015 --force`, and the planned deny rules only stop `git push origin main` and `git push --force`/`-f` written first. Rules such as `Bash(git push * main*)`, `Bash(git push *--force*)` and `Bash(git push * -f*)` in `deny` would close that; they are not added without approval.
+
 ## 7. sources.md (R2)
 
 Plain Markdown, one `##` heading per topic, one `- [Name](url): note` line per source, so `sources.ts` can parse it and Alina can edit it by hand. Cross-topic sources are listed once under the topic where most of their items land, with a note to scan for all topics, so the file keeps the four topics of R2.

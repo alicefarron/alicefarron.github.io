@@ -1,0 +1,31 @@
+{
+	"permissions": {
+		"allow": [
+			"WebFetch",
+			"WebSearch",
+			"Bash(pnpm install --frozen-lockfile)",
+			"Bash(pnpm check)",
+			"Bash(node scripts/digest.ts:*)",
+			"Bash(git fetch:*)",
+			"Bash(git switch:*)",
+			"Bash(git pull --ff-only)",
+			"Bash(git status:*)",
+			"Bash(git diff:*)",
+			"Bash(git log:*)",
+			"Bash(git add src/content/digest/*)",
+			"Bash(git commit:*)",
+			"Bash(git push -u origin digest/*)",
+			"Bash(gh auth status)",
+			"Bash(gh pr list:*)",
+			"Bash(gh pr create:*)",
+			"Edit(src/content/digest/**)",
+			"Edit(.digest/**)"
+		],
+		"deny": [
+			"Bash(gh pr merge:*)",
+			"Bash(git push origin main:*)",
+			"Bash(git push --force:*)",
+			"Bash(git push -f:*)"
+		]
+	}
+}
