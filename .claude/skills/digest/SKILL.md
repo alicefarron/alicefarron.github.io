@@ -49,7 +49,7 @@ Create `.digest/NNN.json` with `number`, `runDate` and `window` from `context`, 
 
 For each candidate:
 
-1. Open the candidate's own page with WebFetch. Ask for the publication date exactly as printed on the page, and for the sentences that support what you want to say. When a changelog has a page or anchor per entry, open and cite that entry, not only the index.
+1. Open the candidate's own page with WebFetch. Ask for the publication date exactly as printed on the page, and for the sentences that support what you want to say. When a changelog has a page or anchor per entry, open and cite that entry, not only the index. For papers, cite the arXiv abstract page (`https://arxiv.org/abs/<id>`), which prints "Submitted on" with the year; Hugging Face paper pages show the day without the year.
 2. Keep it only when the page loaded, a full date including the year is printed on that page, and the date is inside the window. A date without a year counts only when the same page shows the year for that entry. Do not take the date from a listing page, a search result or the URL alone.
 3. Drop it when its URL, or another URL for the same announcement, is in `cited`. Judge "same announcement" by subject and headline, and put the earlier issue number in the reason.
 4. Add the page to `opened`. Add the item to `items`, or the candidate to `dropped` with a reason.

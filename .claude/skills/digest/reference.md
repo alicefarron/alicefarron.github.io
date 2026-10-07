@@ -51,7 +51,7 @@ Fields:
 `node scripts/digest.ts pr-body` writes it from the ledger and the issue file. Do not write it by hand or edit it afterwards. It has these sections, in this order:
 
 - Items: number, section, headline, source link, date on page.
-- Quote: the quote with author, role and URL, or "None".
+- Quote: the quote in double quotes, then author and role in brackets and the URL, or "None".
 - Dropped: each dropped candidate with its reason.
 - Sources checked: each source with its note.
 - Author markers left: every `[ALINA: ...]` marker with its line.

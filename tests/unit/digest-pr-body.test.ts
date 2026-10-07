@@ -67,7 +67,7 @@ describe("pr-body", () => {
 			);
 		}
 		expect(body).toContain(
-			"## Quote\n\n[QUOTE TEXT], [QUOTE AUTHOR], [QUOTE ROLE]. Source: https://example.com/[M1]",
+			'## Quote\n\n"[QUOTE TEXT]" ([QUOTE AUTHOR], [QUOTE ROLE]). Source: https://example.com/[M1]',
 		);
 		expect(body).toContain(
 			"## Dropped\n\n- [HEADLINE OLD]: outside window: 2026-10-02",

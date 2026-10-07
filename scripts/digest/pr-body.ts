@@ -32,7 +32,7 @@ export function prBody({ ledger, markers, checks }: PrBodyInput): string {
 		"",
 		ledger.quote === null
 			? "None"
-			: `${ledger.quote.text}, ${ledger.quote.author}, ${ledger.quote.role}. Source: ${ledger.quote.url}`,
+			: `"${ledger.quote.text}" (${ledger.quote.author}, ${ledger.quote.role}). Source: ${ledger.quote.url}`,
 		"",
 		"## Dropped",
 		"",
