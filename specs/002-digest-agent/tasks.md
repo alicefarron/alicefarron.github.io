@@ -54,7 +54,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: Dockerfile, docs/deploy.md, tests/unit/deploy-config.test.ts
   Verify: `deploy-config.test.ts`: the build stage declares `ARG CONTENT_STRICT=false` and sets `CONTENT_STRICT=$CONTENT_STRICT` before `astro build`; `docs/deploy.md` lists `CONTENT_STRICT=true` for production and `CONTENT_STRICT=false` for PR environments; manual where Docker exists: `scripts/docker-smoke.sh` still passes
 
-- [ ] T12 [P] Write docs/publishing.md
+- [x] T12 [P] Write docs/publishing.md
   Files: docs/publishing.md, docs/deploy.md (link)
   Verify: manual: covers the weekly routine, the production error and how to fix it, the thin-week report, one-time setup (Claude GitHub App with write access, scheduled task settings including automatic approval, Railway variables, Buttondown RSS-to-email on `/digest/rss.xml` with a test send), running the skill by hand in English and Russian, dry run, editing sources; no em dashes or curly quotes (R14)
 

@@ -2,6 +2,8 @@
 
 The repo holds everything Railway needs: `Dockerfile` (build with Node, serve with Caddy), `Caddyfile` and `railway.json`. The steps below happen once in the Railway dashboard. They cover R17 and task T36 in `specs/001-site-v1/tasks.md`.
 
+The weekly publishing routine, branch protection, the Claude scheduled task and Buttondown RSS-to-email are in `docs/publishing.md`.
+
 ## Before the first deploy
 
 - Add at least one published digest issue in `src/content/digest/` and one published note in `src/content/notes/`. The production build fails on purpose until both exist ("No published digest issues").
