@@ -20,7 +20,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
 
 ## Skill and scripts
 
-- [ ] T04 [P] Write sources.md and its parser
+- [x] T04 [P] Write sources.md and its parser
   Files: .claude/skills/digest/sources.md, scripts/digest/sources.ts, tests/unit/digest-skill-files.test.ts
   Verify: `digest-skill-files.test.ts`: `sources.md` parses into exactly the groups Models, Tooling, Agents, Papers, every line is `- [Name](https://...): note`, no duplicate URLs, list matches plan section 7
 
