@@ -24,7 +24,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: .claude/skills/digest/sources.md, scripts/digest/sources.ts, tests/unit/digest-skill-files.test.ts
   Verify: `digest-skill-files.test.ts`: `sources.md` parses into exactly the groups Models, Tooling, Agents, Papers, every line is `- [Name](https://...): note`, no duplicate URLs, list matches plan section 7
 
-- [ ] T05 Add the context command
+- [x] T05 Add the context command
   Files: scripts/digest.ts, scripts/digest/issues.ts, scripts/digest/window.ts, scripts/digest/urls.ts, tests/unit/digest-context.test.ts, tests/fixtures/digest-runs/**
   Verify: `digest-context.test.ts`: with 014 published on 2026-10-05 and run date 2026-10-12 the window is 2026-10-06 to 2026-10-12 (AC3); with no issues the number is 1, file `src/content/digest/001.mdx`, window 2026-10-06 to 2026-10-12; next number counts a draft 015 but `previous` skips it; `cited` lists every URL of earlier issues with normalized forms and headlines (AC5); default run date is computed in Europe/Amsterdam (23:30 UTC on Sunday is Monday); run date before the previous issue exits 1; `node scripts/digest.ts context --content-dir tests/fixtures/digest-runs/basic --date 2026-10-12` prints valid JSON
 
