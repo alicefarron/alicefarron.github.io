@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
 	assertIssueNumbers,
+	assertNoAuthorMarkers,
 	assertSinglePinned,
 	type CheckedEntry,
 } from "../../src/lib/collection-checks";
@@ -82,5 +83,78 @@ describe("assertIssueNumbers", () => {
 		expect(() =>
 			assertIssueNumbers([issue("src/content/digest/first.mdx", 1)]),
 		).toThrow(/first\.mdx/);
+	});
+});
+
+function marked(
+	filePath: string,
+	body: string,
+	data: Record<string, unknown> = {},
+): CheckedEntry {
+	return { id: filePath, filePath, body, data };
+}
+
+describe("assertNoAuthorMarkers", () => {
+	const issue = marked(
+		"src/content/digest/014.mdx",
+		[
+			"[INTRO] [ALINA: your take, optional]",
+			"",
+			"<TriedIt>",
+			"[ALINA: tried it this week]",
+			"</TriedIt>",
+		].join("\n"),
+		{ number: 14, lede: "[LEDE]", quote: { text: "[ALINA: quote]" } },
+	);
+	const note = marked("src/content/notes/a.mdx", "[TEXT]", {
+		tldr: ["[ONE]", "[ALINA: point"],
+	});
+
+	it("throws one error listing file, line and marker for every hit (AC11)", () => {
+		let message = "";
+		try {
+			assertNoAuthorMarkers([issue, note], true);
+		} catch (error) {
+			message = error instanceof Error ? error.message : String(error);
+		}
+		expect(message).toBe(
+			[
+				"Unresolved author markers in published content (CONTENT_STRICT=true):",
+				"  src/content/digest/014.mdx:frontmatter [ALINA: quote]",
+				"  src/content/digest/014.mdx:1 [ALINA: your take, optional]",
+				"  src/content/digest/014.mdx:4 [ALINA: tried it this week]",
+				"  src/content/notes/a.mdx:frontmatter [ALINA: point",
+				"Fill or remove each marker, or set draft: true.",
+			].join("\n"),
+		);
+	});
+
+	it("passes when not strict", () => {
+		expect(() => assertNoAuthorMarkers([issue, note], false)).not.toThrow();
+	});
+
+	it("skips draft entries (AC12)", () => {
+		const draft = marked("src/content/digest/015.mdx", "[ALINA: x]", {
+			draft: true,
+		});
+		expect(() => assertNoAuthorMarkers([draft], true)).not.toThrow();
+	});
+
+	it("passes clean published entries", () => {
+		expect(() =>
+			assertNoAuthorMarkers(
+				[marked("src/content/digest/001.mdx", "[TEXT]", { draft: false })],
+				true,
+			),
+		).not.toThrow();
+	});
+
+	it("ignores dates and entries without a body", () => {
+		expect(() =>
+			assertNoAuthorMarkers(
+				[{ id: "a", data: { date: new Date("2026-10-05") } }],
+				true,
+			),
+		).not.toThrow();
 	});
 });

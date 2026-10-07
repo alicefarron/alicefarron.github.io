@@ -1,6 +1,9 @@
+import { findMarkers } from "./author-markers";
+
 export type CheckedEntry = {
 	id: string;
 	filePath?: string;
+	body?: string;
 	data: Record<string, unknown>;
 };
 
@@ -44,5 +47,49 @@ export function assertIssueNumbers(entries: CheckedEntry[]): void {
 		if (paths.length > 1) {
 			throw new Error(`Duplicate issue number ${number}: ${paths.join(", ")}`);
 		}
+	}
+}
+
+function frontmatterMarkers(value: unknown): string[] {
+	if (typeof value === "string") {
+		return findMarkers(value).map((hit) => hit.marker);
+	}
+	if (Array.isArray(value)) {
+		return value.flatMap(frontmatterMarkers);
+	}
+	if (value !== null && typeof value === "object" && !(value instanceof Date)) {
+		return Object.values(value).flatMap(frontmatterMarkers);
+	}
+	return [];
+}
+
+export function assertNoAuthorMarkers(
+	entries: CheckedEntry[],
+	strict: boolean,
+): void {
+	if (!strict) {
+		return;
+	}
+	const lines: string[] = [];
+	for (const entry of entries) {
+		if (entry.data.draft === true) {
+			continue;
+		}
+		const path = label(entry);
+		for (const marker of frontmatterMarkers(entry.data)) {
+			lines.push(`  ${path}:frontmatter ${marker}`);
+		}
+		for (const hit of findMarkers(entry.body ?? "")) {
+			lines.push(`  ${path}:${hit.line} ${hit.marker}`);
+		}
+	}
+	if (lines.length > 0) {
+		throw new Error(
+			[
+				"Unresolved author markers in published content (CONTENT_STRICT=true):",
+				...lines,
+				"Fill or remove each marker, or set draft: true.",
+			].join("\n"),
+		);
 	}
 }

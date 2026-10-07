@@ -6,7 +6,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
 
 ## Content guard
 
-- [ ] T01 Find author markers and add the strict collection check
+- [x] T01 Find author markers and add the strict collection check
   Files: src/lib/author-markers.ts, src/lib/collection-checks.ts, tests/unit/author-markers.test.ts, tests/unit/collection-checks.test.ts
   Verify: `author-markers.test.ts`: finds closed and unclosed `[ALINA:` markers with line numbers, splits text into text and marker parts; `collection-checks.test.ts`: strict throws one error listing file, line and marker for every hit in body and nested frontmatter strings (AC11), not strict passes, draft entries are skipped (AC12)
 
