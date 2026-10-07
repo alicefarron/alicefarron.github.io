@@ -1,3 +1,4 @@
+import { satteri } from "@astrojs/markdown-satteri";
 import mdx from "@astrojs/mdx";
 import preact from "@astrojs/preact";
 import sitemap from "@astrojs/sitemap";
@@ -7,6 +8,7 @@ import {
 	fontProviders,
 	passthroughImageService,
 } from "astro/config";
+import { authorMarkerPlugin } from "./src/lib/author-marker-plugin";
 import { codeMetaTransformer } from "./src/lib/code-meta";
 import { includeInSitemap, resolveSiteUrl } from "./src/lib/seo";
 
@@ -44,6 +46,7 @@ export default defineConfig({
 		service: passthroughImageService(),
 	},
 	markdown: {
+		processor: satteri({ hastPlugins: [authorMarkerPlugin] }),
 		shikiConfig: {
 			transformers: [codeMetaTransformer],
 		},

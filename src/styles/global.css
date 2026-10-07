@@ -102,6 +102,14 @@
 		0 0 0 calc(var(--default-ring-gap) + var(--border-window)) var(--color-ink);
 }
 
+@utility author-marker {
+	background-color: var(--color-pink);
+	color: var(--color-ink);
+	font-weight: 700;
+	outline: var(--outline-focus) dashed var(--color-ink);
+	box-decoration-break: clone;
+}
+
 @utility border-r-window {
 	border-right-width: var(--border-window);
 	border-right-style: solid;
@@ -162,7 +170,7 @@
 		color: var(--color-link-hover);
 	}
 
-	& mark {
+	& mark:not(.author-marker) {
 		background-color: var(--color-yellow);
 		color: var(--color-ink);
 		padding-inline: calc(var(--spacing) * 1);

@@ -14,7 +14,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: src/content.config.ts, tests/build/build-output.ts, tests/build/markers.test.ts, tests/fixtures/content-markers/**, tests/fixtures/content-markers-draft/**
   Verify: `markers.test.ts`: `CONTENT_STRICT=true` build of `content-markers` exits non-zero and the output names `tests/fixtures/content-markers/digest/001.mdx` and `[ALINA: tried it this week]` (AC11); `CONTENT_STRICT=true` build of `content-markers-draft` passes (AC12); `CONTENT_STRICT=false` build of `content-markers` passes; `runBuild` clears `CONTENT_STRICT` by default; existing build tests still pass
 
-- [ ] T03 Highlight markers in rendered MDX with a Sätteri hast plugin
+- [x] T03 Highlight markers in rendered MDX with a Sätteri hast plugin
   Files: package.json, pnpm-lock.yaml, astro.config.ts, src/lib/author-marker-plugin.ts, src/styles/global.css, tests/unit/author-marker-render.test.ts, tests/build/markers.test.ts
   Verify: `package.json` pins `@astrojs/markdown-satteri` 0.4.3 exactly; `author-marker-render.test.ts` (container render of a fixture MDX): `<mark class="author-marker" data-author-marker>` wraps the marker in a paragraph and inside `TriedIt`, no mark inside a code block, code blocks still get `data-title` from `codeMetaTransformer`; `markers.test.ts`: non-strict build of `content-markers` has the mark with the marker text on `/digest/001` and on the note page (AC11); `tokens.test.ts` and the class helper find no non-token colors; if the hast `text` visitor misses JSX children, switch to the mdast fallback in plan section 13 and record it in `plan.md`
 

@@ -1,4 +1,5 @@
-import { rmSync } from "node:fs";
+import { readdirSync, readFileSync, rmSync } from "node:fs";
+import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { type BuildResult, runBuild } from "./build-output";
 
@@ -56,12 +57,33 @@ describe("author markers in the build", () => {
 		expect(result.status, result.output).toBe(0);
 	});
 
-	it("passes a build with CONTENT_STRICT=false", () => {
+	it("passes a build with CONTENT_STRICT=false and highlights markers (AC11)", () => {
 		const result = build({
 			CONTENT_DIR: "tests/fixtures/content-markers",
 			CONTENT_STRICT: "false",
 		});
 		expect(result.status, result.output).toBe(0);
+		const page = (path: string) =>
+			readFileSync(join(result.outDir, path, "index.html"), "utf8");
+		const mark = (text: string) =>
+			new RegExp(
+				`<mark class="author-marker" data-author-marker(?:="")?>${text.replace(/[[\]]/g, "\\$&")}</mark>`,
+			);
+		const issue = page("digest/001");
+		expect(issue).toMatch(mark("[ALINA: your take, optional]"));
+		const triedIt = issue.slice(issue.indexOf('id="tried-it"'));
+		expect(triedIt).toMatch(mark("[ALINA: tried it this week]"));
+		expect(issue).not.toMatch(mark("[ALINA: inside code]"));
+		expect(page("writing/sample-note-marker")).toMatch(
+			mark("[ALINA: note paragraph marker]"),
+		);
+		const css = readdirSync(join(result.outDir, "_astro"))
+			.filter((name) => name.endsWith(".css"))
+			.map((name) => readFileSync(join(result.outDir, "_astro", name), "utf8"))
+			.join("\n");
+		expect(css).toMatch(
+			/\.author-marker\{[^}]*background-color:var\(--color-pink\)/,
+		);
 	});
 
 	it("clears CONTENT_STRICT from the parent environment by default", () => {
