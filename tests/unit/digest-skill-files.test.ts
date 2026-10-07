@@ -223,3 +223,31 @@ describe("digest issue template", () => {
 		]);
 	});
 });
+
+describe("digest scheduled prompt", () => {
+	const prompt = readFileSync(
+		".claude/skills/digest/scheduled-prompt.md",
+		"utf8",
+	);
+
+	it("runs on Monday shortly before 07:00 Amsterdam time with push", () => {
+		expect(prompt).toContain("`CRON_TZ=Europe/Amsterdam 52 6 * * 1`");
+		expect(prompt).toContain("Notifications: push on");
+	});
+
+	it("clones the repo, installs, follows the skill and never merges", () => {
+		expect(prompt).toContain("https://github.com/alicefarron/alina-os");
+		expect(prompt).toContain("alicefarron/alina-os");
+		expect(prompt).toContain("pnpm install --frozen-lockfile");
+		expect(prompt).toContain(".claude/skills/digest/SKILL.md");
+		expect(prompt).toContain("not dry run");
+		expect(prompt).toContain(
+			"Never merge a pull request, never push to main, never force-push.",
+		);
+		expect(prompt).toMatch(/pull request link, or for a thin week the reason/);
+	});
+
+	it("has no em dashes or curly quotes", () => {
+		expect(prompt).not.toMatch(/[—‘’“”]/);
+	});
+});

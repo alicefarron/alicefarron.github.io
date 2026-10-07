@@ -70,7 +70,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
 
 ## Schedule
 
-- [ ] T15 Write the scheduled prompt
+- [x] T15 Write the scheduled prompt
   Files: .claude/skills/digest/scheduled-prompt.md, tests/unit/digest-skill-files.test.ts
   Verify: the file holds the cron `CRON_TZ=Europe/Amsterdam 52 6 * * 1`, push notification on, and the prompt from plan section 8; `digest-skill-files.test.ts` checks the cron line, the repo name `alicefarron/alina-os`, `pnpm install --frozen-lockfile`, a reference to `.claude/skills/digest/SKILL.md`, and the never-merge line; manual: the prompt reads as standalone for a fresh session with no memory
 
