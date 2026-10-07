@@ -27,6 +27,7 @@ This file is the only place the procedure is written. Follow it step by step and
 
 1. `git status --porcelain` prints nothing. If the tree is not clean, stop and report.
 2. `git fetch origin main`, `git switch main`, `git pull --ff-only`.
+   In normal mode, `git log --oneline origin/main..main` must print nothing; local commits on `main` would end up in the PR, so stop and report them.
 3. If `node_modules` is missing, run `pnpm install --frozen-lockfile`.
 4. Open digest PRs: `gh auth status`, then `gh pr list --state open --json number,headRefName,url`. If any open PR has a `headRefName` starting with `digest/`, stop and report its URL; issues must not stack. In normal mode, if `gh` fails, stop and report. In dry run, if `gh` is not authenticated, skip this check and say so in the report.
 
@@ -95,7 +96,7 @@ Change only the issue file and the ledger. If `pnpm check` fails for a reason un
 ## 10. Commit and publish
 
 1. `git add src/content/digest/NNN.mdx` and nothing else. Commit with the message `content(digest): add issue NNN`.
-2. `node scripts/digest.ts check-diff NNN`. It must pass.
+2. `node scripts/digest.ts check-diff NNN`. It must pass. In dry run use `node scripts/digest.ts check-diff NNN --base main`, because a local `main` may be ahead of `origin/main` and nothing is pushed.
 3. `node scripts/digest.ts pr-body src/content/digest/NNN.mdx .digest/NNN.json --check pass --render pass > .digest/NNN-pr.md`
 4. Normal mode: `git push -u origin digest/NNN`, then `gh pr create --base main --head digest/NNN --title "Digest #NNN: <title>" --body-file .digest/NNN-pr.md`, with `<title>` the frontmatter title.
 5. Dry run: do not push and do not run `gh pr create`. Run `git switch main`; the issue stays committed on `digest/NNN` and the PR body stays in `.digest/NNN-pr.md`.

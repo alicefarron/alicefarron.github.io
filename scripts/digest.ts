@@ -40,16 +40,16 @@ export type CommandResult = {
 export type Deps = {
 	now: () => Date;
 	readSources: () => ParsedSources;
-	changedFiles: () => string[];
+	changedFiles: (base: string) => string[];
 	renderCheck: (file: string) => RenderCheck;
 };
 
-function gitChangedFiles(): string[] {
-	const result = spawnSync(
-		"git",
-		["diff", "--name-only", "origin/main...HEAD"],
-		{ encoding: "utf8" },
-	);
+export const defaultDiffBase = "origin/main";
+
+function gitChangedFiles(base: string): string[] {
+	const result = spawnSync("git", ["diff", "--name-only", `${base}...HEAD`], {
+		encoding: "utf8",
+	});
 	if (result.status !== 0) {
 		throw new Error(`git diff failed: ${result.stderr.trim()}`);
 	}
@@ -382,7 +382,11 @@ export function checkDiff(number: number, files: string[]) {
 	};
 }
 
-function checkDiffCommand(positional: string[], deps: Deps): CommandResult {
+function checkDiffCommand(
+	positional: string[],
+	options: Record<string, string>,
+	deps: Deps,
+): CommandResult {
 	const [raw] = positional;
 	const number = Number.parseInt(raw ?? "", 10);
 	if (!Number.isInteger(number) || number < 1) {
@@ -390,7 +394,7 @@ function checkDiffCommand(positional: string[], deps: Deps): CommandResult {
 	}
 	let files: string[];
 	try {
-		files = deps.changedFiles();
+		files = deps.changedFiles(options.base || defaultDiffBase);
 	} catch (error) {
 		return {
 			code: 1,
@@ -457,7 +461,7 @@ function prBodyCommand(
 
 const usage = `Usage: node scripts/digest.ts <command> [options]
 Commands: context, check-ledger <ledger>, check-issue <file> <ledger>,
-  render-check <file>, check-diff <number>,
+  render-check <file>, check-diff <number> [--base REF],
   pr-body <file> <ledger> --check pass|fail --render pass|fail
 Options: --date YYYY-MM-DD, --content-dir DIR
 `;
@@ -479,7 +483,7 @@ export function runDigest(
 		case "render-check":
 			return renderCheckCommand(rest, deps);
 		case "check-diff":
-			return checkDiffCommand(rest, deps);
+			return checkDiffCommand(rest, options, deps);
 		case "pr-body":
 			return prBodyCommand(rest, options, deps);
 		default:

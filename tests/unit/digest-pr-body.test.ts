@@ -185,6 +185,29 @@ describe("check-diff", () => {
 		expect(result.stderr).toContain("no origin/main");
 	});
 
+	it("compares with origin/main by default", () => {
+		const bases: string[] = [];
+		runDigest(["check-diff", "15"], {
+			changedFiles: (base) => {
+				bases.push(base);
+				return ["src/content/digest/015.mdx"];
+			},
+		});
+		expect(bases).toEqual(["origin/main"]);
+	});
+
+	it("compares with --base when given, for dry runs on a local main", () => {
+		const bases: string[] = [];
+		const result = runDigest(["check-diff", "15", "--base", "main"], {
+			changedFiles: (base) => {
+				bases.push(base);
+				return ["src/content/digest/015.mdx"];
+			},
+		});
+		expect(result.code).toBe(0);
+		expect(bases).toEqual(["main"]);
+	});
+
 	it("requires a number", () => {
 		expect(runDigest(["check-diff"]).code).toBe(64);
 	});
