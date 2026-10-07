@@ -74,7 +74,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: .claude/skills/digest/scheduled-prompt.md, tests/unit/digest-skill-files.test.ts
   Verify: the file holds the cron `CRON_TZ=Europe/Amsterdam 52 6 * * 1`, push notification on, and the prompt from plan section 8; `digest-skill-files.test.ts` checks the cron line, the repo name `alicefarron/alina-os`, `pnpm install --frozen-lockfile`, a reference to `.claude/skills/digest/SKILL.md`, and the never-merge line; manual: the prompt reads as standalone for a fresh session with no memory
 
-- [ ] T16 Create the scheduled task (done by the orchestrator, not an implementation agent)
+- [x] T16 Create the scheduled task (done by the orchestrator, not an implementation agent)
   Files: none
   Verify: prerequisites done by Alina: Claude GitHub App has write access to `alicefarron/alina-os`; T15 is on `main`. The orchestrator calls `create_trigger` with the prompt and cron from `scheduled-prompt.md`, `notifications: { push: true }`, no local device; `list_triggers` shows it with the next run on Monday 06:52 Europe/Amsterdam; the reported approval setting is told to Alina, who turns on "Automatically approve" if runs would ask (R13)
 
