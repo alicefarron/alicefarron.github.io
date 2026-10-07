@@ -28,7 +28,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: scripts/digest.ts, scripts/digest/issues.ts, scripts/digest/window.ts, scripts/digest/urls.ts, tests/unit/digest-context.test.ts, tests/fixtures/digest-runs/**
   Verify: `digest-context.test.ts`: with 014 published on 2026-10-05 and run date 2026-10-12 the window is 2026-10-06 to 2026-10-12 (AC3); with no issues the number is 1, file `src/content/digest/001.mdx`, window 2026-10-06 to 2026-10-12; next number counts a draft 015 but `previous` skips it; `cited` lists every URL of earlier issues with normalized forms and headlines (AC5); default run date is computed in Europe/Amsterdam (23:30 UTC on Sunday is Monday); run date before the previous issue exits 1; `node scripts/digest.ts context --content-dir tests/fixtures/digest-runs/basic --date 2026-10-12` prints valid JSON
 
-- [ ] T06 Add the ledger check
+- [x] T06 Add the ledger check
   Files: scripts/digest/ledger.ts, scripts/digest.ts, tests/unit/digest-ledger.test.ts, tests/fixtures/digest-runs/**
   Verify: `digest-ledger.test.ts`: item dated 2026-10-05 rejected and 2026-10-12 accepted for the AC3 window; URL cited in 014 rejected for 015, also with `utm_source`, `www.` and trailing slash variants (AC5); duplicate URL inside the ledger rejected; 5 items in one section rejected; non-topic section rejected; a `sources.md` URL missing from `sourcesChecked` rejected (AC2); quote without author, role or an opened URL rejected (AC7); 3 valid items exits 3 (AC10); a valid ledger exits 0
 

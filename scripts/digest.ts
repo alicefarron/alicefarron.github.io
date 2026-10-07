@@ -1,6 +1,16 @@
+import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { type IssueFile, padNumber, readIssues } from "./digest/issues.ts";
-import { type ParsedSources, readSources } from "./digest/sources.ts";
+import {
+	checkLedger,
+	type LedgerCheck,
+	ledgerExitCodes,
+} from "./digest/ledger.ts";
+import {
+	type ParsedSources,
+	readSources,
+	sourceUrls,
+} from "./digest/sources.ts";
 import { normalizeUrl } from "./digest/urls.ts";
 import {
 	type CoverageWindow,
@@ -8,6 +18,8 @@ import {
 	dateInTimeZone,
 	isIsoDate,
 } from "./digest/window.ts";
+
+export type { LedgerCheck };
 
 export type CommandResult = {
 	code: number;
@@ -156,8 +168,86 @@ function contextCommand(options: Record<string, string>, deps: Deps) {
 	return { code: 0, stdout: json(result.context), stderr: "" };
 }
 
+export function readJson(
+	path: string,
+): { ok: true; value: unknown } | { ok: false; error: string } {
+	try {
+		return { ok: true, value: JSON.parse(readFileSync(path, "utf8")) };
+	} catch (error) {
+		return {
+			ok: false,
+			error: `Cannot read JSON from ${path}: ${error instanceof Error ? error.message : String(error)}`,
+		};
+	}
+}
+
+function runDateFor(options: Record<string, string>, ledger: unknown) {
+	if (options.date !== undefined) {
+		return options;
+	}
+	if (
+		typeof ledger === "object" &&
+		ledger !== null &&
+		"runDate" in ledger &&
+		typeof ledger.runDate === "string"
+	) {
+		return { ...options, date: ledger.runDate };
+	}
+	return options;
+}
+
+export function ledgerCheckFor(
+	ledgerPath: string,
+	options: Record<string, string>,
+	deps: Deps,
+):
+	| { ok: true; check: LedgerCheck; ledger: unknown; context: DigestContext }
+	| {
+			ok: false;
+			error: string;
+	  } {
+	const read = readJson(ledgerPath);
+	if (!read.ok) {
+		return read;
+	}
+	const loaded = loadContext(runDateFor(options, read.value), deps);
+	if (!loaded.ok) {
+		return loaded;
+	}
+	const { context } = loaded;
+	const check = checkLedger(read.value, {
+		number: context.number,
+		runDate: context.runDate,
+		window: context.window,
+		citedUrls: context.cited.urls,
+		sourceUrls: sourceUrls(context.sources),
+	});
+	return { ok: true, check, ledger: read.value, context };
+}
+
+function checkLedgerCommand(
+	positional: string[],
+	options: Record<string, string>,
+	deps: Deps,
+): CommandResult {
+	const [ledgerPath] = positional;
+	if (ledgerPath === undefined) {
+		return { code: 64, stdout: "", stderr: `Missing ledger path\n${usage}` };
+	}
+	const result = ledgerCheckFor(ledgerPath, options, deps);
+	if (!result.ok) {
+		return { code: 1, stdout: "", stderr: `${result.error}\n` };
+	}
+	const { check } = result;
+	return {
+		code: ledgerExitCodes[check.status],
+		stdout: json(check),
+		stderr: check.problems.map((problem) => `${problem}\n`).join(""),
+	};
+}
+
 const usage = `Usage: node scripts/digest.ts <command> [options]
-Commands: context
+Commands: context, check-ledger <ledger>
 Options: --date YYYY-MM-DD, --content-dir DIR
 `;
 
@@ -167,10 +257,12 @@ export function runDigest(
 ): CommandResult {
 	const deps = { ...defaultDeps, ...overrides };
 	const { positional, options } = parseArgs(argv);
-	const [command] = positional;
+	const [command, ...rest] = positional;
 	switch (command) {
 		case "context":
 			return contextCommand(options, deps);
+		case "check-ledger":
+			return checkLedgerCommand(rest, options, deps);
 		default:
 			return {
 				code: 64,

@@ -1,0 +1,79 @@
+{
+	"number": 15,
+	"runDate": "2026-10-12",
+	"window": { "start": "2026-10-06", "end": "2026-10-12" },
+	"sourcesChecked": [
+		{ "url": "https://example.com/[SOURCE LIST 1]", "note": "[NOTE]" },
+		{ "url": "https://example.com/[SOURCE LIST 2]", "note": "[NOTE]" }
+	],
+	"opened": [
+		"https://example.com/[SOURCE LIST 1]",
+		"https://example.com/[SOURCE LIST 2]",
+		"https://example.com/[M1]",
+		"https://example.com/[M2]",
+		"https://example.com/[T1]",
+		"https://example.com/[G1]",
+		"https://example.com/[P1]",
+		"https://example.com/[OLD]"
+	],
+	"items": [
+		{
+			"section": "Models",
+			"headline": "[HEADLINE M1]",
+			"sourceName": "[SOURCE M1]",
+			"url": "https://example.com/[M1]",
+			"publishedDate": "2026-10-06",
+			"dateEvidence": "[DATE M1]",
+			"takeaway": "[TAKEAWAY M1]"
+		},
+		{
+			"section": "Models",
+			"headline": "[HEADLINE M2]",
+			"sourceName": "[SOURCE M2]",
+			"url": "https://example.com/[M2]",
+			"publishedDate": "2026-10-12",
+			"dateEvidence": "[DATE M2]",
+			"takeaway": "[TAKEAWAY M2]"
+		},
+		{
+			"section": "Tooling",
+			"headline": "[HEADLINE T1]",
+			"sourceName": "[SOURCE T1]",
+			"url": "https://example.com/[T1]",
+			"publishedDate": "2026-10-08",
+			"dateEvidence": "[DATE T1]",
+			"takeaway": "[TAKEAWAY T1]"
+		},
+		{
+			"section": "Agents",
+			"headline": "[HEADLINE G1]",
+			"sourceName": "[SOURCE G1]",
+			"url": "https://example.com/[G1]",
+			"publishedDate": "2026-10-09",
+			"dateEvidence": "[DATE G1]",
+			"takeaway": "[TAKEAWAY G1]"
+		},
+		{
+			"section": "Papers",
+			"headline": "[HEADLINE P1]",
+			"sourceName": "[SOURCE P1]",
+			"url": "https://example.com/[P1]",
+			"publishedDate": "2026-10-10",
+			"dateEvidence": "[DATE P1]",
+			"takeaway": "[TAKEAWAY P1]"
+		}
+	],
+	"dropped": [
+		{
+			"headline": "[HEADLINE OLD]",
+			"url": "https://example.com/[OLD]",
+			"reason": "outside window: 2026-10-02"
+		}
+	],
+	"quote": {
+		"text": "[QUOTE TEXT]",
+		"author": "[QUOTE AUTHOR]",
+		"role": "[QUOTE ROLE]",
+		"url": "https://example.com/[M1]"
+	}
+}
