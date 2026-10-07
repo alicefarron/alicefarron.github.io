@@ -44,7 +44,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
   Files: .gitignore, .claude/settings.json
   Verify: `git check-ignore .digest/014.json` matches; rule syntax checked against the current Claude Code permissions docs and recorded in `plan.md` if it differs; manual: in a Claude Code session, `gh pr merge` and `git push origin main` are denied, `node scripts/digest.ts context` runs without a prompt
 
-- [ ] T10 Write the issue template and the digest SKILL.md
+- [x] T10 Write the issue template and the digest SKILL.md
   Files: .claude/skills/digest/SKILL.md, .claude/skills/digest/issue-template.mdx, tests/unit/digest-skill-files.test.ts
   Verify: `digest-skill-files.test.ts`: SKILL.md frontmatter has `name: digest` and a description containing "make this week's digest" and "собери дайджест"; it names every script command; the `check-ledger` step comes before the `git switch -c` step (AC10); it contains the never-list (merge, push to main, force-push); the template's `TriedIt` holds only `[ALINA: tried it this week]` and the intro ends with `[ALINA: your take, optional]` (AC8); manual: read SKILL.md against R1 to R11 and the procedure in plan section 6, including dry run mode and the open-PR stop
 

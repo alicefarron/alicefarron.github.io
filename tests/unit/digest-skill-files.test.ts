@@ -1,6 +1,11 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
+	parseIssueBody,
+	takeMarker,
+	triedItMarker,
+} from "../../scripts/digest/issue-check.ts";
+import {
 	parseSources,
 	readSources,
 	sourcesPath,
@@ -121,6 +126,100 @@ describe("parseSources", () => {
 					},
 				],
 			},
+		]);
+	});
+});
+
+const skillPath = ".claude/skills/digest/SKILL.md";
+const templatePath = ".claude/skills/digest/issue-template.mdx";
+const referencePath = ".claude/skills/digest/reference.md";
+
+function frontmatterOf(markdown: string): Record<string, string> {
+	const block = /^---\n([\s\S]*?)\n---\n/.exec(markdown)?.[1] ?? "";
+	return Object.fromEntries(
+		block.split("\n").map((line) => {
+			const at = line.indexOf(":");
+			return [line.slice(0, at).trim(), line.slice(at + 1).trim()];
+		}),
+	);
+}
+
+describe("digest SKILL.md", () => {
+	const skill = readFileSync(skillPath, "utf8");
+	const frontmatter = frontmatterOf(skill);
+
+	it("is named digest and triggers in English and Russian", () => {
+		expect(frontmatter.name).toBe("digest");
+		expect(frontmatter.description).toContain("make this week's digest");
+		expect(frontmatter.description).toContain("собери дайджест");
+	});
+
+	it("names every script command", () => {
+		for (const command of [
+			"context",
+			"check-ledger",
+			"check-issue",
+			"render-check",
+			"check-diff",
+			"pr-body",
+		]) {
+			expect(skill).toContain(`node scripts/digest.ts ${command}`);
+		}
+	});
+
+	it("checks the ledger before it creates the branch", () => {
+		const check = skill.indexOf("node scripts/digest.ts check-ledger");
+		const branch = skill.indexOf("git switch -c digest/NNN");
+		expect(check).toBeGreaterThan(-1);
+		expect(branch).toBeGreaterThan(check);
+	});
+
+	it("has the never-list", () => {
+		expect(skill).toContain("Never merge a pull request");
+		expect(skill).toContain("Never push to `main`");
+		expect(skill).toContain("Never force-push");
+	});
+
+	it("describes dry run, the open-PR stop and the thin week", () => {
+		expect(skill).toContain("Dry run");
+		expect(skill).toContain(".digest/NNN-pr.md");
+		expect(skill).toMatch(/headRefName` starting with `digest\/`, stop/);
+		expect(skill).toContain("thin week");
+	});
+
+	it("commits only the new issue file with the agreed message", () => {
+		expect(skill).toContain("git add src/content/digest/NNN.mdx");
+		expect(skill).toContain("content(digest): add issue NNN");
+	});
+
+	it("has no em dashes or curly quotes in the skill files", () => {
+		for (const path of [skillPath, templatePath, referencePath]) {
+			expect(readFileSync(path, "utf8")).not.toMatch(/[—‘’“”]/);
+		}
+	});
+});
+
+describe("digest issue template", () => {
+	const template = readFileSync(templatePath, "utf8");
+	const body = template.replace(/^---\n[\s\S]*?\n---\n/, "");
+	const parsed = parseIssueBody(body);
+
+	it("holds only the tried-it marker in TriedIt", () => {
+		expect(parsed.triedIt).toEqual([
+			{ attributes: "", content: triedItMarker },
+		]);
+	});
+
+	it("ends the intro with the take marker", () => {
+		expect(parsed.intro.endsWith(takeMarker)).toBe(true);
+	});
+
+	it("has the four sections with their colors in order", () => {
+		expect(parsed.sections).toEqual([
+			{ title: "Models", color: "sky" },
+			{ title: "Tooling", color: "yellow" },
+			{ title: "Agents", color: "pink" },
+			{ title: "Papers", color: "lime" },
 		]);
 	});
 });
