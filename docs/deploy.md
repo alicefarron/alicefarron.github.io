@@ -26,8 +26,9 @@ In the service, open Variables and add:
 |---|---|---|
 | `SITE_URL` | `https://[DOMAIN]` once the custom domain is known; leave unset until then | Canonical URLs, feeds, sitemap and OG image URLs. Without it the build uses `https://` plus the Railway domain. |
 | `X_ROBOTS_TAG` | `all` | Lets search engines index production. This is also the default. |
+| `CONTENT_STRICT` | `true` | Production refuses to build while a published issue or note still has an `[ALINA: ...]` author marker. The error names the file and the marker. |
 
-Railway sets `PORT` and `RAILWAY_PUBLIC_DOMAIN` itself. Do not add them. The Dockerfile reads `SITE_URL` and `RAILWAY_PUBLIC_DOMAIN` as build arguments, which Railway passes from service variables.
+Railway sets `PORT` and `RAILWAY_PUBLIC_DOMAIN` itself. Do not add them. The Dockerfile reads `SITE_URL`, `RAILWAY_PUBLIC_DOMAIN` and `CONTENT_STRICT` as build arguments, which Railway passes from service variables.
 
 ## 3. Public domain
 
@@ -39,7 +40,8 @@ Railway sets `PORT` and `RAILWAY_PUBLIC_DOMAIN` itself. Do not add them. The Doc
 
 1. Project Settings, Environments: turn on PR Environments. The base environment is `production`.
 2. Open the PR environment template (or the first PR environment once one exists) and set the variable `X_ROBOTS_TAG=noindex`, so previews are never indexed. Leave `SITE_URL` unset there, so each preview uses its own Railway domain.
-3. Railway creates an environment for each pull request and deletes it when the PR is merged or closed.
+3. In the same place set `CONTENT_STRICT=false`. Previews then build with author markers left in and show them highlighted in pink, so Alina sees what to fill before merging. Set it explicitly: Railway's docs do not say whether PR environments copy production variables.
+4. Railway creates an environment for each pull request and deletes it when the PR is merged or closed.
 
 ## 5. Check it worked
 

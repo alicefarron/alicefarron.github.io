@@ -50,7 +50,7 @@ Every task except T14, T16 and T17 ends with `pnpm check` passing and one commit
 
 ## Deploy and docs
 
-- [ ] T11 [P] Pass CONTENT_STRICT through the Dockerfile and document it
+- [x] T11 [P] Pass CONTENT_STRICT through the Dockerfile and document it
   Files: Dockerfile, docs/deploy.md, tests/unit/deploy-config.test.ts
   Verify: `deploy-config.test.ts`: the build stage declares `ARG CONTENT_STRICT=false` and sets `CONTENT_STRICT=$CONTENT_STRICT` before `astro build`; `docs/deploy.md` lists `CONTENT_STRICT=true` for production and `CONTENT_STRICT=false` for PR environments; manual where Docker exists: `scripts/docker-smoke.sh` still passes
 
