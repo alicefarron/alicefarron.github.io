@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { currentNav, navItems, site, subscribeHref } from "../../src/lib/site";
+import {
+	currentNav,
+	isPlaceholder,
+	navItems,
+	site,
+	subscribeHref,
+} from "../../src/lib/site";
 
 describe("site nav", () => {
 	it("lists Digest, Writing, About and Subscribe in order", () => {
@@ -38,9 +44,21 @@ describe("site nav", () => {
 	it("keeps unknown copy as visible placeholders", () => {
 		expect(site.name).toBe("alina.os");
 		expect(site.description).toMatch(/^\[[A-Z_]+\]$/);
-		expect(site.email).toBe("[EMAIL]");
-		expect(site.linkedin).toBe("[LINKEDIN_URL]");
 		expect(site.domain).toBe("[DOMAIN]");
-		expect(site.digestDay).toBe("[DAY]");
+	});
+
+	it("has the real contact details, CV link and digest day (AC6)", () => {
+		expect(site.email).toBe("shaimievaalinas@gmail.com");
+		expect(site.linkedin).toBe(
+			"https://www.linkedin.com/in/alina-shaimieva-5043a4233/",
+		);
+		expect(site.cv).toBe(
+			"https://drive.google.com/file/d/1K4zLioaxgYTVEnET1auOg1ME8npQxxWB/view?usp=sharing",
+		);
+		expect(site.digestDay).toBe("Monday");
+		for (const value of [site.email, site.linkedin, site.cv, site.digestDay]) {
+			expect(isPlaceholder(value)).toBe(false);
+			expect(value).not.toMatch(/[[\]]/);
+		}
 	});
 });

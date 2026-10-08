@@ -14,10 +14,11 @@ export const site = {
 	tagline: "A weekly AI digest and long notes on building software.",
 	taglineHighlight: "Only the news you can use on Monday.",
 	domain: "[DOMAIN]",
-	digestDay: "[DAY]",
-	email: "[EMAIL]",
+	digestDay: "Monday",
+	email: "shaimievaalinas@gmail.com",
 	github: "https://github.com/alicefarron",
-	linkedin: "[LINKEDIN_URL]",
+	linkedin: "https://www.linkedin.com/in/alina-shaimieva-5043a4233/",
+	cv: "https://drive.google.com/file/d/1K4zLioaxgYTVEnET1auOg1ME8npQxxWB/view?usp=sharing",
 	buttondownUsername: "[BUTTONDOWN_USERNAME]",
 } as const;
 

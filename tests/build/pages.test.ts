@@ -258,13 +258,22 @@ describe("about", () => {
 		]);
 	});
 
-	it("keeps unknown copy as visible placeholders and never links them", () => {
+	it("keeps unknown copy as visible placeholders", () => {
 		const html = page("/about");
 		expect(html).toContain("[RESULT]");
-		expect(html).toMatch(/data-placeholder[^>]*>\[EMAIL\]</);
-		expect(html).toMatch(/data-placeholder[^>]*>\[LINKEDIN_URL\]</);
-		expect(html).not.toContain('href="mailto:[EMAIL]"');
-		expect(html).not.toContain('href="[LINKEDIN_URL]"');
+	});
+
+	it("links the real email and LinkedIn with no square brackets (AC6)", () => {
+		const html = page("/about");
+		const contacts = between(html, "data-contacts", "</section>");
+		expect(contacts).toMatch(
+			/<a[^>]*href="mailto:shaimievaalinas@gmail\.com"[^>]*>shaimievaalinas@gmail\.com</,
+		);
+		expect(contacts).toMatch(
+			/<a[^>]*href="https:\/\/www\.linkedin\.com\/in\/alina-shaimieva-5043a4233\/"[^>]*>https:\/\/www\.linkedin\.com\/in\/alina-shaimieva-5043a4233\/</,
+		);
+		expect(contacts).not.toContain("data-placeholder");
+		expect(contacts).not.toMatch(/[[\]]/);
 		expect(html).toMatch(
 			/<a[^>]*href="https:\/\/github\.com\/alicefarron"[^>]*>github\.com\/alicefarron</,
 		);

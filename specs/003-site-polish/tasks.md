@@ -1,6 +1,6 @@
 # 003: Tasks
 
-- [ ] T01 Contact details, CV link value and digestDay in site.ts
+- [x] T01 Contact details, CV link value and digestDay in site.ts
   Files: src/lib/site.ts
   Verify: AC6 unit test; `pnpm check`
 - [ ] T02 Weekly subscribe copy and no "Not now" button
