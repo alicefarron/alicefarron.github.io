@@ -3,7 +3,7 @@
 - [x] T01 Contact details, CV link value and digestDay in site.ts
   Files: src/lib/site.ts
   Verify: AC6 unit test; `pnpm check`
-- [ ] T02 Weekly subscribe copy and no "Not now" button
+- [x] T02 Weekly subscribe copy and no "Not now" button
   Files: src/components/SubscribeForm.astro, tests touching the subscribe form
   Verify: AC2, AC3 build tests
 - [ ] T03 CV link on About

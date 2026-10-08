@@ -72,16 +72,17 @@ test.describe("subscribe form (AC12)", () => {
 		await expect(input).toHaveValue("reader@example.com");
 	});
 
-	test("Not now hides the dialog on Home", async ({ page }) => {
+	test("the Home dialog has one Subscribe button and no Not now", async ({
+		page,
+	}) => {
 		await page.goto("/");
 		const dialog = page.locator('[data-subscribe][data-variant="dialog"]');
-		await dialog.scrollIntoViewIfNeeded();
-		await expect(dialog.locator("astro-island")).not.toHaveAttribute(
-			"ssr",
-			/.*/,
-		);
-		await dialog.getByRole("link", { name: "Not now" }).click();
-		await expect(dialog).toBeHidden();
+		await expect(dialog.getByRole("button")).toHaveCount(1);
+		await expect(
+			dialog.getByRole("button", { name: "Subscribe" }),
+		).toBeVisible();
+		await expect(dialog).not.toContainText("Not now");
+		await expect(dialog).toContainText("One issue a week, every Monday.");
 	});
 
 	test.describe("without JavaScript", () => {

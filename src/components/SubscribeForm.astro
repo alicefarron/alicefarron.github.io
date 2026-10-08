@@ -15,7 +15,7 @@ const { variant = "band", id = "subscribe", class: className } = Astro.props;
 const anchor = id ?? undefined;
 const inputId = `${id ?? "subscribe-band"}-email`;
 const heading = "Get the digest by email";
-const lede = `One issue every ${site.digestDay}. ${site.taglineHighlight}`;
+const lede = `One issue a week, every ${site.digestDay}. ${site.taglineHighlight}`;
 const button =
 	"border-window inline-flex min-h-11 items-center justify-center rounded-dialog-button px-5 font-ui text-ui font-bold text-ink no-underline";
 ---
@@ -54,9 +54,6 @@ const button =
 					<SubscribeEnhancer client:visible inputId={inputId} />
 				</div>
 				<div class="flex flex-wrap items-center justify-end gap-4">
-					<a href="#main" data-not-now class:list={[button, "bg-white font-normal"]}>
-						Not now
-					</a>
 					<button type="submit" class:list={[button, "ring-default m-1.5 bg-white"]}>
 						Subscribe
 					</button>

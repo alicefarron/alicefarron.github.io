@@ -65,13 +65,25 @@ describe.each(["dialog", "band"])("SubscribeForm %s", (variant) => {
 });
 
 describe("SubscribeForm variants", () => {
-	it("dialog is a system alert with Not now and a default Subscribe button", async () => {
+	it.each(["dialog", "band"])(
+		"%s says the digest is weekly, every Monday (AC2)",
+		async (variant) => {
+			const html = await render({ variant });
+			expect(html).toContain(
+				"One issue a week, every Monday. Only the news you can use on Monday.",
+			);
+			expect(html).not.toContain("[DAY]");
+			expect(html).not.toContain("every [");
+		},
+	);
+
+	it("dialog is a system alert with one default Subscribe button aligned right (AC3)", async () => {
 		const html = await render({ variant: "dialog" });
+		expect(html).not.toContain("Not now");
+		expect(html).not.toContain("data-not-now");
+		expect(html.match(/<button\b/g)).toHaveLength(1);
 		expect(html).toMatch(
-			/<a[^>]*href="#main"[^>]*data-not-now[^>]*>\s*Not now\s*<\/a>/,
-		);
-		expect(html).toMatch(
-			/<button[^>]*class="[^"]*ring-default[^"]*"[^>]*>\s*Subscribe/,
+			/<div class="[^"]*justify-end[^"]*">\s*<button[^>]*class="[^"]*ring-default[^"]*"[^>]*>\s*Subscribe/,
 		);
 		expect(html).toContain("rounded-dialog-button");
 	});

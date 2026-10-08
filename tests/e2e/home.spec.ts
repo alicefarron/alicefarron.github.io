@@ -114,7 +114,8 @@ test.describe("home", () => {
 		await expect(
 			dialog.getByRole("button", { name: "Subscribe" }),
 		).toBeVisible();
-		await expect(dialog.getByRole("link", { name: "Not now" })).toBeVisible();
+		await expect(dialog.getByRole("button")).toHaveCount(1);
+		await expect(dialog).not.toContainText("Not now");
 		await expect(page.getByRole("contentinfo")).toHaveText("© 2026 alina.os");
 	});
 });

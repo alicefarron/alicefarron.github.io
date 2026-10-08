@@ -1,7 +1,7 @@
 import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { runBuild } from "./build-output";
+import { readBuiltFiles, runBuild } from "./build-output";
 
 let outDir = "";
 
@@ -130,6 +130,29 @@ describe("digest issue", () => {
 
 	it("has no previous link on the oldest issue", () => {
 		expect(page("/digest/010")).not.toContain("data-previous");
+	});
+});
+
+describe("subscribe copy", () => {
+	it.each(["/", "/digest/012"])(
+		"%s says one issue a week, every Monday (AC2)",
+		(path) => {
+			const subscribe = between(page(path), "data-subscribe", "</form>");
+			expect(subscribe).toContain("One issue a week, every Monday.");
+		},
+	);
+
+	it("no page mentions an unknown digest day (AC2)", () => {
+		for (const html of readBuiltFiles(outDir, [".html"])) {
+			expect(html).not.toContain("[DAY]");
+			expect(html).not.toContain("every [");
+		}
+	});
+
+	it("the Home dialog has exactly one button and no Not now (AC3)", () => {
+		const dialog = between(page("/"), 'data-variant="dialog"', "</form>");
+		expect(dialog.match(/<button\b/g)).toHaveLength(1);
+		expect(dialog).not.toContain("Not now");
 	});
 });
 

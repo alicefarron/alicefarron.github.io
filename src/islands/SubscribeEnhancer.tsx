@@ -43,20 +43,9 @@ export default function SubscribeEnhancer({ inputId }: Props) {
 			input.setAttribute("aria-describedby", errorId);
 			input.focus();
 		};
-		const dialog = form.closest<HTMLElement>('[data-variant="dialog"]');
-		const notNow = form.querySelector<HTMLAnchorElement>("[data-not-now]");
-		const onNotNow = (event: MouseEvent) => {
-			event.preventDefault();
-			if (dialog !== null) {
-				dialog.hidden = true;
-			}
-			document.getElementById("main")?.focus();
-		};
 		form.addEventListener("submit", onSubmit);
-		notNow?.addEventListener("click", onNotNow);
 		return () => {
 			form.removeEventListener("submit", onSubmit);
-			notNow?.removeEventListener("click", onNotNow);
 		};
 	}, [inputId, errorId]);
 
