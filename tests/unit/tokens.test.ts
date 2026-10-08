@@ -22,6 +22,7 @@ const specColors: Record<string, string> = {
 	"link-hover": "#2348C4",
 	"terminal-text": "#E8E8E8",
 	"terminal-dim": "#6F6F6F",
+	"pet-blush": "#FFF6F9",
 };
 
 const defaultPalette = [

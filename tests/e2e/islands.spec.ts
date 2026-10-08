@@ -25,6 +25,22 @@ test.describe("meow.app", () => {
 		await expect(status).toHaveText("ok that is enough");
 	});
 
+	test("the body turns pet-blush after the first press and stays (AC5)", async ({
+		page,
+	}) => {
+		await page.goto("/");
+		const pet = page.locator('[data-window="meow"]');
+		const body = pet.locator("[data-pet-body]");
+		const button = pet.getByRole("button", { name: "Pet the cat" });
+		await button.scrollIntoViewIfNeeded();
+		await expect(button).toBeVisible();
+		await expect(body).toHaveCSS("background-color", "rgb(255, 255, 255)");
+		await button.click();
+		await expect(body).toHaveCSS("background-color", "rgb(255, 246, 249)");
+		await button.click();
+		await expect(body).toHaveCSS("background-color", "rgb(255, 246, 249)");
+	});
+
 	test.describe("without JavaScript", () => {
 		test.use({ javaScriptEnabled: false });
 
@@ -33,6 +49,10 @@ test.describe("meow.app", () => {
 		}) => {
 			await page.goto("/");
 			const pet = page.locator('[data-window="meow"]');
+			await expect(pet.locator("[data-pet-body]")).toHaveCSS(
+				"background-color",
+				"rgb(255, 255, 255)",
+			);
 			await expect(pet.locator("[data-pet-status]")).toHaveText(
 				"zzz... (idle)",
 			);

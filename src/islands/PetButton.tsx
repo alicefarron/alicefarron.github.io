@@ -1,11 +1,13 @@
+import type { ComponentChildren } from "preact";
 import { useEffect, useState } from "preact/hooks";
-import { nextPetIndex } from "../lib/pet";
+import { isPetted, nextPetIndex, petBodyClass } from "../lib/pet";
 
 type Props = {
 	lines: readonly string[];
+	children?: ComponentChildren;
 };
 
-export default function PetButton({ lines }: Props) {
+export default function PetButton({ lines, children }: Props) {
 	const [mounted, setMounted] = useState(false);
 	const [index, setIndex] = useState(0);
 
@@ -14,7 +16,12 @@ export default function PetButton({ lines }: Props) {
 	}, []);
 
 	return (
-		<div class="flex flex-col items-center gap-4">
+		<div
+			class={petBodyClass(index)}
+			data-pet-body
+			data-petted={isPetted(index) ? "" : undefined}
+		>
+			{children}
 			<p class="font-ui text-ui leading-ui" aria-live="polite" data-pet-status>
 				{lines[index]}
 			</p>

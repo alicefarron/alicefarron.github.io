@@ -9,7 +9,7 @@
 - [x] T03 CV link on About
   Files: src/pages/about.astro, tests
   Verify: AC4 build test
-- [ ] T04 Pet blush token and background after the first pet
+- [x] T04 Pet blush token and background after the first pet
   Files: src/styles/tokens.css, src/islands/PetButton.tsx, src/components/PetWindow.astro, tests
   Verify: AC5 unit test, Playwright spec written
 - [ ] T05 Favicon from the cat sprite
