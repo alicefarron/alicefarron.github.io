@@ -12,7 +12,7 @@
 - [x] T04 Pet blush token and background after the first pet
   Files: src/styles/tokens.css, src/islands/PetButton.tsx, src/components/PetWindow.astro, tests
   Verify: AC5 unit test, Playwright spec written
-- [ ] T05 Favicon from the cat sprite
+- [x] T05 Favicon from the cat sprite
   Files: src/pages/favicon.svg.ts, src/pages/favicon-32.png.ts, src/pages/apple-touch-icon.png.ts, src/components/Seo.astro, tests
   Verify: AC1 build test; look at the 32 px PNG
 

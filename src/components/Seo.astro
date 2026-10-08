@@ -1,4 +1,5 @@
 ---
+import { favicons } from "../lib/favicon";
 import {
 	absoluteUrl,
 	canonicalUrl,
@@ -32,6 +33,9 @@ const imageAlt = `${socialTitle}, ${site.name}`;
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 {noindex && <meta name="robots" content="noindex" />}
+<link rel="icon" type="image/svg+xml" href={favicons.svg.path} />
+<link rel="icon" type="image/png" sizes="32x32" href={favicons.png.path} />
+<link rel="apple-touch-icon" sizes="180x180" href={favicons.appleTouch.path} />
 <link rel="canonical" href={canonical} />
 <link rel="sitemap" href={absoluteUrl("/sitemap-index.xml", Astro.site)} />
 <meta property="og:site_name" content={site.name} />

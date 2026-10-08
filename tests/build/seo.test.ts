@@ -144,3 +144,34 @@ describe("og images (R12, R16)", () => {
 		}
 	});
 });
+
+describe("favicons (AC1)", () => {
+	it("every page links the SVG, 32 px PNG and Apple touch icons", () => {
+		for (const { path, html } of pages) {
+			expect(html, path).toMatch(
+				/<link\b(?=[^>]*rel="icon")(?=[^>]*type="image\/svg\+xml")(?=[^>]*href="\/favicon\.svg")[^>]*>/,
+			);
+			expect(html, path).toMatch(
+				/<link\b(?=[^>]*rel="icon")(?=[^>]*type="image\/png")(?=[^>]*sizes="32x32")(?=[^>]*href="\/favicon-32\.png")[^>]*>/,
+			);
+			expect(html, path).toMatch(
+				/<link\b(?=[^>]*rel="apple-touch-icon")(?=[^>]*sizes="180x180")(?=[^>]*href="\/apple-touch-icon\.png")[^>]*>/,
+			);
+		}
+	});
+
+	it("builds the SVG and the PNGs at their sizes", () => {
+		const svg = readFileSync(join(outDir, "favicon.svg"), "utf8");
+		expect(svg).toMatch(/^<svg\b[^>]*viewBox="0 0 16 16"/);
+		expect(svg).toContain('shape-rendering="crispEdges"');
+		for (const [file, size] of [
+			["favicon-32.png", 32],
+			["apple-touch-icon.png", 180],
+		] as const) {
+			const png = readFileSync(join(outDir, file));
+			expect(png.subarray(1, 4).toString(), file).toBe("PNG");
+			expect(png.readUInt32BE(16), file).toBe(size);
+			expect(png.readUInt32BE(20), file).toBe(size);
+		}
+	});
+});
