@@ -6,10 +6,23 @@ import ViewToggle from "../islands/ViewToggle";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { about, isPlaceholder, site } from "../lib/site";
 
-const contacts = [
+type Contact = {
+	label: string;
+	value: string;
+	href: string;
+	newTab?: { ariaLabel: string };
+};
+
+const contacts: Contact[] = [
 	{ label: "Email", value: site.email, href: `mailto:${site.email}` },
 	{ label: "GitHub", value: "github.com/alicefarron", href: site.github },
 	{ label: "LinkedIn", value: site.linkedin, href: site.linkedin },
+	{
+		label: "CV",
+		value: "Google Drive",
+		href: site.cv,
+		newTab: { ariaLabel: "CV (opens Google Drive in a new tab)" },
+	},
 ];
 ---
 
@@ -74,7 +87,15 @@ const contacts = [
 							{isPlaceholder(contact.value) ? (
 								<span data-placeholder>{contact.value}</span>
 							) : (
-								<a href={contact.href} class="text-white underline hover:text-yellow">{contact.value}</a>
+								<a
+									href={contact.href}
+									target={contact.newTab ? "_blank" : undefined}
+									rel={contact.newTab ? "noopener" : undefined}
+									aria-label={contact.newTab?.ariaLabel}
+									class="text-white underline hover:text-yellow"
+								>
+									{contact.value}
+								</a>
 							)}
 						</li>
 					))

@@ -6,7 +6,7 @@
 - [x] T02 Weekly subscribe copy and no "Not now" button
   Files: src/components/SubscribeForm.astro, tests touching the subscribe form
   Verify: AC2, AC3 build tests
-- [ ] T03 CV link on About
+- [x] T03 CV link on About
   Files: src/pages/about.astro, tests
   Verify: AC4 build test
 - [ ] T04 Pet blush token and background after the first pet

@@ -302,6 +302,23 @@ describe("about", () => {
 		);
 	});
 
+	it("links the CV on Google Drive in a new tab (AC4)", () => {
+		const contacts = between(page("/about"), "data-contacts", "</section>");
+		expect(attrs(contacts, /<span[^>]*text-lime[^>]*>([^<]+)</g)).toEqual([
+			"Email",
+			"GitHub",
+			"LinkedIn",
+			"CV",
+		]);
+		const link =
+			/<a\b[^>]*href="https:\/\/drive\.google\.com\/file\/d\/1K4zLioaxgYTVEnET1auOg1ME8npQxxWB\/view\?usp=sharing"[^>]*>/.exec(
+				contacts,
+			)?.[0] ?? "";
+		expect(link).toContain('target="_blank"');
+		expect(link).toMatch(/rel="[^"]*\bnoopener\b[^"]*"/);
+		expect(link).toMatch(/aria-label="CV[^"]*Google Drive[^"]*"/);
+	});
+
 	it("uses no em dashes or curly quotes in copy", () => {
 		const html = page("/about");
 		expect(html).not.toMatch(/[\u2014\u2018\u2019\u201c\u201d]/);
