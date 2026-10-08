@@ -17,7 +17,7 @@ Hosting the CV on the site. The CV stays on Google Drive.
 
 ## Requirements
 
-R1. Every page has a favicon: the pixel cat head from the `cat` sprite, ink and white on a yellow square, as an SVG icon plus a 32 px PNG fallback and a 180 px Apple touch icon, all generated at build time from the sprite grid.
+R1. Every page has a favicon: the whole pixel cat from the `cat` sprite (the head alone leaves its outline open at small sizes), ink and white on a yellow square, as an SVG icon plus a 32 px PNG fallback and a 180 px Apple touch icon, all generated at build time from the sprite grid.
 
 R2. The subscribe copy says the digest is weekly. Both subscribe variants read "One issue a week, every Monday." followed by the tagline highlight. `site.digestDay` is "Monday".
 
