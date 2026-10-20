@@ -7,15 +7,19 @@ The procedure the agent follows is in `.claude/skills/digest/SKILL.md`. Spec: `s
 ## Every week
 
 1. Monday, shortly before 07:00 (Amsterdam time), you get a push notification. It links either to a pull request titled "Digest #NNN: ..." or to a thin-week report.
-2. Open the pull request. Railway posts a preview link on it. Open the preview and read `/digest/NNN` in the real design. Pink highlighted text is an author marker, for example `[ALINA: tried it this week]`, that only you can fill.
+2. Open the pull request, then check out its branch locally and start the dev server:
+   ```bash
+   git fetch && git switch digest/NNN && pnpm install && pnpm dev
+   ```
+   Open `http://localhost:4321/digest/NNN` and read the issue in the real design. Pink highlighted text is an author marker, for example `[ALINA: tried it this week]`, that only you can fill. There are no hosted previews: GitHub Pages publishes only `main`.
 3. Open at least three source links from the "Items" table in the PR body. Check that each page exists, shows the date listed, and supports the takeaway. If there is a quote, find it word for word on its source page.
 4. Edit `src/content/digest/NNN.mdx` on the `digest/NNN` branch (on GitHub or locally):
    - Replace `[ALINA: tried it this week]` with your "Tried it" text. A `Terminal` code block is fine there.
    - Replace `[ALINA: your take, optional]` at the end of the intro with your take, or delete it.
    - Fill or delete any other `[ALINA: ...]` marker.
    - Fix or remove any item you disagree with.
-5. Commit to the branch, wait for the preview to rebuild and check it once more.
-6. Merge the pull request. Production rebuilds with the issue, `/digest/rss.xml` gets the new item, and Buttondown sends it.
+5. Commit to the branch and check the page in `pnpm dev` once more. It reloads on save.
+6. Merge the pull request. The Pages workflow rebuilds production with the issue, `/digest/rss.xml` gets the new item, and Buttondown sends it.
 
 ### If production refuses to build
 
@@ -42,7 +46,7 @@ The agent stops without doing anything when a `digest/...` pull request is still
 
 This is the real guarantee that the agent cannot publish on its own. The permission rules in `.claude/settings.json` are a second line of defense.
 
-1. On GitHub, open `alicefarron/alina-os`, then Settings, then Branches (or Rules, then Rulesets).
+1. On GitHub, open `alicefarron/alicefarron.github.io`, then Settings, then Branches (or Rules, then Rulesets).
 2. Add a rule for the branch `main`.
 3. Turn on "Require a pull request before merging".
 4. Make sure force pushes are blocked ("Block force pushes" in a ruleset; in a classic branch protection rule, leave "Allow force pushes" off). Also leave deletions blocked.
@@ -50,7 +54,7 @@ This is the real guarantee that the agent cannot publish on its own. The permiss
 
 ### 2. Claude GitHub access
 
-1. Install the Claude GitHub App on `alicefarron/alina-os` (claude.ai Settings, then Connectors, then GitHub).
+1. Install the Claude GitHub App on `alicefarron/alicefarron.github.io` (claude.ai Settings, then Connectors, then GitHub).
 2. Give it write access to contents and pull requests on this repository, so the scheduled run can push `digest/NNN` branches and open pull requests.
 
 ### 3. The scheduled task
@@ -62,17 +66,14 @@ The task is created in Claude from `.claude/skills/digest/scheduled-prompt.md`. 
 - Approvals: turn on "Automatically approve" in the task's settings. A scheduled run has nobody to approve steps, so without it the run stops at the first step that needs approval.
 - Web access: the run must be able to reach the sources in `sources.md` with web fetch and web search.
 
-### 4. Railway variables
+### 4. GitHub Pages
 
-- Production environment: `CONTENT_STRICT=true`.
-- PR environments: `CONTENT_STRICT=false`, so previews build with markers left in and highlight them.
-
-Details are in `docs/deploy.md`, sections 2 and 4.
+Set Pages to deploy from GitHub Actions once (`docs/deploy.md`, section 1). The workflow builds production with `CONTENT_STRICT=true`; `pnpm dev` leaves it unset, so markers render highlighted locally.
 
 ### 5. Buttondown RSS-to-email
 
 1. In Buttondown, open Settings, then the RSS-to-email (automations) section, and add a feed.
-2. Feed URL: `https://[DOMAIN]/digest/rss.xml` (the production domain; the Railway domain works until the custom domain is set).
+2. Feed URL: `https://alicefarron.github.io/digest/rss.xml`.
 3. Send each new item as its own email, not a periodic roundup.
 4. Send a test email to yourself and check the issue title, links and layout.
 5. After the first real issue is merged, confirm the email arrives.

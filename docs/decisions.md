@@ -69,7 +69,7 @@ One rule is Alina's standing preference: no comments in code at all, including "
 |---|---|---|
 | Phone navigation | Bottom dock | Fits the OS metaphor, no wrapped menu |
 | Newsletter | Buttondown | Simple, Markdown-based, accepts a form post from a static site |
-| Hosting | Railway | Alina already has a paid account; static build served by Caddy in a container, PR environments for previews |
+| Hosting | GitHub Pages (spec 004; was Railway) | Free, no container to maintain, the user-site repo serves from the root path. Railway with Caddy and PR previews was the v1 choice and was dropped in 004 together with previews |
 | Article font | Proportional reading face | Readability of long text |
 | Series pages | Out of v1 | Not enough content yet; the `series` field exists for later |
 | Domain, email, LinkedIn, digest day | Placeholders | Not decided yet; visible as `[DOMAIN]` and similar |
@@ -96,7 +96,7 @@ Changes they made to the plan, all recorded in `plan.md`:
 - Images use Astro's passthrough image service, so `sharp` is not needed.
 - `pnpm check` builds the site from test fixtures (`tests/fixtures/content`), because real content is empty. Production builds read only `src/content`, so fixtures never ship.
 - The production build fails on purpose until at least one issue and one note exist.
-- Without `SITE_URL` the build falls back to the Railway domain or `https://domain.invalid`; an invalid `SITE_URL` fails the build.
+- Without `SITE_URL` the build falls back to `https://domain.invalid` (it also used the Railway domain until spec 004); an invalid `SITE_URL` fails the build.
 - RSS items have no author field until a real email exists, because RSS 2.0 expects an email there.
 - OG images draw the sky dots as an SVG pattern, because Satori ignores CSS dot backgrounds.
 
@@ -105,7 +105,6 @@ Changes they made to the plan, all recorded in `plan.md`:
 The sandboxes used for the build could not download a Playwright browser or Docker images, and have no Railway access. So:
 
 - e2e tests, visual baselines, axe runs and Lighthouse are written but have not run (tasks T37 to T39 and the Playwright-only checks in earlier tasks).
-- The Docker tags `node:24.21.0-alpine` and `caddy:2.11.4-alpine` were chosen from package registries, not checked on Docker Hub.
-- Railway setup is manual, described in `docs/deploy.md`.
+- Superseded by spec 004: the Docker image tags and the manual Railway setup no longer apply.
 
 Next step after those runs: a spec for empty states, so the site can deploy before the first issue is written.

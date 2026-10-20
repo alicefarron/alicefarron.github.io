@@ -6,7 +6,7 @@ Built with Astro, TypeScript, Preact islands and Tailwind CSS v4. Every page is 
 
 ## Status
 
-Spec 001 (site v1) is implemented. Playwright, Lighthouse and the Railway deploy still need a first run on a machine that can download a browser and Docker images. Open tasks are listed in [`specs/001-site-v1/tasks.md`](specs/001-site-v1/tasks.md).
+Spec 001 (site v1) is implemented. Playwright and Lighthouse still need a first full run, and the GitHub Pages deploy (spec 004) needs the first published content. Open tasks are listed in [`specs/001-site-v1/tasks.md`](specs/001-site-v1/tasks.md).
 
 ## Quick start
 
@@ -110,11 +110,11 @@ blocks with `title="file.ts"` for the terminal-style header.
 
 - Add at least one published issue and one published note. The production build fails on purpose until both exist.
 - Fill the placeholders in `src/lib/site.ts`: `description`, `domain`, `digestDay`, `email`, `linkedin`, `buttondownUsername`, plus the `[RESULT]` and `[STACK]` values in the About data.
-- Set `SITE_URL` in Railway once the domain is known.
+- In the repository settings, set Pages to deploy from GitHub Actions.
 
 ## Deploy
 
-Railway builds the `Dockerfile` (Node build, Caddy serve) on every push to `main` and creates a preview environment for each pull request. Setup steps and checks are in [`docs/deploy.md`](docs/deploy.md). Why the site is built the way it is: [`docs/decisions.md`](docs/decisions.md).
+GitHub Pages serves the site at https://alicefarron.github.io. `.github/workflows/deploy.yml` runs `pnpm check`, builds and publishes on every push to `main`. There are no pull request previews; review branches locally with `pnpm dev`. Setup steps and checks are in [`docs/deploy.md`](docs/deploy.md). Why the site is built the way it is: [`docs/decisions.md`](docs/decisions.md).
 
 ## How work happens here
 

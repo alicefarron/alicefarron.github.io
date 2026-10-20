@@ -16,7 +16,7 @@
   Files: Dockerfile, Caddyfile, .dockerignore, railway.json, scripts/docker-smoke.sh, tests/unit/deploy-config.test.ts
   Verify: files gone; `pnpm check` passes; `grep -ri railway` outside `specs/`, `docs/decisions.md` and `src/lib/site.ts` is empty (AC6)
 
-- [ ] T05 [P] Update docs for Pages and local review
+- [x] T05 [P] Update docs for Pages and local review
   Files: docs/deploy.md, docs/publishing.md, README.md, docs/decisions.md
   Verify: manual: deploy.md covers the Pages source setting, the workflow, checking and rerunning a deploy; publishing.md review step uses `pnpm dev` and has no preview step; Buttondown URL is `https://alicefarron.github.io/digest/rss.xml` (AC5)
 
