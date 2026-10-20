@@ -8,7 +8,7 @@
   Files: src/lib/seo.ts, tests/unit/seo.test.ts, tests/build/seo.test.ts
   Verify: `seo.test.ts`: `SITE_URL` wins, empty falls back to `https://domain.invalid`, invalid fails, `RAILWAY_PUBLIC_DOMAIN` is ignored (AC6); build test with `SITE_URL=https://alicefarron.github.io` finds that origin in sitemap, feeds and canonicals and no `domain.invalid` in `dist/` (AC2)
 
-- [ ] T03 Add the GitHub Pages workflow
+- [x] T03 Add the GitHub Pages workflow
   Files: .github/workflows/deploy.yml
   Verify: actions pinned to commit SHAs; `pnpm check` before `pnpm build`; build env sets `SITE_URL` and `CONTENT_STRICT=true`; deploy job `needs: build` (R1, R2); `actionlint` if available, otherwise manual read
 
