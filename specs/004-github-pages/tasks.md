@@ -12,7 +12,7 @@
   Files: .github/workflows/deploy.yml
   Verify: actions pinned to commit SHAs; `pnpm check` before `pnpm build`; build env sets `SITE_URL` and `CONTENT_STRICT=true`; deploy job `needs: build` (R1, R2); `actionlint` if available, otherwise manual read
 
-- [ ] T04 [P] Remove the Railway setup
+- [x] T04 [P] Remove the Railway setup
   Files: Dockerfile, Caddyfile, .dockerignore, railway.json, scripts/docker-smoke.sh, tests/unit/deploy-config.test.ts
   Verify: files gone; `pnpm check` passes; `grep -ri railway` outside `specs/`, `docs/decisions.md` and `src/lib/site.ts` is empty (AC6)
 
