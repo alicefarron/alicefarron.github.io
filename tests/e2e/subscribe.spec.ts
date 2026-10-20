@@ -56,15 +56,17 @@ test.describe("subscribe form (AC12)", () => {
 		const band = await bandForm(page);
 		const input = band.getByLabel("Email address");
 		await input.fill("reader@example.com");
-		const [popup] = await Promise.all([
+		const [popup, request] = await Promise.all([
 			context.waitForEvent("page"),
+			context.waitForEvent("request", (r) =>
+				r.url().startsWith("https://buttondown.com/"),
+			),
 			band.getByRole("button", { name: "Subscribe" }).click(),
 		]);
-		const request = await popup.waitForRequest(buttondown).catch(() => null);
 		expect(popup.url()).toContain(
 			"https://buttondown.com/api/emails/embed-subscribe/",
 		);
-		expect(request?.method() ?? "POST").toBe("POST");
+		expect(request.method()).toBe("POST");
 		await expect(band.locator("[data-subscribe-status]")).toHaveText(
 			"Almost done. Finish in the Buttondown tab, then confirm the email sent to reader@example.com.",
 		);
