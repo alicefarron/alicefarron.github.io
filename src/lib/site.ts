@@ -1,3 +1,5 @@
+import { normalizePath } from "./seo";
+
 export type NavId = "digest" | "writing" | "about" | "subscribe";
 
 export type NavItem = {
@@ -40,7 +42,7 @@ export const navItems: NavItem[] = [
 ];
 
 export function currentNav(pathname: string): NavId | undefined {
-	const path = pathname.replace(/\/+$/, "") || "/";
+	const path = normalizePath(pathname);
 	return navItems.find(
 		(item) =>
 			item.match !== undefined &&
@@ -53,7 +55,7 @@ export function subscribeHref(hasForm: boolean): string {
 }
 
 export function isHome(pathname: string): boolean {
-	return (pathname.replace(/\/+$/, "") || "/") === "/";
+	return normalizePath(pathname) === "/";
 }
 
 export type CaseStudy = {

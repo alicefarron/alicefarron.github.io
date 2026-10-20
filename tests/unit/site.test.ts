@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
 	currentNav,
+	isHome,
 	isPlaceholder,
 	navItems,
 	site,
@@ -27,8 +28,21 @@ describe("site nav", () => {
 		["/about/", "about"],
 		["/aboutness", undefined],
 		["/404", undefined],
+		["/digest.html", "digest"],
+		["/digest/012.html", "digest"],
+		["/writing/some-note.html", "writing"],
+		["/about.html", "about"],
+		["/404.html", undefined],
 	])("current nav for %s is %s", (pathname, expected) => {
 		expect(currentNav(pathname)).toBe(expected);
+	});
+
+	it.each([
+		["/", true],
+		["/index.html", true],
+		["/about.html", false],
+	])("isHome for %s is %s", (pathname, expected) => {
+		expect(isHome(pathname)).toBe(expected);
 	});
 
 	it("never marks Subscribe as current", () => {
