@@ -52,7 +52,7 @@ export default function SubscribeEnhancer({ inputId }: Props) {
 	const isError = state === "invalid" || state === "offline";
 
 	return (
-		<div ref={root} class="contents">
+		<div ref={root} class="-mt-2 flex flex-col gap-2 has-[p:not(:empty)]:mt-0">
 			<p
 				id={errorId}
 				aria-live="assertive"
