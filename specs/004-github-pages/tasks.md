@@ -1,6 +1,6 @@
 # 004: Tasks
 
-- [ ] T01 Emit one HTML file per route
+- [x] T01 Emit one HTML file per route
   Files: astro.config.ts, tests/build/pages.test.ts, tests/build/seo.test.ts, tests/build/markers.test.ts, tests/build/digest-render-check.test.ts, tests/build/sitemap.test.ts, tests/unit/js-budget.test.ts, tests/unit/seo.test.ts, scripts/digest/render-check.ts
   Verify: `pages.test.ts` "output format" over the fixtures build: no `index.html` below the root, `digest/012.html` and `404.html` exist (AC3, AC4); `seo.test.ts` maps `/about.html` to `/about`; `pnpm check` and `pnpm test:e2e` pass
 
