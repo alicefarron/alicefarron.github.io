@@ -158,13 +158,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
 
 ## Deploy
 
-- [ ] T35 Add the Dockerfile, Caddyfile and smoke script
-  Files: Dockerfile, Caddyfile, .dockerignore, scripts/docker-smoke.sh
-  Verify: pin exact `node` and `caddy` image tags and digests; `scripts/docker-smoke.sh`: `/` returns 200, `/missing` returns 404 with the custom page, a `/_astro/` asset has `Cache-Control: public, max-age=31536000, immutable` (AC19)
-
-- [ ] T36 Configure Railway deploys and PR environments
-  Files: railway.json, specs/001-site-v1/plan.md (record service settings)
-  Verify: manual: service builds from `main` with the Dockerfile builder, has a Railway domain, PR Environments enabled, `X_ROBOTS_TAG=noindex` on PR environments; a test PR gets a preview URL that serves `/` with 200 and is removed on close (R17)
+Replaced by spec 004: T35 (Dockerfile, Caddyfile, smoke script) and T36 (Railway deploys and PR environments) were removed. Deployment tasks are in `specs/004-github-pages/tasks.md`.
 
 ## Verification
 
@@ -178,7 +172,7 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
 
 - [ ] T39 Walk every acceptance criterion and check the live deploy
   Files: specs/001-site-v1/tasks.md (tick boxes)
-  Verify: manual: paste the three production feeds into validator.w3.org/feed (AC15); run `scripts/docker-smoke.sh` steps against the Railway URL (AC19); walk AC1 to AC19 at 390, 820 and 1280 px and report each as pass or fail
+  Verify: manual: paste the three production feeds into validator.w3.org/feed (AC15); walk AC1 to AC18 at 390, 820 and 1280 px and report each as pass or fail
 
 ## AC coverage
 
@@ -202,4 +196,4 @@ Every task ends with `pnpm check` passing and one commit, for example `feat(001)
 | AC16 | T12, T15 |
 | AC17 | T10 |
 | AC18 | T33 |
-| AC19 | T35, T39 |
+| AC19 | Replaced by 004 |

@@ -20,7 +20,7 @@ Spec 001 publishes an issue when an MDX file lands on `main`, so nothing on the 
 - A sources file the skill reads, which Alina edits without touching the skill.
 - A production guard that refuses to publish an issue with unresolved author markers.
 - A weekly scheduled task in Claude that runs the skill and opens a pull request.
-- Documentation for the manual setup: GitHub access for Claude, Railway variables, Buttondown RSS-to-email.
+- Documentation for the manual setup: GitHub access for Claude, the GitHub Pages setting (Railway variables before 004), Buttondown RSS-to-email.
 
 ## Out of scope
 
@@ -32,7 +32,7 @@ Spec 001 publishes an issue when an MDX file lands on `main`, so nothing on the 
 ## Decisions
 
 - Runs as a Claude scheduled task in the cloud, not in Hermes. Reason: the stronger model writes and checks better.
-- Merge is publication. The agent opens the issue with `draft: false`, so the PR preview on Railway shows it as it will look live. Anything only Alina can write is left as a marker, and production refuses to build while a marker is left.
+- Merge is publication. The agent opens the issue with `draft: false`, so Alina sees it in `pnpm dev` on the PR branch as it will look live (hosted previews were dropped in 004). Anything only Alina can write is left as a marker, and production refuses to build while a marker is left.
 - Author marker format: `[ALINA: what is needed]`, for example `[ALINA: tried it this week]`.
 - Issues are written in English, following `.claude/rules/content.md`.
 - Schedule: the agent runs on Monday morning, Alina reviews and merges the same day, so the issue comes out on Monday. `site.digestDay` becomes "Monday".
@@ -62,11 +62,11 @@ R10. The agent works on a branch `digest/NNN`, commits only the new issue file, 
 
 R11. If fewer than 4 items pass R4 and R5, the agent does not open a PR. It reports the items it found and why the week was thin.
 
-R12. Production builds fail when a published (non-draft) digest issue or note contains an `[ALINA:` marker, with a message naming the file and the marker. The check runs only when the environment variable `CONTENT_STRICT` is `true`, which is set on the Railway production environment and not on PR environments. Without it, markers render visibly highlighted so Alina sees them in the preview.
+R12. Production builds fail when a published (non-draft) digest issue or note contains an `[ALINA:` marker, with a message naming the file and the marker. The check runs only when the environment variable `CONTENT_STRICT` is `true`, which the GitHub Pages workflow sets for production builds and `pnpm dev` does not. Without it, markers render visibly highlighted so Alina sees them in her local review.
 
 R13. A Claude scheduled task runs the skill every Monday shortly before 07:00 Europe/Amsterdam, with a push notification when it finishes. The run needs GitHub push access to `alicefarron/alina-os` and must not stop to ask for approvals.
 
-R14. `docs/publishing.md` describes the weekly routine from Alina's side (review the PR, fill the markers, merge), the one-time setup (Claude GitHub access, `CONTENT_STRICT=true` on Railway production, Buttondown RSS-to-email on `/digest/rss.xml`), and how to run the skill by hand. `site.digestDay` is set to "Monday".
+R14. `docs/publishing.md` describes the weekly routine from Alina's side (review the PR, fill the markers, merge), the one-time setup (Claude GitHub access, GitHub Pages deploying from Actions (the workflow sets `CONTENT_STRICT=true`), Buttondown RSS-to-email on `/digest/rss.xml`), and how to run the skill by hand. `site.digestDay` is set to "Monday".
 
 ## Acceptance criteria
 

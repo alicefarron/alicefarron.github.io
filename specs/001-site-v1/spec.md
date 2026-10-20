@@ -155,7 +155,7 @@ R15. On screens narrower than 640 px, navigation is the bottom dock; the top men
 
 R16. Issue pages get an OG image that shows the issue number.
 
-R17. The site deploys to Railway from the main branch, and every pull request gets a preview environment.
+R17. Replaced by 004. (Was: the site deploys to Railway from the main branch, and every pull request gets a preview environment.)
 
 ## Acceptance criteria
 
@@ -177,7 +177,7 @@ AC15 (R13). Given a production build, then all three feeds validate and contain 
 AC16 (Content model). Given a note whose cover has no alt text, then the build fails.
 AC17 (R15). Given any route at 390 px, then the dock is visible with four items, the current one has `aria-current="page"`, the menu bar has no nav links, and the last element of the page is not covered by the dock. At 820 px the dock is not rendered visibly.
 AC18 (R16). Given issue 012, then its OG image contains the text "#012".
-AC19 (R17). Given the Dockerfile or Railway config, when built locally with `docker build` and run, then `/` returns 200, `/missing` returns the custom 404 with status 404, and hashed assets under `/_astro/` are served with a one-year immutable cache header.
+AC19 (R17). Replaced by 004. (Was: given the Dockerfile or Railway config, when built locally with `docker build` and run, then `/` returns 200, `/missing` returns the custom 404 with status 404, and hashed assets under `/_astro/` are served with a one-year immutable cache header.)
 
 ## Open questions
 

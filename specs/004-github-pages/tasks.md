@@ -20,7 +20,7 @@
   Files: docs/deploy.md, docs/publishing.md, README.md, docs/decisions.md
   Verify: manual: deploy.md covers the Pages source setting, the workflow, checking and rerunning a deploy; publishing.md review step uses `pnpm dev` and has no preview step; Buttondown URL is `https://alicefarron.github.io/digest/rss.xml` (AC5)
 
-- [ ] T06 [P] Mark Railway requirements in 001 and 002 as replaced
+- [x] T06 [P] Mark Railway requirements in 001 and 002 as replaced
   Files: specs/001-site-v1/spec.md, specs/001-site-v1/tasks.md, specs/002-digest-agent/spec.md
   Verify: manual: 001 R17 and AC19 say "Replaced by 004."; T35 and T36 removed, T39 and the AC table no longer mention AC19 or Railway; 002 R12 and R14 name the Pages workflow and local review (AC7)
 
