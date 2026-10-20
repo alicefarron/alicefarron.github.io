@@ -8,7 +8,7 @@ test.describe("meow.app", () => {
 		const pet = page.locator('[data-window="meow"]');
 		const button = pet.getByRole("button", { name: "Pet the cat" });
 		const status = pet.locator("[data-pet-status]");
-		await button.scrollIntoViewIfNeeded();
+		await pet.scrollIntoViewIfNeeded();
 		await expect(button).toBeVisible();
 		await expect(status).toHaveText("zzz... (idle)");
 		const expected = [
@@ -32,7 +32,7 @@ test.describe("meow.app", () => {
 		const pet = page.locator('[data-window="meow"]');
 		const body = pet.locator("[data-pet-body]");
 		const button = pet.getByRole("button", { name: "Pet the cat" });
-		await button.scrollIntoViewIfNeeded();
+		await pet.scrollIntoViewIfNeeded();
 		await expect(button).toBeVisible();
 		await expect(body).toHaveCSS("background-color", "rgb(255, 255, 255)");
 		await button.click();
@@ -143,8 +143,10 @@ test.describe("side projects view toggle", () => {
 		page,
 	}) => {
 		await page.goto("/about");
+		await page
+			.locator('[data-window="side-projects"]')
+			.scrollIntoViewIfNeeded();
 		const toggle = page.getByRole("group", { name: "View" });
-		await toggle.scrollIntoViewIfNeeded();
 		const list = toggle.getByRole("button", { name: "List" });
 		const icons = toggle.getByRole("button", { name: "Icons" });
 		await expect(icons).toHaveAttribute("aria-pressed", "true");
