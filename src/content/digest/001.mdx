@@ -1,0 +1,73 @@
+---
+number: 1
+title: "Two big open models and agents that review code"
+date: 2026-10-20
+lede: "Reflection and Meta release large open-weight models, Claude and OpenAI APIs get tracing and longer caching, and the Claude Code team shows how agents review its pull requests."
+topics:
+  - Models
+  - Tooling
+  - Agents
+  - Papers
+quote:
+  text: "Verification looks different for each domain. It might be as simple as running a bash command, or running a test suite, or testing the app in a browser or phone simulator."
+  author: "Boris Cherny"
+  role: "who created Claude Code"
+---
+
+Two labs put large open-weight models on Hugging Face this week, both mixture-of-experts and both already supported in vLLM and SGLang. On the API side, Anthropic added OpenTelemetry export and OpenAI added a 12-hour prompt cache. The most useful read for teams running coding agents is the Claude Code team's write-up on review, with real before-and-after numbers.
+
+<Section title="Models" color="sky">
+
+<Item headline="Reflection releases Beam, a 501B open model under Apache 2.0" source={{ name: "Hugging Face", url: "https://huggingface.co/blog/reflection-beam" }}>
+Beam is a mixture-of-experts coding and agent model with 23B active parameters per token and day-0 support in transformers, SGLang and vLLM, so you can serve it yourself or call it through Inference Providers.
+</Item>
+
+<Item headline="Meta's Muse Spark Open brings open weights and a one-million-token context" source={{ name: "Hugging Face", url: "https://huggingface.co/blog/meta-muse-spark-open" }}>
+The model has about 816B parameters with 42B active, reads text, images, audio and video, and already runs in llama.cpp, vLLM, SGLang and MLX, but the post states no license, so check it before you ship.
+</Item>
+
+<Item headline="Grok Voice 3.0 arrives in the xAI Voice Agent API at the 2.0 price" source={{ name: "xAI", url: "https://x.ai/news/grok-voice-3" }}>
+The speech-to-speech model costs $0.08 per minute, and agents that use grok-voice-latest switched to it with no code changes.
+</Item>
+
+</Section>
+
+<Section title="Tooling" color="yellow">
+
+<Item headline="Claude API adds OpenTelemetry export in beta" source={{ name: "Claude Platform release notes", url: "https://platform.claude.com/docs/en/release-notes/overview" }}>
+Add an OpenTelemetry destination in the Claude Console to trace Messages API requests and Claude Managed Agents sessions in your own observability backend.
+</Item>
+
+<Item headline="OpenAI Responses API gets a 12-hour prompt cache option" source={{ name: "OpenAI API changelog", url: "https://developers.openai.com/api/docs/changelog" }}>
+Shared instructions, tools and context can now stay cached for requests that are hours apart, and cache writes cost 2.5x the input token price.
+</Item>
+
+<Item headline="GitHub AI Scan for pull requests is generally available" source={{ name: "GitHub changelog", url: "https://github.blog/changelog/2026-10-15-ai-scan-for-pull-requests-generally-available" }}>
+It finds vulnerabilities in pull request changes in languages CodeQL does not cover, such as PHP, shell scripts and Dockerfiles, works on public repositories and needs no Copilot license.
+</Item>
+
+</Section>
+
+<Section title="Agents" color="pink">
+
+<Item headline="How the Claude Code team reviews code with agents before people" source={{ name: "Claude blog", url: "https://claude.dev/blog/solving-code-review-at-anthropic/" }}>
+Several agents look for bugs in each pull request, a separate group votes on each finding before it is posted, and the share of changes that pass after one review-and-fix round rose from 65% to 78%.
+</Item>
+
+<Item headline="LangChain explains how Deep Agents manage memory" source={{ name: "LangChain blog", url: "https://www.langchain.com/blog/context-engineering-deep-agents-remember" }}>
+Large tool results go to the filesystem with a preview for the model, older messages are summarized near the context limit and saved to a file, and long-term memory is a plain file that carries over to the next conversation.
+</Item>
+
+</Section>
+
+<Section title="Papers" color="lime">
+
+<Item headline="Self-HPO lets a coding agent improve its own harness and policy" source={{ name: "arXiv", url: "https://arxiv.org/abs/2610.22791" }}>
+Alternating harness and policy optimization raised Qwen3.5-35B-A3B's average resolve rate on three coding benchmarks from 57.8% to 64.8%.
+</Item>
+
+<Item headline="OR-License tests agents on real operations research consulting work" source={{ name: "arXiv", url: "https://arxiv.org/abs/2610.24087" }}>
+The benchmark has 31 tasks from 10 industrial scenarios, and task-equalized completion rates range from 24% to 45% across models.
+</Item>
+
+</Section>
