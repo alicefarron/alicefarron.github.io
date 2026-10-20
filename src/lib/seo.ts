@@ -4,7 +4,6 @@ export const ogImageSize = { width: 1200, height: 630 } as const;
 
 export type SiteEnv = {
 	SITE_URL?: string;
-	RAILWAY_PUBLIC_DOMAIN?: string;
 };
 
 function nonEmpty(value: string | undefined): string | undefined {
@@ -13,11 +12,7 @@ function nonEmpty(value: string | undefined): string | undefined {
 }
 
 export function resolveSiteUrl(env: SiteEnv): string {
-	const explicit = nonEmpty(env.SITE_URL);
-	const railway = nonEmpty(env.RAILWAY_PUBLIC_DOMAIN);
-	const candidate =
-		explicit ??
-		(railway === undefined ? placeholderSiteUrl : `https://${railway}`);
+	const candidate = nonEmpty(env.SITE_URL) ?? placeholderSiteUrl;
 	let url: URL;
 	try {
 		url = new URL(candidate);

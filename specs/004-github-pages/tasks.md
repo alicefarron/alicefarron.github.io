@@ -4,7 +4,7 @@
   Files: astro.config.ts, tests/build/pages.test.ts, tests/build/seo.test.ts, tests/build/markers.test.ts, tests/build/digest-render-check.test.ts, tests/build/sitemap.test.ts, tests/unit/js-budget.test.ts, tests/unit/seo.test.ts, scripts/digest/render-check.ts
   Verify: `pages.test.ts` "output format" over the fixtures build: no `index.html` below the root, `digest/012.html` and `404.html` exist (AC3, AC4); `seo.test.ts` maps `/about.html` to `/about`; `pnpm check` and `pnpm test:e2e` pass
 
-- [ ] T02 Read the site URL only from SITE_URL
+- [x] T02 Read the site URL only from SITE_URL
   Files: src/lib/seo.ts, tests/unit/seo.test.ts, tests/build/seo.test.ts
   Verify: `seo.test.ts`: `SITE_URL` wins, empty falls back to `https://domain.invalid`, invalid fails, `RAILWAY_PUBLIC_DOMAIN` is ignored (AC6); build test with `SITE_URL=https://alicefarron.github.io` finds that origin in sitemap, feeds and canonicals and no `domain.invalid` in `dist/` (AC2)
 

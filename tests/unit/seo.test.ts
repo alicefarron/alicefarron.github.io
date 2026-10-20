@@ -10,25 +10,21 @@ import {
 
 describe("resolveSiteUrl", () => {
 	it("prefers SITE_URL without a trailing slash", () => {
-		expect(
-			resolveSiteUrl({
-				SITE_URL: "https://alina.example/",
-				RAILWAY_PUBLIC_DOMAIN: "x.up.railway.app",
-			}),
-		).toBe("https://alina.example");
-	});
-
-	it("falls back to the Railway public domain", () => {
-		expect(resolveSiteUrl({ RAILWAY_PUBLIC_DOMAIN: "x.up.railway.app" })).toBe(
-			"https://x.up.railway.app",
+		expect(resolveSiteUrl({ SITE_URL: "https://alina.example/" })).toBe(
+			"https://alina.example",
 		);
 	});
 
-	it("falls back to the placeholder when nothing is set", () => {
+	it("falls back to the placeholder when SITE_URL is unset or empty", () => {
 		expect(resolveSiteUrl({})).toBe(placeholderSiteUrl);
-		expect(resolveSiteUrl({ SITE_URL: "", RAILWAY_PUBLIC_DOMAIN: "" })).toBe(
-			placeholderSiteUrl,
-		);
+		expect(resolveSiteUrl({ SITE_URL: "" })).toBe(placeholderSiteUrl);
+	});
+
+	it("ignores the Railway public domain", () => {
+		const env: NodeJS.ProcessEnv = {
+			RAILWAY_PUBLIC_DOMAIN: "x.up.railway.app",
+		};
+		expect(resolveSiteUrl(env)).toBe(placeholderSiteUrl);
 	});
 
 	it("rejects a value that is not an http URL", () => {

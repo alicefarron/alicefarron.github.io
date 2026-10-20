@@ -3,18 +3,19 @@ import { join, relative } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { runBuild } from "./build-output";
 
-const site = "https://seo.example";
+const site = "https://alicefarron.github.io";
 let outDir = "";
 let pages: { path: string; html: string }[] = [];
 
-function htmlFiles(dir: string): string[] {
+function builtFiles(dir: string): string[] {
 	return readdirSync(dir).flatMap((name) => {
 		const path = join(dir, name);
-		if (statSync(path).isDirectory()) {
-			return htmlFiles(path);
-		}
-		return name.endsWith(".html") ? [path] : [];
+		return statSync(path).isDirectory() ? builtFiles(path) : [path];
 	});
+}
+
+function htmlFiles(dir: string): string[] {
+	return builtFiles(dir).filter((path) => path.endsWith(".html"));
 }
 
 function meta(html: string, attr: "name" | "property", key: string): string[] {
@@ -48,6 +49,16 @@ afterAll(() => {
 	if (outDir !== "") {
 		rmSync(outDir, { recursive: true, force: true });
 	}
+});
+
+describe("production site URL (004 AC2)", () => {
+	it("no built file points at the placeholder origin", () => {
+		const offenders = builtFiles(outDir)
+			.filter((file) => /\.(html|xml|txt|json)$/.test(file))
+			.filter((file) => readFileSync(file, "utf8").includes("domain.invalid"))
+			.map((file) => relative(outDir, file));
+		expect(offenders).toEqual([]);
+	});
 });
 
 describe("seo tags on every built page (R12)", () => {
