@@ -323,14 +323,14 @@ Prompt text (draft, finalized in T15):
 ```
 You are running the weekly alina.os digest. You have no memory of earlier runs.
 
-1. Work in a clone of https://github.com/alicefarron/alina-os. If it is not already in the working directory, clone it. Check out main and pull.
+1. Work in a clone of https://github.com/alicefarron/alicefarron.github.io. If it is not already in the working directory, clone it. Check out main and pull.
 2. Install dependencies: enable corepack or install pnpm 12.9.1, then run pnpm install --frozen-lockfile. Node must be 22.12 or newer.
 3. Read .claude/skills/digest/SKILL.md and follow it exactly in normal mode, with today's date in Europe/Amsterdam as the run date. That file is the procedure; do not improvise steps it does not describe.
 4. Never merge a pull request, never push to main, never force-push.
 5. Finish with a short report: the PR URL, or for a thin week the reason and the items found; markers left; the result of each check.
 ```
 
-Prerequisites, listed in `docs/publishing.md`: the Claude GitHub App installed on `alicefarron/alina-os` with write access (contents and pull requests), the scheduled task's environment allowed to reach the sources (web access for WebFetch and WebSearch), and automatic approval for the task. The `create_trigger` tool cannot request automatic approval; the result reports the setting it got, and if runs will ask, Alina turns on "Automatically approve" in the task settings. `.claude/settings.json` (section 6) also keeps the run from stopping on the commands it needs.
+Prerequisites, listed in `docs/publishing.md`: the Claude GitHub App installed on `alicefarron/alicefarron.github.io` with write access (contents and pull requests), the scheduled task's environment allowed to reach the sources (web access for WebFetch and WebSearch), and automatic approval for the task. The `create_trigger` tool cannot request automatic approval; the result reports the setting it got, and if runs will ask, Alina turns on "Automatically approve" in the task settings. `.claude/settings.json` (section 6) also keeps the run from stopping on the commands it needs.
 
 ## 9. Docs and site.digestDay (R14)
 

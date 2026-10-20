@@ -236,8 +236,10 @@ describe("digest scheduled prompt", () => {
 	});
 
 	it("clones the repo, installs, follows the skill and never merges", () => {
-		expect(prompt).toContain("https://github.com/alicefarron/alina-os");
-		expect(prompt).toContain("alicefarron/alina-os");
+		expect(prompt).toContain(
+			"https://github.com/alicefarron/alicefarron.github.io",
+		);
+		expect(prompt).toContain("alicefarron/alicefarron.github.io");
 		expect(prompt).toContain("pnpm install --frozen-lockfile");
 		expect(prompt).toContain(".claude/skills/digest/SKILL.md");
 		expect(prompt).toContain("not dry run");

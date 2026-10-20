@@ -64,7 +64,7 @@ R11. If fewer than 4 items pass R4 and R5, the agent does not open a PR. It repo
 
 R12. Production builds fail when a published (non-draft) digest issue or note contains an `[ALINA:` marker, with a message naming the file and the marker. The check runs only when the environment variable `CONTENT_STRICT` is `true`, which the GitHub Pages workflow sets for production builds and `pnpm dev` does not. Without it, markers render visibly highlighted so Alina sees them in her local review.
 
-R13. A Claude scheduled task runs the skill every Monday shortly before 07:00 Europe/Amsterdam, with a push notification when it finishes. The run needs GitHub push access to `alicefarron/alina-os` and must not stop to ask for approvals.
+R13. A Claude scheduled task runs the skill every Monday shortly before 07:00 Europe/Amsterdam, with a push notification when it finishes. The run needs GitHub push access to `alicefarron/alicefarron.github.io` and must not stop to ask for approvals.
 
 R14. `docs/publishing.md` describes the weekly routine from Alina's side (review the PR, fill the markers, merge), the one-time setup (Claude GitHub access, GitHub Pages deploying from Actions (the workflow sets `CONTENT_STRICT=true`), Buttondown RSS-to-email on `/digest/rss.xml`), and how to run the skill by hand. `site.digestDay` is set to "Monday".
 
