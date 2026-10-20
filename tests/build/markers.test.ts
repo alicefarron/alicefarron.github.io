@@ -64,7 +64,7 @@ describe("author markers in the build", () => {
 		});
 		expect(result.status, result.output).toBe(0);
 		const page = (path: string) =>
-			readFileSync(join(result.outDir, path, "index.html"), "utf8");
+			readFileSync(join(result.outDir, `${path}.html`), "utf8");
 		const mark = (text: string) =>
 			new RegExp(
 				`<mark class="author-marker" data-author-marker(?:="")?>${text.replace(/[[\]]/g, "\\$&")}</mark>`,

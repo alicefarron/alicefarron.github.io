@@ -1,5 +1,5 @@
-import { readFileSync, rmSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
+import { join, relative } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { readBuiltFiles, runBuild } from "./build-output";
 
@@ -18,8 +18,7 @@ afterAll(() => {
 });
 
 function page(path: string): string {
-	const file =
-		path === "/" ? "index.html" : join(path.replace(/^\//, ""), "index.html");
+	const file = path === "/" ? "index.html" : `${path.replace(/^\//, "")}.html`;
 	return readFileSync(join(outDir, file), "utf8");
 }
 
@@ -33,6 +32,32 @@ function between(html: string, start: string, end: string): string {
 	const to = html.indexOf(end, from);
 	return html.slice(from, to === -1 ? undefined : to);
 }
+
+function htmlFiles(dir: string): string[] {
+	return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+		const path = join(dir, entry.name);
+		if (entry.isDirectory()) {
+			return htmlFiles(path);
+		}
+		return entry.name.endsWith(".html") ? [relative(outDir, path)] : [];
+	});
+}
+
+describe("output format", () => {
+	it("emits one html file per route, with index.html only at the root (AC3)", () => {
+		const nested = htmlFiles(outDir).filter(
+			(path) => path !== "index.html" && path.endsWith("index.html"),
+		);
+		expect(nested).toEqual([]);
+		expect(existsSync(join(outDir, "digest", "012.html"))).toBe(true);
+		expect(existsSync(join(outDir, "digest.html"))).toBe(true);
+		expect(existsSync(join(outDir, "about.html"))).toBe(true);
+	});
+
+	it("emits the 404 page as 404.html (AC4)", () => {
+		expect(existsSync(join(outDir, "404.html"))).toBe(true);
+	});
+});
 
 describe("home", () => {
 	it("shows the highest issue and the five newest notes, newest first (AC1)", () => {

@@ -78,7 +78,7 @@ export function renderCheck(
 	const { frontmatter, content } = parseFrontmatter(source);
 	const number =
 		typeof frontmatter.number === "number" ? frontmatter.number : Number.NaN;
-	const page = `digest/${padNumber(number)}/index.html`;
+	const page = `digest/${padNumber(number)}.html`;
 	if (!Number.isInteger(number)) {
 		return {
 			status: "failed",

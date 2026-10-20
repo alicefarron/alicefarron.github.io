@@ -49,6 +49,8 @@ describe("canonicalUrl", () => {
 		["/writing/", "https://a.example/writing"],
 		["/digest/012", "https://a.example/digest/012"],
 		["/about/index.html", "https://a.example/about"],
+		["/about.html", "https://a.example/about"],
+		["/digest/012.html", "https://a.example/digest/012"],
 	])("%s becomes %s", (pathname, expected) => {
 		expect(canonicalUrl(pathname, "https://a.example")).toBe(expected);
 	});

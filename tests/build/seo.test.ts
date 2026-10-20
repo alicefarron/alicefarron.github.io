@@ -104,17 +104,15 @@ describe("seo tags on every built page (R12)", () => {
 			]),
 		);
 		expect(byPath["index.html"]).toBe(`${site}/`);
-		expect(byPath[join("digest", "012", "index.html")]).toBe(
-			`${site}/digest/012`,
-		);
-		expect(byPath[join("writing", "sample-note-code", "index.html")]).toBe(
+		expect(byPath[join("digest", "012.html")]).toBe(`${site}/digest/012`);
+		expect(byPath[join("writing", "sample-note-code.html")]).toBe(
 			`${site}/writing/sample-note-code`,
 		);
 	});
 
 	it("notes are articles and link the three feeds", () => {
 		const note = pages.find(
-			({ path }) => path === join("writing", "sample-note-code", "index.html"),
+			({ path }) => path === join("writing", "sample-note-code.html"),
 		);
 		expect(note && one(note.html, "property", "og:type")).toBe("article");
 		for (const { path, html } of pages) {

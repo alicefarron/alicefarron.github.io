@@ -20,7 +20,7 @@ describe("render-check", () => {
 		const report = JSON.parse(result.stdout) as RenderCheck;
 		expect(report).toEqual({
 			status: "ok",
-			page: "digest/015/index.html",
+			page: "digest/015.html",
 			problems: [],
 		});
 	});

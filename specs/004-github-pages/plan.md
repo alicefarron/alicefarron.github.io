@@ -15,7 +15,7 @@ Code that reads `dist/` by path moves from `<path>/index.html` to `<path>.html`:
 
 - `tests/build/pages.test.ts` (`page()` helper), `tests/build/seo.test.ts`, `tests/build/markers.test.ts`, `tests/build/digest-render-check.test.ts`, `tests/build/sitemap.test.ts`, `tests/unit/js-budget.test.ts`.
 - `scripts/digest/render-check.ts` (`digest/NNN/index.html` becomes `digest/NNN.html`).
-- A new build test lists `dist/` and asserts no route folder contains an `index.html` except the root (AC3), and that `404.html` exists (AC4).
+- `pages.test.ts` gets an "output format" block that lists `dist/` and asserts no route folder contains an `index.html` except the root (AC3), and that `404.html` exists (AC4).
 
 ## 2. Workflow
 
