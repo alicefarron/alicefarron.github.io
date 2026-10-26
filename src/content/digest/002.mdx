@@ -1,0 +1,73 @@
+---
+number: 2
+title: "Decisions API goes GA and Agent Skills gets a neutral home"
+date: 2026-10-26
+lede: "OpenAI makes the Decisions API generally available, Anthropic hands Agent Skills to the Agentic AI Foundation, and IBM ships an Apache 2.0 speech model."
+topics:
+  - Models
+  - Tooling
+  - Agents
+  - Papers
+---
+
+A quieter week for new frontier models and a busy one for plumbing. OpenAI's Decisions API is out of beta, Claude Code and Codex CLI both shipped releases aimed at teams running agents in production, and Agent Skills now has the same neutral home as MCP. Two pieces on agent training and context are worth reading if you build agents yourself. [ALINA: your take, optional]
+
+<Section title="Models" color="sky">
+
+<Item headline="IBM releases Granite Speech 5.0 under Apache 2.0" source={{ name: "Hugging Face", url: "https://huggingface.co/blog/ibm-granite/granite-speech-5" }}>
+The 2B model transcribes English, French, German, Spanish, Portuguese and Japanese, ranks second among open-weight ASR models on average English WER at 5.06%, and runs in Transformers, vLLM, llama.cpp and mlx-audio.
+</Item>
+
+<Item headline="OpenAI models are coming to Google Cloud Model Garden" source={{ name: "OpenAI", url: "https://openai.com/index/openai-models-google-cloud/" }}>
+Google Cloud customers will be able to buy OpenAI frontier models through Model Garden and count the spend against existing GCP commitments, with general availability planned in the coming weeks.
+</Item>
+
+</Section>
+
+<Section title="Tooling" color="yellow">
+
+<Item headline="OpenAI's Decisions API is generally available" source={{ name: "OpenAI", url: "https://openai.com/index/decisions-api/" }}>
+You define a question and its allowed answers, send up to 400 questions per request with text, image or JSON context, and pay only for input tokens at $0.10 per million, or $0.01 when cached.
+</Item>
+
+<Item headline="Claude Code reports blocked and prompted tool calls to OpenTelemetry" source={{ name: "Claude Code changelog", url: "https://code.claude.com/docs/en/changelog" }}>
+Version 2.1.307 emits a claude_code.safety_event for each tool call that a permission rule, auto mode, a safety check, a hook or the sandbox stopped, prompted or sent back, so you can see in your own backend what your guardrails catch.
+</Item>
+
+<Item headline="Codex CLI 0.164.0 adds reusable prompt presets" source={{ name: "ChatGPT and Codex changelog", url: "https://learn.chatgpt.com/docs/changelog" }}>
+Ten numbered /presets slots store reusable prompts and slash commands, /model and /permissions now take inline arguments, and credentials are masked in supported remote Bash commands.
+</Item>
+
+</Section>
+
+<Section title="Agents" color="pink">
+
+<Item headline="Anthropic donates Agent Skills to the Agentic AI Foundation" source={{ name: "Anthropic", url: "https://www.anthropic.com/news/donating-agent-skills-to-the-agentic-ai-foundation" }}>
+The standard, its name, its GitHub organization and the agentskills.io domain move to the AAIF under the Linux Foundation, and you can keep using or contributing to it without joining.
+</Item>
+
+<Item headline="LangChain's retrieval rules for agent context" source={{ name: "LangChain blog", url: "https://www.langchain.com/blog/context-engineering-starts-with-retrieval" }}>
+Use grep before semantic search when you know the keywords, read large files in sections, save results to files and pass the paths, and let subagents do the reading so the main agent sees only conclusions.
+</Item>
+
+<Item headline="Microsoft's ThinkingBox turns database checks into RL rewards for agents" source={{ name: "Hugging Face", url: "https://huggingface.co/blog/microsoft/thinkingbox-training" }}>
+Grading the final database state with an executable check raised Qwen3.8-27B's average success from 51.70% to 60.78%, and the data-selection, rollout, reward and Verl code is released.
+</Item>
+
+<Item headline="OpenAI coordinates fixes for PHP flaws that AI found first" source={{ name: "OpenAI", url: "https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/" }}>
+Calif found a critical PHP flaw with GPT-5.6 Sol through Patch the Planet, and OpenAI shares a PHP version checker as a Codex skill so you can find vulnerable versions and apply the fixes.
+</Item>
+
+</Section>
+
+<Section title="Papers" color="lime">
+
+<Item headline="Async-RBench tests agents on results that arrive one at a time" source={{ name: "arXiv", url: "https://arxiv.org/abs/2610.32429" }}>
+All nine agents had lower task success with asynchronous delivery than with batched delivery, 26.0% versus 29.7% on average, and scored lowest on duplicate reports and subagent failures.
+</Item>
+
+</Section>
+
+<TriedIt>
+[ALINA: tried it this week]
+</TriedIt>
